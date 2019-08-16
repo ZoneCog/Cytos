@@ -1,0 +1,1521 @@
+<root>
+  <MSystemDescription>
+    <tiling>
+      <tiles>
+        <tile name="d">
+          <polygon>
+            <sides value="4" />
+            <radius value="2" />
+          </polygon>
+          <positions>
+            <position name="center">
+              <posX value="0" />
+              <posY value="0" />
+            </position>
+          </positions>
+          <connectingAngle value="180" />
+          <connectors>
+            <connector name="c1">
+              <positions>
+                <position name="v1" />
+                <position name="v2" />
+              </positions>
+              <glue name="g1" />
+            </connector>
+            <connector name="c2">
+              <positions>
+                <position name="v2" />
+                <position name="v3" />
+              </positions>
+              <glue name="g2" />
+            </connector>
+            <connector name="c3">
+              <positions>
+                <position name="v3" />
+                <position name="v4" />
+              </positions>
+              <glue name="g3" />
+            </connector>
+            <connector name="c4">
+              <positions>
+                <position name="v4" />
+                <position name="v1" />
+              </positions>
+              <glue name="g4" />
+            </connector>
+          </connectors>
+          <surfaceGlue name="gx" />
+          <color name="White" alpha="255" />
+        </tile>
+      </tiles>
+      <glues>
+        <glue name="g1" />
+        <glue name="g2" />
+        <glue name="g3" />
+        <glue name="g4" />
+        <glue name="gx" />
+      </glues>
+      <glueRelations>
+        <glueTuple glue1="g3" glue2="g1" />
+        <glueTuple glue1="g4" glue2="g2" />
+      </glueRelations>
+      <initialObjects>
+        <initialObject name="d">
+          <posX value="0" />
+          <posY value="0" />
+          <posZ value="0" />
+          <angleX value="0" />
+          <angleY value="0" />
+          <angleZ value="0" />
+        </initialObject>
+      </initialObjects>
+      <glueRadius value="0.1" />
+    </tiling>
+    <Msystem>
+      <floatingObjects>
+        <floatingObject name="a">
+          <shape value="capsule" />
+          <size value="0.05" />
+          <mobility value="5" />
+          <concentration value="10" />
+        </floatingObject>
+      </floatingObjects>
+      <proteins />
+      <proteinsOnTiles />
+      <evoRulesWithPriority>
+        <evoRule type="Create">
+          <leftside value="a" />
+          <rightside value="d" />
+        </evoRule>
+      </evoRulesWithPriority>
+      <signalObjects />
+    </Msystem>
+  </MSystemDescription>
+  <snapshots>
+    <snapshot stepID="0">
+      <floatingObjects />
+      <tiles>
+        <tile name="d" objectID="1" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="0" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="2" />
+              <posY value="1.22460635382238E-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="2.44921270764475E-16" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-2" />
+              <posY value="-3.67381906146713E-16" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="1">
+      <floatingObjects />
+      <tiles>
+        <tile name="d" objectID="2" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-2" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-4.44089209850063E-16" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-2" />
+              <posY value="-4.44089209850063E-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-4" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="3" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-2" />
+              <posY value="0" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="2.22044604925031E-16" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-2" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-4" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="2">
+      <floatingObjects />
+      <tiles>
+        <tile name="d" objectID="4" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-4" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-2" />
+              <posY value="-3.21628574467825E-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-4" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-6" />
+              <posY value="-8.11471115996776E-16" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="5" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-4" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-2" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-4" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-6" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="6" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-4" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-2" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-4" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-6" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="3">
+      <floatingObjects />
+      <tiles>
+        <tile name="d" objectID="7" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-6" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-4" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-6" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="8" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-6" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-4" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-6" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="9" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-6" />
+              <posY value="0" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-4" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-6" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="10" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-6" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-4" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-6" />
+              <posY value="-8.88178419700125E-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="4">
+      <floatingObjects />
+      <tiles>
+        <tile name="d" objectID="11" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-8" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-6" />
+              <posY value="-3.21628574467825E-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-8.11471115996776E-16" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="12" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-8" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-6" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="13" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-8" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-6" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="14" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-8" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-6" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="-10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="15" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-8" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-6" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="5">
+      <floatingObjects />
+      <tiles>
+        <tile name="d" objectID="16" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="-10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-10" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="17" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-10" />
+              <posY value="12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="18" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-10" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-8.88178419700125E-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="19" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-4.44089209850063E-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="20" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-10" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="21" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-8" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="6">
+      <floatingObjects />
+      <tiles>
+        <tile name="d" objectID="22" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="23" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-12" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="24" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-12" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="25" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="26" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-14" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-12" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="27" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-12" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="-7.65717784317888E-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-1.25556032584684E-15" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="28" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-12" />
+              <posY value="14" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-10" />
+              <posY value="12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="12" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="7">
+      <floatingObjects />
+      <tiles>
+        <tile name="d" objectID="29" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-14" />
+              <posY value="16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="14" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="14" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="30" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-14" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-14" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="31" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-14" />
+              <posY value="12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="32" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="33" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-10" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="34" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-14" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="35" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-8.88178419700125E-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="36" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-14" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-12" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-1.33226762955019E-15" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="8">
+      <floatingObjects />
+      <tiles>
+        <tile name="d" objectID="37" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-16" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-1.33226762955019E-15" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-1.82211017107914E-15" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="38" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-16" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="39" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-14" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-18" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-16" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="40" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-16" />
+              <posY value="18" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="14" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="16" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="41" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="42" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-14" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-12" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="43" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="44" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-16" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="45" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-16" />
+              <posY value="14" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-14" />
+              <posY value="12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="12" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="9">
+      <floatingObjects />
+      <tiles>
+        <tile name="d" objectID="46" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-18" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-1.77635683940025E-15" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-20" />
+              <posY value="2" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="47" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-1.33226762955019E-15" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-20" />
+              <posY value="-2" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="48" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-18" />
+              <posY value="12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-20" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="49" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-20" />
+              <posY value="-10" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="50" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-14" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-20" />
+              <posY value="-14" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="51" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-18" />
+              <posY value="16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="14" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="12" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-20" />
+              <posY value="14" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="52" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-18" />
+              <posY value="8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-20" />
+              <posY value="6" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="53" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-18" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-20" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-20" />
+              <posY value="-18" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="54" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-18" />
+              <posY value="20" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="18" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="16" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-20" />
+              <posY value="18" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+        <tile name="d" objectID="55" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-4" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-16" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-18" />
+              <posY value="-8" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-20" />
+              <posY value="-6" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ffffffff" />
+        </tile>
+      </tiles>
+    </snapshot>
+  </snapshots>
+</root>

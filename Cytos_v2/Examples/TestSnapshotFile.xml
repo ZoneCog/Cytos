@@ -1,0 +1,846 @@
+<root>
+  <MSystemDescription>
+    <tiling>
+    </tiling>
+    <Msystem>
+    </Msystem>
+  </MSystemDescription>
+  <snapshots>
+    <snapshot stepID="0">
+      <floatingObjects>
+        <floatingObject name="testName" objectID="1">
+          <position>
+            <posX value="0" />
+            <posY value="1" />
+            <posZ value="2" />
+          </position>
+        </floatingObject>
+      </floatingObjects>
+      <tiles>
+        <tile name="q2" objectID="1" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="0" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295154" />
+              <posY value="3.09016994374947" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="5.87785252292473" />
+              <posY value="-8.09016994374947" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-5.87785252292473" />
+              <posY value="-8.09016994374947" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295154" />
+              <posY value="3.09016994374947" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="1">
+      <floatingObjects>
+        <floatingObject name="testName" objectID="1">
+          <position>
+            <posX value="0" />
+            <posY value="1" />
+            <posZ value="2" />
+          </position>
+        </floatingObject>
+      </floatingObjects>
+      <tiles>
+        <tile name="q2" objectID="2" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="9.51056516295154" />
+              <posY value="3.09016994374947" />
+              <posZ value="-1.77635683940025E-15" />
+            </vertex>
+            <vertex>
+              <posX value="0" />
+              <posY value="10" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="1.77635683940025E-15" />
+              <posY value="16.1803398874989" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295154" />
+              <posY value="13.0901699437495" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="15.3884176858763" />
+              <posY value="5" />
+              <posZ value="10" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="q2" objectID="3" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="5.87785252292473" />
+              <posY value="-8.09016994374947" />
+              <posZ value="8.88178419700125E-16" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295154" />
+              <posY value="3.09016994374947" />
+              <posZ value="-8.88178419700125E-16" />
+            </vertex>
+            <vertex>
+              <posX value="15.3884176858763" />
+              <posY value="5" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="15.3884176858763" />
+              <posY value="-5" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295154" />
+              <posY value="-13.0901699437495" />
+              <posZ value="10" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="q2" objectID="4" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-5.87785252292473" />
+              <posY value="-8.09016994374947" />
+              <posZ value="-2.66453525910038E-15" />
+            </vertex>
+            <vertex>
+              <posX value="5.87785252292473" />
+              <posY value="-8.09016994374947" />
+              <posZ value="-1.77635683940025E-15" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295153" />
+              <posY value="-13.0901699437495" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="-5.86197757002083E-15" />
+              <posY value="-16.1803398874989" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295154" />
+              <posY value="-13.0901699437495" />
+              <posZ value="10" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="q2" objectID="5" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-9.51056516295154" />
+              <posY value="3.09016994374947" />
+              <posZ value="2.66453525910038E-15" />
+            </vertex>
+            <vertex>
+              <posX value="-5.87785252292473" />
+              <posY value="-8.09016994374947" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295153" />
+              <posY value="-13.0901699437495" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="-15.3884176858763" />
+              <posY value="-5.00000000000001" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-15.3884176858763" />
+              <posY value="4.99999999999999" />
+              <posZ value="10" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="q2" objectID="6" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="0" />
+              <posY value="10" />
+              <posZ value="-1.77635683940025E-15" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295154" />
+              <posY value="3.09016994374947" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="-15.3884176858763" />
+              <posY value="5" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295154" />
+              <posY value="13.0901699437495" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-8.88178419700125E-16" />
+              <posY value="16.1803398874989" />
+              <posZ value="10" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="s1" objectID="7" type="rod" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="0" />
+              <posY value="0" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="3.94499763260772E-16" />
+              <posY value="-2.03924405337978E-16" />
+              <posZ value="2" />
+            </vertex>
+          </vertices>
+          <color name="ffff0000" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="2">
+      <floatingObjects>
+        <floatingObject name="testName" objectID="1">
+          <position>
+            <posX value="0" />
+            <posY value="1" />
+            <posZ value="2" />
+          </position>
+        </floatingObject>
+      </floatingObjects>
+      <tiles>
+        <tile name="q2" objectID="8" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="9.51056516295154" />
+              <posY value="13.0901699437495" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="2.17603712826531E-15" />
+              <posY value="16.1803398874989" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295153" />
+              <posY value="13.0901699437495" />
+              <posZ value="16.180339887499" />
+            </vertex>
+            <vertex>
+              <posX value="-5.87785252292472" />
+              <posY value="8.09016994374947" />
+              <posZ value="26.180339887499" />
+            </vertex>
+            <vertex>
+              <posX value="5.87785252292474" />
+              <posY value="8.09016994374947" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="q2" objectID="9" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="15.3884176858763" />
+              <posY value="-5" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="15.3884176858763" />
+              <posY value="5" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295154" />
+              <posY value="13.0901699437495" />
+              <posZ value="16.180339887499" />
+            </vertex>
+            <vertex>
+              <posX value="5.87785252292475" />
+              <posY value="8.09016994374947" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295154" />
+              <posY value="-3.09016994374948" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="q2" objectID="10" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-7.99360577730113E-15" />
+              <posY value="-16.1803398874989" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295153" />
+              <posY value="-13.0901699437495" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="15.3884176858763" />
+              <posY value="-5" />
+              <posZ value="16.180339887499" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295153" />
+              <posY value="-3.09016994374948" />
+              <posZ value="26.180339887499" />
+            </vertex>
+            <vertex>
+              <posX value="-9.76996261670138E-15" />
+              <posY value="-10" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="q2" objectID="11" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-15.3884176858763" />
+              <posY value="-5.00000000000001" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295153" />
+              <posY value="-13.0901699437495" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="5.32907051820075E-15" />
+              <posY value="-16.180339887499" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-2.66453525910038E-15" />
+              <posY value="-10" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295154" />
+              <posY value="-3.09016994374948" />
+              <posZ value="26.180339887499" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="q2" objectID="12" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-9.51056516295153" />
+              <posY value="13.0901699437495" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-15.3884176858763" />
+              <posY value="5" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="-15.3884176858763" />
+              <posY value="-5.00000000000001" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295153" />
+              <posY value="-3.09016994374948" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-5.87785252292473" />
+              <posY value="8.09016994374947" />
+              <posZ value="26.180339887499" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="s1" objectID="13" type="rod" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="3.88578058618805E-16" />
+              <posY value="-2.22044604925031E-16" />
+              <posZ value="2" />
+            </vertex>
+            <vertex>
+              <posX value="0.800239820807327" />
+              <posY value="-0.599680105718256" />
+              <posZ value="3.73205080756888" />
+            </vertex>
+          </vertices>
+          <color name="ffff0000" />
+        </tile>
+        <tile name="s1" objectID="14" type="rod" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="3.88578058618805E-16" />
+              <posY value="-2.22044604925031E-16" />
+              <posZ value="2" />
+            </vertex>
+            <vertex>
+              <posX value="0.414835320393451" />
+              <posY value="0.909896508925088" />
+              <posZ value="3.73205080756888" />
+            </vertex>
+          </vertices>
+          <color name="ffff0000" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="3">
+      <floatingObjects>
+        <floatingObject name="testName" objectID="1">
+          <position>
+            <posX value="0" />
+            <posY value="1" />
+            <posZ value="2" />
+          </position>
+        </floatingObject>
+      </floatingObjects>
+      <tiles>
+        <tile name="q2" objectID="15" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="-5.87785252292473" />
+              <posY value="8.09016994374947" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295154" />
+              <posY value="-3.09016994374948" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-2.68673971959288E-15" />
+              <posY value="-10" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295153" />
+              <posY value="-3.09016994374948" />
+              <posZ value="26.180339887499" />
+            </vertex>
+            <vertex>
+              <posX value="5.87785252292473" />
+              <posY value="8.09016994374947" />
+              <posZ value="26.180339887499" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="s1" objectID="16" type="rod" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="0.800239820807327" />
+              <posY value="-0.599680105718256" />
+              <posZ value="3.73205080756888" />
+            </vertex>
+            <vertex>
+              <posX value="1.95375630688901" />
+              <posY value="-1.87025785058104" />
+              <posZ value="4.75919827049579" />
+            </vertex>
+          </vertices>
+          <color name="ffff0000" />
+        </tile>
+        <tile name="s1" objectID="17" type="rod" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="0.800239820807327" />
+              <posY value="-0.599680105718256" />
+              <posZ value="3.73205080756888" />
+            </vertex>
+            <vertex>
+              <posX value="2.36127123748703" />
+              <posY value="-0.691822215923428" />
+              <posZ value="4.97892319384821" />
+            </vertex>
+          </vertices>
+          <color name="ffff0000" />
+        </tile>
+        <tile name="s1" objectID="18" type="rod" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="0.414835320393451" />
+              <posY value="0.909896508925088" />
+              <posZ value="3.73205080756888" />
+            </vertex>
+            <vertex>
+              <posX value="1.66694011329938" />
+              <posY value="1.24808960525407" />
+              <posZ value="5.25450245447836" />
+            </vertex>
+          </vertices>
+          <color name="ffff0000" />
+        </tile>
+        <tile name="s1" objectID="19" type="rod" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="0.414835320393451" />
+              <posY value="0.909896508925088" />
+              <posZ value="3.73205080756888" />
+            </vertex>
+            <vertex>
+              <posX value="0.0212061650335715" />
+              <posY value="2.337376750739" />
+              <posZ value="5.0764303102695" />
+            </vertex>
+          </vertices>
+          <color name="ffff0000" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="4">
+      <floatingObjects>
+        <floatingObject name="testName" objectID="1">
+          <position>
+            <posX value="0" />
+            <posY value="1" />
+            <posZ value="2" />
+          </position>
+        </floatingObject>
+      </floatingObjects>
+      <tiles>
+        <tile name="q2" objectID="8" type="tile" state="Destroy">
+          <vertices>
+            <vertex>
+              <posX value="9.51056516295154" />
+              <posY value="13.0901699437495" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="2.17603712826531E-15" />
+              <posY value="16.1803398874989" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295153" />
+              <posY value="13.0901699437495" />
+              <posZ value="16.180339887499" />
+            </vertex>
+            <vertex>
+              <posX value="-5.87785252292472" />
+              <posY value="8.09016994374947" />
+              <posZ value="26.180339887499" />
+            </vertex>
+            <vertex>
+              <posX value="5.87785252292474" />
+              <posY value="8.09016994374947" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="q2" objectID="9" type="tile" state="Destroy">
+          <vertices>
+            <vertex>
+              <posX value="15.3884176858763" />
+              <posY value="-5" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="15.3884176858763" />
+              <posY value="5" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295154" />
+              <posY value="13.0901699437495" />
+              <posZ value="16.180339887499" />
+            </vertex>
+            <vertex>
+              <posX value="5.87785252292475" />
+              <posY value="8.09016994374947" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295154" />
+              <posY value="-3.09016994374948" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="q2" objectID="10" type="tile" state="Destroy">
+          <vertices>
+            <vertex>
+              <posX value="-7.99360577730113E-15" />
+              <posY value="-16.1803398874989" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295153" />
+              <posY value="-13.0901699437495" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="15.3884176858763" />
+              <posY value="-5" />
+              <posZ value="16.180339887499" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295153" />
+              <posY value="-3.09016994374948" />
+              <posZ value="26.180339887499" />
+            </vertex>
+            <vertex>
+              <posX value="-9.76996261670138E-15" />
+              <posY value="-10" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="q2" objectID="11" type="tile" state="Destroy">
+          <vertices>
+            <vertex>
+              <posX value="-15.3884176858763" />
+              <posY value="-5.00000000000001" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295153" />
+              <posY value="-13.0901699437495" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="5.32907051820075E-15" />
+              <posY value="-16.180339887499" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-2.66453525910038E-15" />
+              <posY value="-10" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295154" />
+              <posY value="-3.09016994374948" />
+              <posZ value="26.180339887499" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+        <tile name="q2" objectID="12" type="tile" state="Destroy">
+          <vertices>
+            <vertex>
+              <posX value="-9.51056516295153" />
+              <posY value="13.0901699437495" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-15.3884176858763" />
+              <posY value="5" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="-15.3884176858763" />
+              <posY value="-5.00000000000001" />
+              <posZ value="16.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295153" />
+              <posY value="-3.09016994374948" />
+              <posZ value="26.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-5.87785252292473" />
+              <posY value="8.09016994374947" />
+              <posZ value="26.180339887499" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="5">
+      <floatingObjects>
+        <floatingObject name="testName" objectID="1">
+          <position>
+            <posX value="0" />
+            <posY value="1" />
+            <posZ value="2" />
+          </position>
+        </floatingObject>
+      </floatingObjects>
+      <tiles>
+        <tile name="q2" objectID="15" type="tile" state="Move">
+          <vertices>
+            <vertex>
+              <posX value="-5.87785252292473" />
+              <posY value="8.09016994374947" />
+              <posZ value="21.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-9.51056516295154" />
+              <posY value="-3.09016994374948" />
+              <posZ value="21.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="-2.68673971959288E-15" />
+              <posY value="-10" />
+              <posZ value="21.1803398874989" />
+            </vertex>
+            <vertex>
+              <posX value="9.51056516295153" />
+              <posY value="-3.09016994374948" />
+              <posZ value="21.180339887499" />
+            </vertex>
+            <vertex>
+              <posX value="5.87785252292473" />
+              <posY value="8.09016994374947" />
+              <posZ value="21.180339887499" />
+            </vertex>
+          </vertices>
+          <color name="ff00bfff" />
+        </tile>
+      </tiles>
+    </snapshot>
+    <snapshot stepID="6">
+      <floatingObjects>
+        <floatingObject name="testName" objectID="1">
+          <position>
+            <posX value="0" />
+            <posY value="1" />
+            <posZ value="2" />
+          </position>
+        </floatingObject>
+      </floatingObjects>
+      <tiles>
+        <tile name="TestSquare" objectID="20" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="35" />
+              <posY value="5" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="35" />
+              <posY value="-5" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="25" />
+              <posY value="-5" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="25" />
+              <posY value="5" />
+              <posZ value="0" />
+            </vertex>
+          </vertices>
+          <color name="ff00008b" />
+        </tile>
+        <tile name="TestSquare" objectID="21" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="35" />
+              <posY value="-5" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="35" />
+              <posY value="-5" />
+              <posZ value="8.88178419700125E-16" />
+            </vertex>
+            <vertex>
+              <posX value="35" />
+              <posY value="5" />
+              <posZ value="0" />
+            </vertex>
+            <vertex>
+              <posX value="35" />
+              <posY value="5" />
+              <posZ value="10" />
+            </vertex>
+          </vertices>
+          <color name="ff00008b" />
+        </tile>
+        <tile name="TestSquare" objectID="22" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="35" />
+              <posY value="-5" />
+              <posZ value="4.44089209850063E-15" />
+            </vertex>
+            <vertex>
+              <posX value="35" />
+              <posY value="-5" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="25" />
+              <posY value="-5" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="25" />
+              <posY value="-5.00000000000001" />
+              <posZ value="5.32907051820075E-15" />
+            </vertex>
+          </vertices>
+          <color name="ff00008b" />
+        </tile>
+        <tile name="TestSquare" objectID="23" type="tile" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="25" />
+              <posY value="-5" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="35" />
+              <posY value="-5" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="35" />
+              <posY value="5" />
+              <posZ value="10" />
+            </vertex>
+            <vertex>
+              <posX value="25" />
+              <posY value="5" />
+              <posZ value="10" />
+            </vertex>
+          </vertices>
+          <color name="ff00008b" />
+        </tile>
+      </tiles>
+    </snapshot>
+  </snapshots>
+</root>

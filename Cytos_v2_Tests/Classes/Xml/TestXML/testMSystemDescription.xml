@@ -1,0 +1,272 @@
+﻿<root>
+  <tiling>
+    <tiles>
+      <!-- q1 is a pentagonal tile with edge connectors and a point connector in its center -->
+      <tile name="q1">
+        <polygon>
+          <sides value="5"/>
+          <radius value="10"/>
+        </polygon>
+        <positions>
+          <position name="point1">
+            <!--if dimension=1, positions have posX-->
+            <!--if dimension=2, positions have posX, posY-->
+            <!--if dimension=3, positions have posX, posY, posZ (not supported in this version)-->
+            <posX value="0"/>
+            <posY value="0"/>
+          </position>
+        </positions>
+        <!--default angle for all connectors of the object-->
+        <!--connectors can re-define it with individual angles-->
+        <connectingAngle value="2.034443935795703" unit="rad"/>
+        <connectors>
+          <connector name="c1">
+            <positions>
+              <position name="v1"/>
+              <position name="v2"/>
+            </positions>
+            <glue name="pa"/>
+          </connector>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+              <position name="v3"/>
+            </positions>
+            <glue name="pb"/>
+          </connector>
+          <connector name="c3">
+            <positions>
+              <position name="v3"/>
+              <position name="v4"/>
+            </positions>
+            <glue name="pa"/>
+          </connector>
+          <connector name="c4">
+            <positions>
+              <position name="v4"/>
+              <position name="v5"/>
+            </positions>
+            <glue name="pb"/>
+          </connector>
+          <connector name="c5">
+            <positions>
+              <position name="v5"/>
+              <position name="v1"/>
+            </positions>
+            <glue name="pa"/>
+          </connector>
+          <connector name="c6">
+            <positions>
+              <position name="point1"/>
+            </positions>
+            <glue name="pa"/>
+            <!--individual angle for this connector which overrides the default angle-->
+            <angle value="45"/>
+          </connector>
+        </connectors>
+        <surfaceGlue name="px"/>
+        <color name="DeepSkyBlue" alpha="64"/>
+      </tile>
+      <!-- q2 is a pentagonal tile with edge connectors -->
+      <tile name="q2">
+        <polygon>
+          <sides value="5"/>
+          <radius value="10"/>
+        </polygon>
+        <connectingAngle value="2.034443935795703" unit="rad"/>
+        <connectors>
+          <connector name="c1">
+            <positions>
+              <position name="v1"/>
+              <position name="v2"/>
+            </positions>
+            <glue name="pa"/>
+          </connector>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+              <position name="v3"/>
+            </positions>
+            <glue name="pb"/>
+          </connector>
+          <connector name="c3">
+            <positions>
+              <position name="v3"/>
+              <position name="v4"/>
+            </positions>
+            <glue name="pa"/>
+          </connector>
+          <connector name="c4">
+            <positions>
+              <position name="v4"/>
+              <position name="v5"/>
+            </positions>
+            <glue name="pb"/>
+          </connector>
+          <connector name="c5">
+            <positions>
+              <position name="v5"/>
+              <position name="v1"/>
+            </positions>
+            <glue name="pa"/>
+          </connector>
+        </connectors>
+        <surfaceGlue name="px"/>
+        <color name="DeepSkyBlue" alpha="64"/>
+      </tile>
+      <!-- s1 is simple rod with one connector at each end -->
+      <tile name="s1">
+        <polygon>
+          <sides value="2"/>
+          <radius value="5"/>
+        </polygon>
+        <connectingAngle value="30" unit="deg"/>
+        <connectors>
+          <connector name="c1">
+            <positions>
+              <position name="v1"/>
+            </positions>
+            <glue name="pa"/>
+          </connector>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+            </positions>
+            <glue name="pb"/>
+          </connector>
+        </connectors>
+        <surfaceGlue name="px"/>
+        <color name="FireBrick"/>
+      </tile>
+    </tiles>
+    <glues>
+      <glue name="pa"/>
+      <glue name="pb"/>
+      <glue name="px"/>
+    </glues>
+    <glueRelations>
+      <glueTuple glue1="pa" glue2="pb"/>
+      <glueTuple glue1="pa" glue2="pa"/>
+      <glueTuple glue1="pb" glue2="pb"/>
+    </glueRelations>
+    <initialObjects>
+      <initialObject name="q1">
+        <posX value="0"/>
+        <posY value="0"/>
+        <posZ value="0"/>
+
+        <angleX value="0"/>
+        <angleY value="0"/>
+        <angleZ value="0"/>
+      </initialObject>
+      <initialObject name="q2">
+        <posX value="3"/>
+        <posY value="3"/>
+        <posZ value="3"/>
+
+        <angleX value="0"/>
+        <angleY value="0"/>
+        <angleZ value="0"/>
+      </initialObject>
+
+      <initialObject name="s1">
+        <posX value="3"/>
+        <posY value="-12"/>
+        <posZ value="3"/>
+
+        <angleX value="0"/>
+        <angleY value="0"/>
+        <angleZ value="0"/>
+      </initialObject>
+    </initialObjects>
+    <glueRadius value="0.1"/>
+    <pushingCoef value="2.2"/>
+  </tiling>
+  <Msystem>
+    <floatingObjects>
+      <floatingObject name="a">
+        <shape value="sphere"/>
+        <size value="0.05"/>
+        <!--if color omitted - default Black-->
+        <!--if alpha omitted - default 255-->
+        <color name="Azure" alpha ="255"/>
+        <mobility value="2"/>
+      </floatingObject>
+      <floatingObject name="b">
+        <shape value="sphere"/>
+        <size value="0.05"/>
+        <mobility value="3"/>
+        <concentration value="2"/>
+        <!--if concentration omitted - default 0-->
+      </floatingObject>
+      <floatingObject name="c">
+        <shape value="cube"/>
+        <size value="0.05"/>
+        <mobility value="2.5"/>
+      </floatingObject>
+    </floatingObjects>
+    <proteins>
+      <protein name="p1"/>
+      <protein name="p2"/>
+    </proteins>
+    <proteinsOnTiles>
+      <!-- the tile must be defined in 'tiles' element-->
+      <tile name="q1">
+        <!-- the protein must be defined in 'proteins' element-->
+        <protein name="p1">
+          <!-- if positions omitted - default zero -->
+        </protein>
+        <protein name="p1">
+        </protein>
+        <protein name="p2">
+        </protein>
+        <protein name="p2">
+        </protein>
+      </tile>
+      <tile name="q2">
+        <protein name="p1">
+        </protein>
+        <protein name="p1">
+        </protein>
+        <protein name="p2">
+        </protein>
+        <protein name="p2">
+        </protein>
+      </tile>
+      <tile name="s1">
+        <protein name="p1">
+        </protein>
+      </tile>
+    </proteinsOnTiles>
+    <evoRulesWithPriority>
+      <!-- if priority omitted - default zero -->
+      <evoRule type="Metabolic">
+        <leftside value ="a,p1"/>
+        <rightside value= "p1,a"/>
+        <!-- NEW FORMAT: one or more objects in one string, aply to all element 'evoRule' -->
+      </evoRule>
+      <evoRule type="Create" priority="1">
+        <leftside value="a,a,a"/>
+        <rightside value="q1"/>
+      </evoRule>
+      <evoRule type="Divide" priority="1">
+        <leftside value="pa,pa,a,a"/>
+        <rightside value="pa,pa"/>
+      </evoRule>
+      <evoRule type="Destroy" priority="1">
+        <leftside value="a,a,s1"/>
+        <rightside value="c,c"/>
+      </evoRule>
+    </evoRulesWithPriority>
+    <!-- reactionRadius value="1"-->
+    <signalObjects>
+      <!-- if the tuple is here, it must be also in 'glueRelations' above, but not every tuple must be here-->
+      <glueTuple glue1="pa" glue2="pb">
+        <objects value="a"/>
+      </glueTuple>
+      <glueTuple glue1="pa" glue2="pa">
+        <objects value="c"/>
+      </glueTuple>
+    </signalObjects>
+  </Msystem>
+</root>

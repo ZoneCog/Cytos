@@ -1,0 +1,702 @@
+<colorTable>
+  <color name="aliceblue">
+    <r value="0.9"/>
+    <g value="1"/>
+    <b value="1"/>
+  </color>
+  <color name="antiquewhite">
+    <r value="1"/>
+    <g value="0.9"/>
+    <b value="0.8"/>
+  </color>
+  <color name="aqua">
+    <r value="0"/>
+    <g value="1"/>
+    <b value="1"/>
+  </color>
+  <color name="aquamarine">
+    <r value="0.5"/>
+    <g value="1"/>
+    <b value="0.8"/>
+  </color>
+  <color name="azure">
+    <r value="0.9"/>
+    <g value="1"/>
+    <b value="1"/>
+  </color>
+  <color name="beige">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="0.9"/>
+  </color>
+  <color name="bisque">
+    <r value="1"/>
+    <g value="0.9"/>
+    <b value="0.8"/>
+  </color>
+  <color name="black">
+    <r value="0"/>
+    <g value="0"/>
+    <b value="0"/>
+  </color>
+  <color name="blanchedalmond">
+    <r value="1"/>
+    <g value="0.9"/>
+    <b value="0.8"/>
+  </color>
+  <color name="blue">
+    <r value="0"/>
+    <g value="0"/>
+    <b value="1"/>
+  </color>
+  <color name="blueviolet">
+    <r value="0.5"/>
+    <g value="0.2"/>
+    <b value="0.9"/>
+  </color>
+  <color name="brown">
+    <r value="0.6"/>
+    <g value="0.2"/>
+    <b value="0.2"/>
+  </color>
+  <color name="burlywood">
+    <r value="0.9"/>
+    <g value="0.7"/>
+    <b value="0.5"/>
+  </color>
+  <color name="cadetblue">
+    <r value="0.4"/>
+    <g value="0.6"/>
+    <b value="0.6"/>
+  </color>
+  <color name="chartreuse">
+    <r value="0.5"/>
+    <g value="1"/>
+    <b value="0"/>
+  </color>
+  <color name="chocolate">
+    <r value="0.8"/>
+    <g value="0.4"/>
+    <b value="0.1"/>
+  </color>
+  <color name="coral">
+    <r value="1"/>
+    <g value="0.5"/>
+    <b value="0.3"/>
+  </color>
+  <color name="cornflowerblue">
+    <r value="0.4"/>
+    <g value="0.6"/>
+    <b value="0.9"/>
+  </color>
+  <color name="cornsilk">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="0.9"/>
+  </color>
+  <color name="crimson">
+    <r value="0.9"/>
+    <g value="0.1"/>
+    <b value="0.2"/>
+  </color>
+  <color name="cyan">
+    <r value="0"/>
+    <g value="1"/>
+    <b value="1"/>
+  </color>
+  <color name="darkblue">
+    <r value="0"/>
+    <g value="0"/>
+    <b value="0.5"/>
+  </color>
+  <color name="darkcyan">
+    <r value="0"/>
+    <g value="0.5"/>
+    <b value="0.5"/>
+  </color>
+  <color name="darkgoldenrod">
+    <r value="0.7"/>
+    <g value="0.5"/>
+    <b value="0"/>
+  </color>
+  <color name="darkgray">
+    <r value="0.7"/>
+    <g value="0.7"/>
+    <b value="0.7"/>
+  </color>
+  <color name="darkgreen">
+    <r value="0"/>
+    <g value="0.4"/>
+    <b value="0"/>
+  </color>
+  <color name="darkkhaki">
+    <r value="0.7"/>
+    <g value="0.7"/>
+    <b value="0.4"/>
+  </color>
+  <color name="darkmagenta">
+    <r value="0.5"/>
+    <g value="0"/>
+    <b value="0.5"/>
+  </color>
+  <color name="darkolivegreen">
+    <r value="0.3"/>
+    <g value="0.4"/>
+    <b value="0.2"/>
+  </color>
+  <color name="darkorange">
+    <r value="1"/>
+    <g value="0.5"/>
+    <b value="0"/>
+  </color>
+  <color name="darkorchid">
+    <r value="0.6"/>
+    <g value="0.2"/>
+    <b value="0.8"/>
+  </color>
+  <color name="darkred">
+    <r value="0.5"/>
+    <g value="0"/>
+    <b value="0"/>
+  </color>
+  <color name="darksalmon">
+    <r value="0.9"/>
+    <g value="0.6"/>
+    <b value="0.5"/>
+  </color>
+  <color name="darkseagreen">
+    <r value="0.6"/>
+    <g value="0.7"/>
+    <b value="0.5"/>
+  </color>
+  <color name="darkslateblue">
+    <r value="0.3"/>
+    <g value="0.2"/>
+    <b value="0.5"/>
+  </color>
+  <color name="darkslategray">
+    <r value="0.2"/>
+    <g value="0.3"/>
+    <b value="0.3"/>
+  </color>
+  <color name="darkturquoise">
+    <r value="0"/>
+    <g value="0.8"/>
+    <b value="0.8"/>
+  </color>
+  <color name="darkviolet">
+    <r value="0.6"/>
+    <g value="0.8"/>
+    <b value="0"/>
+  </color>
+  <color name="deeppink">
+    <r value="1"/>
+    <g value="0.1"/>
+    <b value="0.6"/>
+  </color>
+  <color name="deepskyblue">
+    <r value="0"/>
+    <g value="0.7"/>
+    <b value="1"/>
+  </color>
+  <color name="dimgray">
+    <r value="0.4"/>
+    <g value="0.4"/>
+    <b value="0.4"/>
+  </color>
+  <color name="dodgerblue">
+    <r value="0.1"/>
+    <g value="0.6"/>
+    <b value="1"/>
+  </color>
+  <color name="firebrick">
+    <r value="0.7"/>
+    <g value="0.1"/>
+    <b value="0.1"/>
+  </color>
+  <color name="floralwhite">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="0.9"/>
+  </color>
+  <color name="forestgreen">
+    <r value="0.1"/>
+    <g value="0.5"/>
+    <b value="0.1"/>
+  </color>
+  <color name="fuchsia">
+    <r value="1"/>
+    <g value="0"/>
+    <b value="1"/>
+  </color>
+  <color name="gainsboro">
+    <r value="0.9"/>
+    <g value="0.9"/>
+    <b value="0.9"/>
+  </color>
+  <color name="ghostwhite">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="1"/>
+  </color>
+  <color name="gold">
+    <r value="1"/>
+    <g value="0.8"/>
+    <b value="0"/>
+  </color>
+  <color name="goldenrod">
+    <r value="0.9"/>
+    <g value="0.6"/>
+    <b value="0.1"/>
+  </color>
+  <color name="gray">
+    <r value="0.5"/>
+    <g value="0.5"/>
+    <b value="0.5"/>
+  </color>
+  <color name="green">
+    <r value="0"/>
+    <g value="0.5"/>
+    <b value="0"/>
+  </color>
+  <color name="greenyellow">
+    <r value="0.7"/>
+    <g value="1"/>
+    <b value="0.2"/>
+  </color>
+  <color name="honeydew">
+    <r value="0.9"/>
+    <g value="1"/>
+    <b value="0.9"/>
+  </color>
+  <color name="hotpink">
+    <r value="1"/>
+    <g value="0.4"/>
+    <b value="0.7"/>
+  </color>
+  <color name="indianred">
+    <r value="0.8"/>
+    <g value="0.4"/>
+    <b value="0.4"/>
+  </color>
+  <color name="indigo">
+    <r value="0.3"/>
+    <g value="0"/>
+    <b value="0.5"/>
+  </color>
+  <color name="ivory">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="0.9"/>
+  </color>
+  <color name="khaki">
+    <r value="0.9"/>
+    <g value="0.9"/>
+    <b value="0.5"/>
+  </color>
+  <color name="lavender">
+    <r value="0.9"/>
+    <g value="0.9"/>
+    <b value="1"/>
+  </color>
+  <color name="lavenderblush">
+    <r value="1"/>
+    <g value="0.9"/>
+    <b value="1"/>
+  </color>
+  <color name="lawngreen">
+    <r value="0.5"/>
+    <g value="1"/>
+    <b value="0"/>
+  </color>
+  <color name="lemonchiffon">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="0.8"/>
+  </color>
+  <color name="lightblue">
+    <r value="0.7"/>
+    <g value="0.8"/>
+    <b value="0.9"/>
+  </color>
+  <color name="lightcoral">
+    <r value="0.9"/>
+    <g value="0.5"/>
+    <b value="0.5"/>
+  </color>
+  <color name="lightcyan">
+    <r value="0.9"/>
+    <g value="1"/>
+    <b value="1"/>
+  </color>
+  <color name="lightgoldenrodyellow">
+    <r value="1"/>
+    <g value="0.8"/>
+    <b value="1"/>
+  </color>
+  <color name="LightGray">
+    <r value="0.8"/>
+    <g value="0.8"/>
+    <b value="0.8"/>
+  </color>
+  <color name="LightGreen">
+    <r value="0.6"/>
+    <g value="0.9"/>
+    <b value="0.6"/>
+  </color>
+  <color name="LightPink">
+    <r value="1"/>
+    <g value="0.7"/>
+    <b value="0.8"/>
+  </color>
+  <color name="lightsalmon">
+    <r value="1"/>
+    <g value="0.6"/>
+    <b value="0.5"/>
+  </color>
+  <color name="lightseagreen">
+    <r value="0.1"/>
+    <g value="0.7"/>
+    <b value="0.7"/>
+  </color>
+  <color name="lightskyblue">
+    <r value="0.5"/>
+    <g value="0.8"/>
+    <b value="1"/>
+  </color>
+  <color name="lightslategray">
+    <r value="0.5"/>
+    <g value="0.5"/>
+    <b value="0.6"/>
+  </color>
+  <color name="lightsteelblue">
+    <r value="0.7"/>
+    <g value="0.8"/>
+    <b value="0.9"/>
+  </color>
+  <color name="lightyellow">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="0.9"/>
+  </color>
+  <color name="lime">
+    <r value="0"/>
+    <g value="1"/>
+    <b value="0"/>
+  </color>
+  <color name="limegreen">
+    <r value="0.2"/>
+    <g value="0.8"/>
+    <b value="0.2"/>
+  </color>
+  <color name="linen">
+    <r value="1"/>
+    <g value="0.9"/>
+    <b value="0.9"/>
+  </color>
+  <color name="magenta">
+    <r value="1"/>
+    <g value="0"/>
+    <b value="1"/>
+  </color>
+  <color name="maroon">
+    <r value="0.5"/>
+    <g value="0"/>
+    <b value="0"/>
+  </color>
+  <color name="mediumaquamarine">
+    <r value="0.4"/>
+    <g value="0.8"/>
+    <b value="0.7"/>
+  </color>
+  <color name="mediumblue">
+    <r value="0"/>
+    <g value="0"/>
+    <b value="0.8"/>
+  </color>
+  <color name="mediumorchid">
+    <r value="0.7"/>
+    <g value="0.3"/>
+    <b value="0.8"/>
+  </color>
+  <color name="mediumpurple">
+    <r value="0.6"/>
+    <g value="0.4"/>
+    <b value="0.9"/>
+  </color>
+  <color name="mediumseagreen">
+    <r value="0.2"/>
+    <g value="0.7"/>
+    <b value="0.4"/>
+  </color>
+  <color name="mediumslateblue">
+    <r value="0.5"/>
+    <g value="0.4"/>
+    <b value="0.9"/>
+  </color>
+  <color name="mediumspringgreen">
+    <r value="0"/>
+    <g value="1"/>
+    <b value="0.6"/>
+  </color>
+  <color name="mediumturquoise">
+    <r value="0.3"/>
+    <g value="0.8"/>
+    <b value="0.8"/>
+  </color>
+  <color name="mediumvioletred">
+    <r value="0.8"/>
+    <g value="0.1"/>
+    <b value="0.5"/>
+  </color>
+  <color name="midnightblue">
+    <r value="0.1"/>
+    <g value="0.1"/>
+    <b value="0.4"/>
+  </color>
+  <color name="mintcream">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="1"/>
+  </color>
+  <color name="mistyrose">
+    <r value="1"/>
+    <g value="0.9"/>
+    <b value="0.9"/>
+  </color>
+  <color name="moccasin">
+    <r value="1"/>
+    <g value="0.9"/>
+    <b value="0.7"/>
+  </color>
+  <color name="navajowhite">
+    <r value="1"/>
+    <g value="0.9"/>
+    <b value="0.7"/>
+  </color>
+  <color name="navy">
+    <r value="0"/>
+    <g value="0"/>
+    <b value="0.5"/>
+  </color>
+  <color name="oldlace">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="0.9"/>
+  </color>
+  <color name="olive">
+    <r value="0.5"/>
+    <g value="0.5"/>
+    <b value="0"/>
+  </color>
+  <color name="olivedrab">
+    <r value="0.4"/>
+    <g value="0.6"/>
+    <b value="0.1"/>
+  </color>
+  <color name="orange">
+    <r value="1"/>
+    <g value="0.6"/>
+    <b value="0"/>
+  </color>
+  <color name="orangered">
+    <r value="1"/>
+    <g value="0.3"/>
+    <b value="0"/>
+  </color>
+  <color name="orchid">
+    <r value="0.9"/>
+    <g value="0.4"/>
+    <b value="0.8"/>
+  </color>
+  <color name="palegoldenrod">
+    <r value="0.9"/>
+    <g value="0.9"/>
+    <b value="0.7"/>
+  </color>
+  <color name="palegreen">
+    <r value="0.6"/>
+    <g value="1"/>
+    <b value="0.6"/>
+  </color>
+  <color name="paleturquoise">
+    <r value="0.7"/>
+    <g value="0.9"/>
+    <b value="0.9"/>
+  </color>
+  <color name="palevioletred">
+    <r value="0.9"/>
+    <g value="0.4"/>
+    <b value="0.6"/>
+  </color>
+  <color name="papayawhip">
+    <r value="1"/>
+    <g value="0.9"/>
+    <b value="0.8"/>
+  </color>
+  <color name="peachpuff">
+    <r value="1"/>
+    <g value="0.9"/>
+    <b value="0.7"/>
+  </color>
+  <color name="peru">
+    <r value="0.8"/>
+    <g value="0.5"/>
+    <b value="0.2"/>
+  </color>
+  <color name="pink">
+    <r value="1"/>
+    <g value="0.8"/>
+    <b value="0.8"/>
+  </color>
+  <color name="plum">
+    <r value="0.9"/>
+    <g value="0.6"/>
+    <b value="0.9"/>
+  </color>
+  <color name="powderblue">
+    <r value="0.7"/>
+    <g value="0.9"/>
+    <b value="0.9"/>
+  </color>
+  <color name="purple">
+    <r value="0.5"/>
+    <g value="0"/>
+    <b value="0.5"/>
+  </color>
+  <color name="red">
+    <r value="1"/>
+    <g value="0"/>
+    <b value="0"/>
+  </color>
+  <color name="rosybrown">
+    <r value="0.7"/>
+    <g value="0.6"/>
+    <b value="0.6"/>
+  </color>
+  <color name="royalblue">
+    <r value="0.3"/>
+    <g value="0.4"/>
+    <b value="0.9"/>
+  </color>
+  <color name="saddlebrown">
+    <r value="0.5"/>
+    <g value="0.3"/>
+    <b value="0.1"/>
+  </color>
+  <color name="salmon">
+    <r value="1"/>
+    <g value="0.5"/>
+    <b value="0.4"/>
+  </color>
+  <color name="sandybrown">
+    <r value="1"/>
+    <g value="0.6"/>
+    <b value="0.4"/>
+  </color>
+  <color name="seagreen">
+    <r value="0.2"/>
+    <g value="0.5"/>
+    <b value="0.3"/>
+  </color>
+  <color name="seashell">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="0.9"/>
+  </color>
+  <color name="sienna">
+    <r value="0.6"/>
+    <g value="0.3"/>
+    <b value="0.2"/>
+  </color>
+  <color name="silver">
+    <r value="0.8"/>
+    <g value="0.8"/>
+    <b value="0.8"/>
+  </color>
+  <color name="skyblue">
+    <r value="0.5"/>
+    <g value="0.8"/>
+    <b value="0.9"/>
+  </color>
+  <color name="slateblue">
+    <r value="0.4"/>
+    <g value="0.4"/>
+    <b value="0.8"/>
+  </color>
+  <color name="slategray">
+    <r value="0.4"/>
+    <g value="0.5"/>
+    <b value="0.6"/>
+  </color>
+  <color name="snow">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="1"/>
+  </color>
+  <color name="springgreen">
+    <r value="0"/>
+    <g value="1"/>
+    <b value="0.5"/>
+  </color>
+  <color name="steelblue">
+    <r value="0.3"/>
+    <g value="0.5"/>
+    <b value="0.7"/>
+  </color>
+  <color name="tan">
+    <r value="0.8"/>
+    <g value="0.7"/>
+    <b value="0.5"/>
+  </color>
+  <color name="teal">
+    <r value="0"/>
+    <g value="0.5"/>
+    <b value="0.5"/>
+  </color>
+  <color name="thistle">
+    <r value="0.8"/>
+    <g value="0.7"/>
+    <b value="0.8"/>
+  </color>
+  <color name="tomato">
+    <r value="1"/>
+    <g value="0.4"/>
+    <b value="0.3"/>
+  </color>
+  <color name="turquoise">
+    <r value="0.3"/>
+    <g value="0.9"/>
+    <b value="0.8"/>
+  </color>
+  <color name="violet">
+    <r value="0.9"/>
+    <g value="0.5"/>
+    <b value="0.9"/>
+  </color>
+  <color name="wheat">
+    <r value="1"/>
+    <g value="0.9"/>
+    <b value="0.7"/>
+  </color>
+  <color name="white">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="1"/>
+  </color>
+  <color name="whitesmoke">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="1"/>
+  </color>
+  <color name="yellow">
+    <r value="1"/>
+    <g value="1"/>
+    <b value="0"/>
+  </color>
+  <color name="yellowgreen">
+    <r value="0.6"/>
+    <g value="0.8"/>
+    <b value="0.2"/>
+  </color>
+</colorTable>

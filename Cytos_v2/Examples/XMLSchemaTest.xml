@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+File to test XML Schema document "MSystemXMLSchema.xsd"
+-->
+
+<root 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="file://c:\Users\jb\Source\Workspaces\Cytos\Cytos_v2\Examples\ MSystemXMLSchema.xsd">
+
+  
+</root>
+

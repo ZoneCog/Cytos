@@ -1,0 +1,109 @@
+<!--
+==========================
+Note:
+&apos; = '
+==========================
+-->
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation='MSystemXMLSchema.xsd'>
+  <tiling>
+    <tiles>
+      <tile name="A">
+        <polygon>
+          <sides value="4"/>
+          <radius value="2"/>
+        </polygon>
+        <connectingAngle value="180"/>
+        <connectors>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+              <position name="v3"/>
+            </positions>
+            <glue name="g2"/>
+          </connector>
+
+          <connector name="c4">
+            <positions>
+              <position name="v4"/>
+              <position name="v1"/>
+            </positions>
+            <glue name="g4"/>
+          </connector>
+
+        </connectors>
+        <surfaceGlue name="gx"/>
+        <alphaRatio value="2"/>
+        <color name= "SkyBlue" alpha="255"/>
+      </tile>
+      <tile name="B">
+        <polygon>
+          <sides value="4"/>
+          <radius value="2"/>
+        </polygon>
+        <connectingAngle value="180"/>
+        <connectors>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+              <position name="v3"/>
+            </positions>
+            <glue name="g2"/>
+          </connector>
+
+          <connector name="c4">
+            <positions>
+              <position name="v4"/>
+              <position name="v1"/>
+            </positions>
+            <glue name="g4"/>
+          </connector>
+
+        </connectors>
+        <surfaceGlue name="gx"/>
+        <alphaRatio value="1"/>
+        <color name= "Red" alpha="255"/>
+      </tile>
+    </tiles>
+    <glues>
+      <glue name="g1"/>
+      <glue name="g2"/>
+      <glue name="g3"/>
+      <glue name="g4"/>
+      <glue name="gx"/>
+    </glues>
+    <glueRelations>
+      <!-- <glueTuple glue1="g3" glue2="g1"/> -->
+      <glueTuple glue1="g2" glue2="g4"/>
+    </glueRelations>
+    <initialObjects>
+      <initialObject name="B">
+        <posX value="0"/>
+        <posY value="-10"/>
+        <posZ value="0"/>
+
+        <angleX value="0"/>
+        <angleY value="0"/>
+        <angleZ value="0"/>
+      </initialObject>
+    </initialObjects>
+    <batteryVoltage value="100"/>
+    <thresholdPotential value="1"/>
+  </tiling>
+  <Msystem>
+    <floatingObjects>
+    </floatingObjects>
+    <proteins />
+    <proteinsOnTiles />
+    <evoRulesWithPriority>
+      <evoRule type="Create">
+        <leftside value=""/>
+        <rightside value="A"/>
+      </evoRule>
+      <evoRule type="Create">
+        <leftside value=""/>
+        <rightside value="B"/>
+      </evoRule>
+    </evoRulesWithPriority>
+    <signalObjects />
+  </Msystem>
+</root>

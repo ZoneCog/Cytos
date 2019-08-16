@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <tiling>
+    <tiles />
+    <glues>
+      <glue name="bsadbrb" />
+      <glue name="gg" />
+    </glues>
+    <glueRelations />
+    <initialObjects />
+  </tiling>
+  <Msystem>
+    <floatingObjects />
+    <proteins />
+    <proteinsOnTiles />
+    <evoRulesWithPriority />
+    <signalObjects />
+  </Msystem>
+</root>

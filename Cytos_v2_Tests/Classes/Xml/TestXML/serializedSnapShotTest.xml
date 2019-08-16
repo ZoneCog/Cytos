@@ -1,0 +1,38 @@
+<root>
+  <MSystemDescription>
+    <tiling>
+    </tiling>
+    <Msystem>
+    </Msystem>
+  </MSystemDescription>
+  <snapshots>
+    <snapshot stepID="0">
+      <floatingObjects>
+        <floatingObject name="testName" objectID="0">
+          <position>
+            <posX value="0" />
+            <posY value="0" />
+            <posZ value="0" />
+          </position>
+        </floatingObject>
+      </floatingObjects>
+      <tiles>
+        <tile name="testName" objectID="0" type="rod" state="Create">
+          <vertices>
+            <vertex>
+              <posX value="1" />
+              <posY value="1" />
+              <posZ value="1" />
+            </vertex>
+            <vertex>
+              <posX value="2" />
+              <posY value="2" />
+              <posZ value="2" />
+            </vertex>
+          </vertices>
+          <color name="ff000000" />
+        </tile>
+      </tiles>
+    </snapshot>
+  </snapshots>
+</root>

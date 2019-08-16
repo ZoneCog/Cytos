@@ -1,0 +1,15 @@
+﻿<!--
+==========================
+Config file for visualization.
+==========================
+-->
+<root>
+  <program>
+    <MSystemDescriptionFileName value="MSystemDescription.xml"/>
+    <InventoryFileName value="Inventory.xml"/>
+    <SnapshopFileName value="SnapshotFile.xml"/>
+  </program>
+  <rod>
+    <dia value="0.05f"/>
+  </rod>
+</root>

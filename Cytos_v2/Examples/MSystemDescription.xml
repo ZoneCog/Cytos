@@ -1,0 +1,610 @@
+﻿<!--
+==========================
+Note:
+&apos; = '
+==========================
+-->
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation='MSystemXMLSchema.xsd'>
+  <tiling>
+    <tiles>
+      <!-- Large base tile -->
+      <tile name="q0">
+        <polygon>
+          <sides value="5"/>
+          <radius value="10"/>
+        </polygon>
+        <positions>
+          <position name="center">
+            <posX value="0"/>
+            <posY value="0"/>
+          </position>
+        </positions>
+        <connectingAngle value="2.034443935795703" unit="rad"/>
+        <connectors>
+          <connector name="c1">
+            <positions>
+              <position name="v1"/>
+              <position name="v2"/>
+            </positions>
+            <glue name="ge"/>
+            <resistance value ="0" />
+          </connector>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+              <position name="v3"/>
+            </positions>
+            <glue name="ge"/>
+          </connector>
+          <connector name="c3">
+            <positions>
+              <position name="v3"/>
+              <position name="v4"/>
+            </positions>
+            <glue name="ge"/>
+          </connector>
+          <connector name="c4">
+            <positions>
+              <position name="v4"/>
+              <position name="v5"/>
+            </positions>
+            <glue name="ge"/>
+          </connector>
+          <connector name="c5">
+            <positions>
+              <position name="v5"/>
+              <position name="v1"/>
+            </positions>
+            <glue name="ge"/>
+          </connector>
+          <connector name="c6">
+            <positions>
+              <position name="center"/>
+            </positions>
+            <glue name="g3"/>
+            <angle value="90" unit="deg"/>
+          </connector>
+          <connector name="c7">
+            <positions>
+              <position name="center"/>
+            </positions>
+            <glue name="g0"/>
+            <angle value="90" unit="deg"/>
+          </connector>
+        </connectors>
+        <surfaceGlue name="gx"/>
+        <color name="DeepSkyBlue" alpha="64"/>
+      </tile>
+      <!-- Large top tile -->
+      <tile name="q1">
+        <polygon>
+          <sides value="5"/>
+          <radius value="10"/>
+        </polygon>
+        <positions>
+          <position name="center">
+            <posX value="0"/>
+            <posY value="0"/>
+          </position>
+        </positions>
+        <connectingAngle value="2.034443935795703" unit="rad"/>
+        <connectors>
+          <connector name="c1">
+            <positions>
+              <position name="v1"/>
+              <position name="v2"/>
+            </positions>
+            <glue name="ga"/>
+          </connector>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+              <position name="v3"/>
+            </positions>
+            <glue name="ga"/>
+          </connector>
+          <connector name="c3">
+            <positions>
+              <position name="v3"/>
+              <position name="v4"/>
+            </positions>
+            <glue name="ga"/>
+          </connector>
+          <connector name="c4">
+            <positions>
+              <position name="v4"/>
+              <position name="v5"/>
+            </positions>
+            <glue name="ga"/>
+          </connector>
+          <connector name="c5">
+            <positions>
+              <position name="v5"/>
+              <position name="v1"/>
+            </positions>
+            <glue name="ga"/>
+          </connector>
+          <connector name="c6">
+            <positions>
+              <position name="center"/>
+            </positions>
+            <glue name="g3"/>
+            <angle value="90" unit="deg"/>
+          </connector>
+        </connectors>
+        <surfaceGlue name="gx"/>
+        <color name="DeepSkyBlue" alpha="64"/>
+      </tile>
+      <!-- Large equatorial tile -->
+      <tile name="q2">
+        <polygon>
+          <sides value="5"/>
+          <radius value="10"/>
+        </polygon>
+        <connectingAngle value="2.034443935795703" unit="rad"/>
+        <connectors>
+          <connector name="c1">
+            <positions>
+              <position name="v1"/>
+              <position name="v2"/>
+            </positions>
+            <glue name="gf"/>
+          </connector>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+              <position name="v3"/>
+            </positions>
+            <glue name="gb"/>
+          </connector>
+          <connector name="c3">
+            <positions>
+              <position name="v3"/>
+              <position name="v4"/>
+            </positions>
+            <glue name="gc"/>
+          </connector>
+          <connector name="c4">
+            <positions>
+              <position name="v4"/>
+              <position name="v5"/>
+            </positions>
+            <glue name="gd"/>
+          </connector>
+          <connector name="c5">
+            <positions>
+              <position name="v5"/>
+              <position name="v1"/>
+            </positions>
+            <glue name="gb"/>
+          </connector>
+        </connectors>
+        <surfaceGlue name="gx"/>
+        <color name="DeepSkyBlue" alpha="64"/>
+      </tile>
+      <!-- Small polar tile -->
+      <tile name="q3">
+        <polygon>
+          <sides value="5"/>
+          <radius value="3"/>
+        </polygon>
+        <positions>
+          <position name="center">
+            <posX value="0"/>
+            <posY value="0"/>
+          </position>
+        </positions>
+        <connectingAngle value="2.034443935795703" unit="rad"/>
+        <connectors>
+          <connector name="c1">
+            <positions>
+              <position name="v1"/>
+              <position name="v2"/>
+            </positions>
+            <glue name="ga"/>
+          </connector>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+              <position name="v3"/>
+            </positions>
+            <glue name="ga"/>
+          </connector>
+          <connector name="c3">
+            <positions>
+              <position name="v3"/>
+              <position name="v4"/>
+            </positions>
+            <glue name="ga"/>
+          </connector>
+          <connector name="c4">
+            <positions>
+              <position name="v4"/>
+              <position name="v5"/>
+            </positions>
+            <glue name="ga"/>
+          </connector>
+          <connector name="c5">
+            <positions>
+              <position name="v5"/>
+              <position name="v1"/>
+            </positions>
+            <glue name="ga"/>
+          </connector>
+          <connector name="cy">
+            <positions>
+              <position name="center"/>
+            </positions>
+            <glue name="g2"/>
+            <angle value="-90" unit="deg"/>
+          </connector>
+        </connectors>
+        <surfaceGlue name="gt"/>
+        <color name="Red" alpha="128"/>
+      </tile>
+      <!-- Small equatorial tile -->
+      <tile name="q4">
+        <polygon>
+          <sides value="5"/>
+          <radius value="3"/>
+        </polygon>
+        <connectingAngle value="2.034443935795703" unit="rad"/>
+        <connectors>
+          <connector name="c1">
+            <positions>
+              <position name="v1"/>
+              <position name="v2"/>
+            </positions>
+            <glue name="gf"/>
+          </connector>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+              <position name="v3"/>
+            </positions>
+            <glue name="gb"/>
+          </connector>
+          <connector name="c3">
+            <positions>
+              <position name="v3"/>
+              <position name="v4"/>
+            </positions>
+            <glue name="gcc"/>
+          </connector>
+          <connector name="c4">
+            <positions>
+              <position name="v4"/>
+              <position name="v5"/>
+            </positions>
+            <glue name="gdd"/>
+          </connector>
+          <connector name="c5">
+            <positions>
+              <position name="v5"/>
+              <position name="v1"/>
+            </positions>
+            <glue name="gb"/>
+          </connector>
+        </connectors>
+        <surfaceGlue name="gx"/>
+        <color name="Red" alpha="128"/>
+      </tile>
+      <!-- Auxiliary rod to position the base nucleus tile -->
+      <tile name="s0">
+        <polygon>
+          <sides value="2"/>
+          <radius value="4.592"/>
+        </polygon>
+        <connectors>
+          <connector name="c1">
+            <positions>
+              <position name="v1"/>
+            </positions>
+            <angle value="90" unit="deg"/>
+            <glue name="g1"/>
+          </connector>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+            </positions>
+            <angle value="90" unit="deg"/>
+            <glue name="g1"/>
+          </connector>
+        </connectors>
+        <surfaceGlue name="gx"/>
+        <color name="White" alpha="0"/>
+      </tile>
+      <!-- Straight rod -->
+      <tile name="s1">
+        <polygon>
+          <sides value="2"/>
+          <radius value="0.7"/>
+        </polygon>
+        <connectingAngle value="0" unit="deg"/>
+        <connectors>
+          <connector name="c1">
+            <positions>
+              <position name="v1"/>
+            </positions>
+            <glue name="g3"/>
+          </connector>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+            </positions>
+            <glue name="g4"/>
+          </connector>
+        </connectors>
+        <surfaceGlue name="gx"/>
+        <color name="Yellow" alpha="255"/>
+        <thickness value="0.1" />
+      </tile>
+      <!-- Straight rod with a fork connectors on one end-->
+      <tile name="s2">
+        <polygon>
+          <sides value="2"/>
+          <radius value="0.7"/>
+        </polygon>
+        <connectors>
+          <connector name="c1">
+            <positions>
+              <position name="v1"/>
+            </positions>
+            <angle value="0" unit="deg"/>
+            <glue name="g5"/>
+          </connector>
+          <connector name="c2">
+            <positions>
+              <position name="v2"/>
+            </positions>
+            <angle value="6" unit="deg"/>
+            <glue name="g6"/>
+          </connector>
+          <connector name="c3">
+            <positions>
+              <position name="v2"/>
+            </positions>
+            <angle value="-6" unit="deg"/>
+            <glue name="g4"/>
+          </connector>
+        </connectors>
+        <surfaceGlue name="gx"/>
+        <color name="Yellow" alpha="255"/>
+        <thickness value="0.1" />
+      </tile>
+    </tiles>
+    <glues>
+      <glue name="g0"/>
+      <glue name="g1"/>
+      <glue name="g2"/>
+      <glue name="g3"/>
+      <glue name="g4"/>
+      <glue name="g5"/>
+      <glue name="g6"/>
+      <glue name="ga"/>
+      <glue name="gb"/>
+      <glue name="gc"/>
+      <glue name="gd"/>
+      <glue name="gcc"/>
+      <glue name="gdd"/>
+      <!-- gcc, gdd used for debugging, can be replaced with gc, gd in the whole file -->
+      <glue name="ge"/>
+      <glue name="gf"/>
+      <glue name="gt"/>
+      <glue name="gx"/>
+    </glues>
+    <glueRelations>
+      <glueTuple glue1="g0" glue2="g1"/>
+      <glueTuple glue1="g1" glue2="g2"/>
+      <glueTuple glue1="g3" glue2="g3"/>
+      <glueTuple glue1="g4" glue2="g5"/>
+      <glueTuple glue1="g6" glue2="g3"/>
+      <glueTuple glue1="g4" glue2="gt"/>
+      <glueTuple glue1="g6" glue2="gt"/>
+      <glueTuple glue1="gb" glue2="gb"/>
+      <glueTuple glue1="gc" glue2="gc"/>
+      <glueTuple glue1="gd" glue2="gd"/>
+      <glueTuple glue1="gcc" glue2="gcc"/>
+      <glueTuple glue1="gdd" glue2="gdd"/>
+      <glueTuple glue1="ge" glue2="gf"/>
+      <glueTuple glue1="gf" glue2="ga"/>
+      <glueTuple glue1="ga" glue2="gf"/>
+    </glueRelations>
+    <initialObjects>
+      <initialObject name="q0">
+        <posX value="0"/>
+        <posY value="0"/>
+        <posZ value="0"/>
+
+        <angleX value="0"/>
+        <angleY value="0"/>
+        <angleZ value="0"/>
+      </initialObject>
+    </initialObjects>
+    <glueRadius value="0.1"/>
+  </tiling>
+  <Msystem>
+    <floatingObjects>
+      <floatingObject name="a">
+        <shape value="sphere"/>
+        <size value="0.05"/>
+        <color name="Lime" alpha ="255"/>
+        <mobility value="15"/>
+        <concentration value="0.1"/>
+      </floatingObject>
+      <floatingObject name="b">
+        <shape value="sphere"/>
+        <size value="0.05"/>
+        <color name="Green" alpha ="255"/>
+        <mobility value="15"/>
+      </floatingObject>
+      <floatingObject name="c">
+        <shape value="cube"/>
+        <size value="0.05"/>
+        <mobility value="10"/>
+      </floatingObject>
+      <floatingObject name="x">
+        <shape value="capsule"/>
+        <size value="0.05"/>
+        <mobility value="15"/>
+      </floatingObject>
+    </floatingObjects>
+    <proteins>
+      <protein name="p0"/>
+      <protein name="p1"/>
+      <protein name="p2"/>
+      <protein name="p3"/>
+      <protein name="p4"/>
+    </proteins>
+    <proteinsOnTiles>
+      <tile name="q2">
+        <protein name="p0">
+          <posX value="2"/>
+          <posY value="0"/>
+        </protein>
+        <protein name="p0">
+          <posX value="2"/>
+          <posY value="2"/>
+        </protein>
+        <protein name="p1">
+          <posX value="-5"/>
+          <posY value="-5"/>
+        </protein>
+        <protein name="p1">
+          <posX value="-5"/>
+          <posY value="5"/>
+        </protein>
+        <protein name="p1">
+          <posX value="5"/>
+          <posY value="-5"/>
+        </protein>
+        <protein name="p1">
+          <posX value="5"/>
+          <posY value="5"/>
+        </protein>
+        <protein name="p2">
+          <posX value="0"/>
+          <posY value="0"/>
+        </protein>
+        <protein name="p2">
+          <posX value="0"/>
+          <posY value="2"/>
+        </protein>
+      </tile>
+      <tile name="q4">
+        <protein name="p3">
+          <posX value="-1"/>
+          <posY value="-1"/>
+        </protein>
+        <protein name="p3">
+          <posX value="-1"/>
+          <posY value="1"/>
+        </protein>
+        <protein name="p3">
+          <posX value="1"/>
+          <posY value="-1"/>
+        </protein>
+        <protein name="p3">
+          <posX value="1"/>
+          <posY value="1"/>
+        </protein>
+        <protein name="p4">
+          <posX value="0"/>
+          <posY value="0"/>
+        </protein>
+        <protein name="p4">
+          <posX value="0"/>
+          <posY value="1"/>
+        </protein>
+        <protein name="p4">
+          <posX value="1"/>
+          <posY value="0"/>
+        </protein>
+        <protein name="p4">
+          <posX value="1"/>
+          <posY value="1"/>
+        </protein>
+      </tile>
+    </proteinsOnTiles>
+    <evoRulesWithPriority>
+      <evoRule type="Metabolic">
+        <leftside value ="a,p0"/>
+        <rightside value= "p0,a"/>
+      </evoRule>
+      <evoRule type="Metabolic">
+        <leftside value ="p2,a"/>
+        <rightside value= "p2,b"/>
+      </evoRule>
+      <evoRule type="Metabolic">
+        <leftside value ="p4,a"/>
+        <rightside value= "p4,c,c"/>
+      </evoRule>
+      <evoRule type="Create">
+        <leftside value="a,a,a,a,a,a,a,a"/>
+        <rightside value="q1"/>
+      </evoRule>
+      <evoRule type="Create">
+        <leftside value="a,a,a,a,a,a,a,a"/>
+        <rightside value="q2"/>
+      </evoRule>
+      <evoRule type="Create" priority = "1">
+        <leftside value="a,a,a"/>
+        <rightside value="q3"/>
+      </evoRule>
+      <evoRule type="Create" priority = "1">
+        <leftside value="a,a,a"/>
+        <rightside value="q4"/>
+      </evoRule>
+      <evoRule type="Create">
+        <leftside value="a,a,a"/>
+        <rightside value="s0"/>
+      </evoRule>
+      <evoRule type="Create">
+        <leftside value="b"/>
+        <rightside value="s1"/>
+      </evoRule>
+      <evoRule type="Create">
+        <leftside value="b"/>
+        <rightside value="s2"/>
+      </evoRule>
+      <evoRule type="Divide">
+        <leftside value="gd,x,gd"/>
+        <rightside value="gd,gd"/>
+      </evoRule>
+      <evoRule type="Divide">
+        <leftside value="gc,x,gc"/>
+        <rightside value="gc,gc"/>
+      </evoRule>
+      <evoRule type="Divide">
+        <leftside value="gdd,x,gdd"/>
+        <rightside value="gdd,gdd"/>
+      </evoRule>
+      <evoRule type="Divide">
+        <leftside value="gcc,x,gcc"/>
+        <rightside value="gcc,gcc"/>
+      </evoRule>
+      <evoRule type="Metabolic">
+        <leftside value="p1,c"/>
+        <rightside value="p1,a"/>
+      </evoRule>
+      <evoRule type="Metabolic">
+        <leftside value="p1,c,x"/>
+        <rightside value="p1,a,a"/>
+      </evoRule>
+      <evoRule type="Metabolic">
+        <leftside value="p3,c,x"/>
+        <rightside value="p3,a,a"/>
+      </evoRule>
+      <evoRule type="Metabolic">
+        <leftside value="c,x,p3"/>
+        <rightside value="a,a,p3"/>
+      </evoRule>
+    </evoRulesWithPriority>
+    <signalObjects>
+      <glueTuple glue1="g4" glue2="gt">
+        <objects value="x,x,x"/>
+      </glueTuple>
+    </signalObjects>
+    <!-- reactionRadius value="14"-->
+  </Msystem>
+</root>
