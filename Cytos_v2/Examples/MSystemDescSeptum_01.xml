@@ -1,0 +1,451 @@
+﻿<!--
+==========================
+Note:
+&apos; = '
+==========================
+-->
+<root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation='MSystemXMLSchema.xsd'>
+    <tiling>
+      <tiles>
+        <!-- Initial tile (octagon) -->
+        <tile name="oct_base">
+          <polygon>
+            <sides value="8" />
+            <radius value="10.452503719011012223" />
+          </polygon>
+          <connectingAngle value="90" unit="deg" />
+          <connectors>
+            <connector name="c1">
+              <positions>
+                <position name="v1" />
+                <position name="v2" />
+              </positions>
+              <glue name="g90o" />
+            </connector>
+            <connector name="c2">
+              <positions>
+                <position name="v2" />
+                <position name="v3" />
+              </positions>
+              <glue name="g90o" />
+            </connector>
+            <connector name="c3">
+              <positions>
+                <position name="v3" />
+                <position name="v4" />
+              </positions>
+              <glue name="g90o" />
+            </connector>
+            <connector name="c4">
+              <positions>
+                <position name="v4" />
+                <position name="v5" />
+              </positions>
+              <glue name="g90o" />
+            </connector>
+            <connector name="c5">
+              <positions>
+                <position name="v5" />
+                <position name="v6" />
+              </positions>
+              <glue name="g90o" />
+            </connector>
+            <connector name="c6">
+              <positions>
+                <position name="v6" />
+                <position name="v7" />
+              </positions>
+              <glue name="g90o" />
+            </connector>
+            <connector name="c7">
+              <positions>
+                <position name="v7" />
+                <position name="v8" />
+              </positions>
+              <glue name="g90o" />
+            </connector>
+            <connector name="c8">
+              <positions>
+                <position name="v8" />
+                <position name="v1" />
+              </positions>
+              <glue name="g90o" />
+            </connector>
+          </connectors>
+          <surfaceGlue name="gx" />
+          <color name="Yellow" alpha="128" />
+        </tile>
+        <!-- Septum part - trapezoid  -->
+        <tile name="trapezoid">
+          <vertices>
+            <vertex name="v1">
+              <posX value="-4" />
+              <posY value="0" />
+            </vertex>
+            <vertex name="v2">
+              <posX value="-2" />
+              <posY value="4.82842712475" />
+            </vertex>
+            <vertex name="v3">
+              <posX value="2" />
+              <posY value="4.82842712475" />
+            </vertex>
+            <vertex name="v4">
+              <posX value="4" />
+              <posY value="0" />
+            </vertex>
+          </vertices>
+          <connectors>
+            <connector name="c1">
+              <positions>
+                <position name="v1" />
+                <position name="v2" />
+              </positions>
+              <glue name="g180t1" />
+              <angle value="180" unit="deg" />
+            </connector>
+            <connector name="c2">
+              <positions>
+                <position name="v2" />
+                <position name="v3" />
+              </positions>
+              <glue name="g180t2" />
+              <angle value="180" unit="deg" />
+            </connector>
+            <connector name="c3">
+              <positions>
+                <position name="v3" />
+                <position name="v4" />
+              </positions>
+              <glue name="g180t1" />
+              <angle value="180" unit="deg" />
+            </connector>
+            <connector name="c4">
+              <positions>
+                <position name="v4" />
+                <position name="v1" />
+              </positions>
+              <glue name="g90o" />
+              <angle value="90" unit="deg" />
+            </connector>
+          </connectors>
+          <surfaceGlue name="gx" />
+          <color name="Yellow" alpha="128" />
+        </tile>
+        <!-- Small central tile of the septum (octagon) -->
+        <tile name="oct_small">
+          <polygon>
+            <sides value="8" />
+            <radius value="5.2262518595055" />
+          </polygon>
+          <positions>
+            <position name="center">
+              <posX value="0" />
+              <posY value="0" />
+            </position>
+          </positions>
+          <connectingAngle value="180" unit="deg" />
+          <connectors>
+            <connector name="c1">
+              <positions>
+                <position name="v1" />
+                <position name="v2" />
+              </positions>
+              <glue name="g180s" />
+            </connector>
+            <connector name="c2">
+              <positions>
+                <position name="v2" />
+                <position name="v3" />
+              </positions>
+              <glue name="g180s" />
+            </connector>
+            <connector name="c3">
+              <positions>
+                <position name="v3" />
+                <position name="v4" />
+              </positions>
+              <glue name="g180s" />
+            </connector>
+            <connector name="c4">
+              <positions>
+                <position name="v4" />
+                <position name="v5" />
+              </positions>
+              <glue name="g180s" />
+            </connector>
+            <connector name="c5">
+              <positions>
+                <position name="v5" />
+                <position name="v6" />
+              </positions>
+              <glue name="g180s" />
+            </connector>
+            <connector name="c6">
+              <positions>
+                <position name="v6" />
+                <position name="v7" />
+              </positions>
+              <glue name="g180s" />
+            </connector>
+            <connector name="c7">
+              <positions>
+                <position name="v7" />
+                <position name="v8" />
+              </positions>
+              <glue name="g180s" />
+            </connector>
+            <connector name="c8">
+              <positions>
+                <position name="v8" />
+                <position name="v1" />
+              </positions>
+              <glue name="g180s" />
+            </connector>
+            <connector name="c_in">
+              <positions>
+                <position name="center" />
+              </positions>
+              <angle value="-90" unit="deg" />
+              <glue name="gt90" />
+            </connector>
+            <connector name="c_out">
+              <positions>
+                <position name="center" />
+              </positions>
+              <angle value="20" unit="deg" />
+              <glue name="gt60" />
+            </connector>
+          </connectors>
+          <surfaceGlue name="gx" />
+          <color name="Yellow" alpha="128" />
+        </tile>
+        <!-- Shell rectangle) -->
+        <tile name="rectangle">
+          <vertices>
+            <vertex name="v1">
+              <posX value="0" />
+              <posY value="0" />
+            </vertex>
+            <vertex name="v2">
+              <posX value="8" />
+              <posY value="0" />
+            </vertex>
+            <vertex name="v3">
+              <posX value="8" />
+              <posY value="8" />
+            </vertex>
+            <vertex name="v4">
+              <posX value="0" />
+              <posY value="8" />
+            </vertex>
+          </vertices>
+          <positions>
+            <position name="x1">
+              <posX value="0" />
+              <posY value="0.01" />
+            </position>
+            <position name="x2">
+              <posX value="8" />
+              <posY value="0.01" />
+            </position>
+          </positions>
+          <connectors>
+            <connector name="c1">
+              <positions>
+                <position name="x1" />
+                <position name="x2" />
+              </positions>
+              <glue name="g90" />
+              <angle value="90" unit="deg" />
+            </connector>
+            <connector name="c2">
+              <positions>
+                <position name="v2" />
+                <position name="v3" />
+              </positions>
+              <glue name="g135" />
+              <angle value="135" unit="deg" />
+            </connector>
+            <connector name="c3">
+              <positions>
+                <position name="v3" />
+                <position name="v4" />
+              </positions>
+              <glue name="g180h" />
+              <angle value="180" unit="deg" />
+            </connector>
+            <connector name="c4">
+              <positions>
+                <position name="v4" />
+                <position name="v1" />
+              </positions>
+              <glue name="g45" />
+              <angle value="45" unit="deg" />
+            </connector>
+          </connectors>
+          <surfaceGlue name="gx" />
+          <color name="Orange" alpha="128" />
+        </tile>
+        <!-- Inner rod 1-->
+        <tile name="inner_rod1">
+          <polygon>
+            <sides value="2" />
+            <radius value="0.1" />
+          </polygon>
+          <connectors>
+            <connector name="c1">
+              <positions>
+                <position name="v1" />
+              </positions>
+              <glue name="gr90" />
+              <angle value="90" unit="deg" />
+            </connector>
+            <connector name="c2">
+              <positions>
+                <position name="v2" />
+              </positions>
+              <glue name="gx90" />
+              <angle value="0" unit="deg" />
+            </connector>
+          </connectors>
+          <surfaceGlue name="gx" />
+          <color name="Yellow" alpha="255" />
+          <thickness value="0.1" />
+        </tile>
+        <!-- Inner rod 2-->
+        <tile name="inner_rod2">
+          <polygon>
+            <sides value="2" />
+            <radius value="0.01" />
+          </polygon>
+          <connectors>
+            <connector name="c1">
+              <positions>
+                <position name="v1" />
+              </positions>
+              <glue name="gy90" />
+              <angle value="0" unit="deg" />
+            </connector>
+          </connectors>
+          <surfaceGlue name="gx" />
+          <color name="Orange" alpha="255" />
+          <thickness value="0.01" />
+        </tile>
+        <!-- Outer rod -->
+        <tile name="outer_rod">
+          <polygon>
+            <sides value="2" />
+            <radius value="8" />
+          </polygon>
+          <connectingAngle value="60" unit="deg" />
+          <connectors>
+            <connector name="c1">
+              <positions>
+                <position name="v1" />
+              </positions>
+              <glue name="gr60" />
+            </connector>
+          </connectors>
+          <surfaceGlue name="gx" />
+          <color name="DeepSkyBlue" alpha="0" />
+          <thickness value="0.001" />
+        </tile>
+      </tiles>
+      <glues>
+        <glue name="gx" />
+        <glue name="ge" />
+        <glue name="g90o" />
+        <glue name="g90" />
+        <glue name="g45" />
+        <glue name="g135" />
+        <glue name="g180h" />
+        <glue name="g180s" />
+        <glue name="g180t1" />
+        <glue name="g180t2" />
+        <glue name="gr90" />
+        <glue name="gt90" />
+        <glue name="gx90" />
+        <glue name="gy90" />
+        <glue name="gr60" />
+        <glue name="gt60" />
+      </glues>
+      <glueRelations>
+        <glueTuple glue1="g90o" glue2="g90" />
+        <glueTuple glue1="g90" glue2="g90o" />
+        <glueTuple glue1="g135" glue2="g45" />
+        <glueTuple glue1="g180h" glue2="g180h" />
+        <glueTuple glue1="g180t1" glue2="g180t1" />
+        <glueTuple glue1="g180t2" glue2="g180s" />
+        <glueTuple glue1="gt90" glue2="gr90" />
+        <glueTuple glue1="gx90" glue2="gy90" />
+        <glueTuple glue1="gt60" glue2="gr60" />
+      </glueRelations>
+      <initialObjects>
+        <initialObject name="oct_base">
+          <posX value="0" />
+          <posY value="0" />
+          <posZ value="0" />
+          <angleX value="0" />
+          <angleY value="0" />
+          <angleZ value="0" />
+        </initialObject>
+      </initialObjects>
+      <glueRadius value="0.01" />
+      <pushingCoef value="1.01" />
+    </tiling>
+    <Msystem>
+      <floatingObjects>
+        <floatingObject name="a">
+          <shape value="sphere" />
+          <size value="0.05" />
+          <color name="Lime" />
+          <mobility value="10" />
+          <concentration value="0.1" />
+        </floatingObject>
+        <floatingObject name="s">
+          <shape value="sphere" />
+          <size value="0.05" />
+          <color name="Red" />
+          <mobility value="15" />
+        </floatingObject>
+      </floatingObjects>
+      <proteins></proteins>
+      <proteinsOnTiles></proteinsOnTiles>
+      <evoRulesWithPriority>
+        <evoRule type="Create">
+          <leftside value="a" />
+          <rightside value="oct_small" />
+        </evoRule>
+        <evoRule type="Create">
+          <leftside value="a" />
+          <rightside value="rectangle" />
+        </evoRule>
+        <evoRule type="Create">
+          <leftside value="a" />
+          <rightside value="trapezoid" />
+        </evoRule>
+        <evoRule type="Create">
+          <leftside value="a" />
+          <rightside value="inner_rod1" />
+        </evoRule>
+        <evoRule type="Create">
+          <leftside value="a" />
+          <rightside value="inner_rod2" />
+        </evoRule>
+        <evoRule type="Create">
+          <leftside value="a" />
+          <rightside value="outer_rod" />
+        </evoRule>
+        <evoRule type="Divide">
+          <leftside value="g180h,s,g180h" />
+          <rightside value="g180h,g180h" />
+        </evoRule>
+      </evoRulesWithPriority>
+      <signalObjects>
+        <glueTuple glue1="gx90" glue2="gy90">
+          <objects value="s,s,s,s,s,s,s,s" />
+        </glueTuple>
+      </signalObjects>
+    </Msystem>
+</root>
