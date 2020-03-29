@@ -62,7 +62,7 @@ namespace MSystemSimulationEngine.Classes
         /// Experimentally observed errors in vertex positions are of the order 10^{-16} 
         /// when sizes of the objects are of the order of units.
         /// </summary>
-        public const double Tolerance = 1E-10;
+        public const double Tolerance = 1E-9;
 
         /// <summary>
         /// If a protein or a connector is placed "inside" or "outside" of a 2D tile,
@@ -132,6 +132,17 @@ namespace MSystemSimulationEngine.Classes
         /// </summary>
         public readonly double PushingCoef;
 
+        /// <summary>
+        /// Scan connectors for attachment of new tiles in random order? 
+        /// If false, connectors are grouped by tiles in order "as created".
+        /// </summary>
+        public readonly bool RandomizeConnectors;
+
+        /// <summary>
+        /// Keep constant concentration of environmental objects as the environment grows?
+        /// </summary>
+        public readonly bool RefillEnvironment;
+
         #endregion
 
         #region Constructor
@@ -155,10 +166,12 @@ namespace MSystemSimulationEngine.Classes
             Tau = mSystemObjects.Tau;
             Nu0 = mSystemObjects.Nu0;
             PushingCoef = mSystemObjects.PushingCoef;
+            RandomizeConnectors = mSystemObjects.RandomizeConnectors;
 
             FloatingObjects = new ReadOnlyDictionary<string, FloatingObject>(mSystemObjects.FloatingObjects);
             if (FloatingObjects.Any())
                 Mobility = FloatingObjects.Values.Max(obj => obj.Mobility);
+            RefillEnvironment = mSystemObjects.RefillEnvironment;
             v_Proteins = new ReadOnlyDictionary<string, Protein>(mSystemObjects.Proteins);
             Tiles = new ReadOnlyDictionary<string, Tile>(mSystemObjects.Tiles);
             GlueRelation = mSystemObjects.GluePRelation;

@@ -1,9 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <MSystemDescription>
-    <tiling>
-    </tiling>
-    <Msystem>
-    </Msystem>
+    <tiling></tiling>
+    <Msystem></Msystem>
   </MSystemDescription>
   <snapshots>
     <snapshot stepID="0">
@@ -218,8 +217,8 @@
               <posZ value="0" />
             </vertex>
             <vertex>
-              <posX value="3.94499763260772E-16" />
-              <posY value="-2.03924405337978E-16" />
+              <posX value="-4.27481776936821E-16" />
+              <posY value="1.20310251816672E-16" />
               <posZ value="2" />
             </vertex>
           </vertices>
@@ -391,13 +390,13 @@
         <tile name="s1" objectID="13" type="rod" state="Create">
           <vertices>
             <vertex>
-              <posX value="3.88578058618805E-16" />
-              <posY value="-2.22044604925031E-16" />
+              <posX value="-4.16333634234434E-16" />
+              <posY value="1.11022302462516E-16" />
               <posZ value="2" />
             </vertex>
             <vertex>
-              <posX value="0.800239820807327" />
-              <posY value="-0.599680105718256" />
+              <posX value="0.390364731908998" />
+              <posY value="-0.920660293529386" />
               <posZ value="3.73205080756888" />
             </vertex>
           </vertices>
@@ -406,13 +405,13 @@
         <tile name="s1" objectID="14" type="rod" state="Create">
           <vertices>
             <vertex>
-              <posX value="3.88578058618805E-16" />
-              <posY value="-2.22044604925031E-16" />
+              <posX value="-4.16333634234434E-16" />
+              <posY value="1.11022302462516E-16" />
               <posZ value="2" />
             </vertex>
             <vertex>
-              <posX value="0.414835320393451" />
-              <posY value="0.909896508925088" />
+              <posX value="0.367362964912265" />
+              <posY value="0.930077659128994" />
               <posZ value="3.73205080756888" />
             </vertex>
           </vertices>
@@ -464,14 +463,14 @@
         <tile name="s1" objectID="16" type="rod" state="Create">
           <vertices>
             <vertex>
-              <posX value="0.800239820807327" />
-              <posY value="-0.599680105718256" />
+              <posX value="0.390364731908998" />
+              <posY value="-0.920660293529386" />
               <posZ value="3.73205080756888" />
             </vertex>
             <vertex>
-              <posX value="1.95375630688901" />
-              <posY value="-1.87025785058104" />
-              <posZ value="4.75919827049579" />
+              <posX value="0.210986557260923" />
+              <posY value="-2.51642246414718" />
+              <posZ value="4.92426159651734" />
             </vertex>
           </vertices>
           <color name="ffff0000" />
@@ -479,14 +478,14 @@
         <tile name="s1" objectID="17" type="rod" state="Create">
           <vertices>
             <vertex>
-              <posX value="0.800239820807327" />
-              <posY value="-0.599680105718256" />
+              <posX value="0.390364731908998" />
+              <posY value="-0.920660293529386" />
               <posZ value="3.73205080756888" />
             </vertex>
             <vertex>
-              <posX value="2.36127123748703" />
-              <posY value="-0.691822215923428" />
-              <posZ value="4.97892319384821" />
+              <posX value="1.53068087981906" />
+              <posY value="-2.15098413596247" />
+              <posZ value="4.82107896402594" />
             </vertex>
           </vertices>
           <color name="ffff0000" />
@@ -494,14 +493,14 @@
         <tile name="s1" objectID="18" type="rod" state="Create">
           <vertices>
             <vertex>
-              <posX value="0.414835320393451" />
-              <posY value="0.909896508925088" />
+              <posX value="0.367362964912265" />
+              <posY value="0.930077659128994" />
               <posZ value="3.73205080756888" />
             </vertex>
             <vertex>
-              <posX value="1.66694011329938" />
-              <posY value="1.24808960525407" />
-              <posZ value="5.25450245447836" />
+              <posX value="0.0949687899164334" />
+              <posY value="2.49206179251207" />
+              <posZ value="4.95106966734417" />
             </vertex>
           </vertices>
           <color name="ffff0000" />
@@ -509,14 +508,14 @@
         <tile name="s1" objectID="19" type="rod" state="Create">
           <vertices>
             <vertex>
-              <posX value="0.414835320393451" />
-              <posY value="0.909896508925088" />
+              <posX value="0.367362964912265" />
+              <posY value="0.930077659128994" />
               <posZ value="3.73205080756888" />
             </vertex>
             <vertex>
-              <posX value="0.0212061650335715" />
-              <posY value="2.337376750739" />
-              <posZ value="5.0764303102695" />
+              <posX value="0.629398895707191" />
+              <posY value="2.62008744093781" />
+              <posZ value="4.76897130035651" />
             </vertex>
           </vertices>
           <color name="ffff0000" />

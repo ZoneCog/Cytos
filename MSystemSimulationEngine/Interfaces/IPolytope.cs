@@ -20,6 +20,16 @@ namespace MSystemSimulationEngine.Interfaces
         ReadOnlyCollection<Line3D> Edges { get; }
 
         /// <summary>
+        /// Central point (centroid)  of vertices 
+        /// </summary>
+        Point3D Center { get; }
+
+        /// <summary>
+        /// Distance from center to the furthest point
+        /// </summary>
+        double Radius { get; }
+
+        /// <summary>
         /// Calculates pushing vector of "another" polytope NOT intersecting with this one.
         /// "This" is pushed by pushingVector which MAY cause intersection with "another"
         /// </summary>

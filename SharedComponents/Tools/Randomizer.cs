@@ -69,14 +69,14 @@ namespace SharedComponents.Tools
         }
 
         /// <summary>
-         /// Gets random double within given bounds.
-         /// </summary>
-         /// <param name="lowerBound">Lower bound.</param>
-         /// <param name="upperBound">Upper bound.</param>
-         /// <returns>Random double within given bounds.</returns>
-         /// <exception cref="InvalidOperationException">
-         /// If lower bound exceed upper bound
-         /// </exception>
+        /// Gets random double within given bounds.
+        /// </summary>
+        /// <param name="lowerBound">Lower bound.</param>
+        /// <param name="upperBound">Upper bound.</param>
+        /// <returns>Random double within given bounds.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// If lower bound exceed upper bound
+        /// </exception>
         public static double NextDoubleBetween(double lowerBound, double upperBound)
         {
             if (lowerBound > upperBound)
@@ -86,6 +86,17 @@ namespace SharedComponents.Tools
             return Rng.NextDouble() * (upperBound - lowerBound) + lowerBound;
         }
 
+        /// <summary>
+        /// Returns a non-negative random integer that is less than the specified maximum. See Random.Next(int)
+        /// </summary>
+        /// <param name="maxValue">The exclusive upper bound of the random number to be generated. maxValue must be greater than or equal to 0.</param>
+        /// <returns>A 32-bit signed integer that is greater than or equal to 0, and less than maxValue; that is,
+        /// the range of return values ordinarily includes 0 but not maxValue. However, if maxValue equals 0, maxValue is returned.
+        /// </returns>
+        public static int Next(int maxValue)
+        {
+            return Rng.Next(maxValue);
+        }
         #endregion
     }
 }

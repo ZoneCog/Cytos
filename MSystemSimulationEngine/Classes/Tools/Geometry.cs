@@ -44,7 +44,7 @@ namespace MSystemSimulationEngine.Classes.Tools
             if (Math.Abs(product) < MSystem.Tolerance) //either parallel or lies in the plane
                 return Point3D.NaN;
 
-            var d = plane.SignedDistanceTo(p1);
+            var d = plane.MySignedDistanceTo(p1);
             var t = -1 * d / product;
             if (t > 1 || t < 0) // They are not intersected
             {
@@ -72,7 +72,32 @@ namespace MSystemSimulationEngine.Classes.Tools
         }
 
         /// <summary>
-        /// Extension method. True if p1 equal to p2 within MSystem.Tolerance.
+        /// Extension method faster than library one. Returns signed distance of point from plane.
+        /// </summary>
+        /// <param name="p">Point.</param>
+        public static double MySignedDistanceTo(this Plane plane, Point3D p) => 
+            plane.A * p.X + plane.B * p.Y + plane.C * p.Z + plane.D;
+
+
+        /// <summary>
+        /// Extension method. 
+        /// Returns false if the line defined by two endpoint does no intersect the plane
+        /// and its distance from the plane is >  MSystem.SideDist.
+        /// </summary>
+        /// <param name="p1">First point.</param>
+        /// <param name="p2">Second point.</param>
+        public static bool MyIntersectsWith(this Plane plane, Point3D p1, Point3D p2)
+        {
+            var dist1 = plane.MySignedDistanceTo(p1);
+            var dist2 = plane.MySignedDistanceTo(p2);
+            return !(dist1 > MSystem.SideDist && dist2 > MSystem.SideDist ||
+                dist1 < -MSystem.SideDist && dist2 < -MSystem.SideDist);
+        }
+
+
+
+        /// <summary>
+        /// Extension method. True if p1 equals to p2 within MSystem.Tolerance.
         /// </summary>
         /// <param name="p1">First point.</param>
         /// <param name="p2">Second point.</param>

@@ -15,6 +15,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -38,6 +39,8 @@ namespace Cytos_v2.Forms
         /// Unity projectName CytosV.exe
         /// </summary>
         private const string c_UnityProjectName = "CytosV.exe";
+
+        private const string c_SimulationEngineName = "MSystemSimulationEngine.dll";
 
         /// <summary>
         /// Path of selected M System declaration file.
@@ -139,6 +142,7 @@ namespace Cytos_v2.Forms
 
                     richTextBoxMSystem.Text = v_Simulator.MSystemToString();
                     VisualizeLogging.LogMessageAndVisualize("Deserialization of M System description file was successful.");
+                    VisualizeLogging.LogMessageAndVisualize(string.Format("File: {0}", openFileDialog.FileName));
                 }
             }
             catch (Exception exception)
@@ -225,9 +229,9 @@ namespace Cytos_v2.Forms
         {
             InputBox inputBox = new InputBox("Multiple runs(fixed kills)", "OK",
                 new List<string> { "Number of runs", "Number of steps for each run", "No of kills", "Probabilistic selection Y/N", "Tile name to remove (empty if it does not matter)" },
-                new List<Regexp.Check> { Regexp.Check.NumberWithoutZero, Regexp.Check.NumberWithoutZero, Regexp.Check.NumberWithoutZero, Regexp.Check.String });
+                new List<Regexp.Check> { Regexp.Check.NumberWithoutZero, Regexp.Check.NumberWithoutZero, Regexp.Check.NumberWithoutZero, Regexp.Check.String, Regexp.Check.String });
             inputBox.ShowDialog();
-            if (inputBox.OutputTexts.Count == 4)
+            if (inputBox.OutputTexts.Count == 5)
             {
                 // get number of runs
                 int numberOfRuns = int.Parse(inputBox.OutputTexts[0]);
@@ -250,6 +254,57 @@ namespace Cytos_v2.Forms
                     tileName = inputBox.OutputTexts[4];
                 }
                 RunMultipleSimulations(numberOfRuns, numberOfSteps, tileName, 0, noOfKills, probabilistic);
+            }
+        }
+
+        /// <summary>
+        /// --- Run septum simulation for number of steps and count number of complete cells
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void multipleRunsV2TestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // get number of runs and number of steps at which I count complete cells
+            InputBox inputBox = new InputBox("Septum count test", "OK",
+                new List<string> { "Number of runs",                 // number of experiments
+                                   "Number of steps for each run",   // number of steps in each experiment
+                                   "Count cells every X step",       // count system and its cells every X step in each experiment
+                                   "No of kills in each experiment", // how many kills do we want to do in each experiment
+                                   "Probabilistic selection Y/N",    // N - no probability, kill every fixed number of steps, Y - choose randomly
+                                   "Tile name to remove (empty if it does not matter)" },  // name of the tile to be targeted while hurting
+                new List<Regexp.Check> { Regexp.Check.NumberWithoutZero,
+                                         Regexp.Check.NumberWithoutZero,
+                                         Regexp.Check.NumberWithoutZero,
+                                         Regexp.Check.NumberWithoutZero,
+                                         Regexp.Check.String,
+                                         Regexp.Check.Skip}
+                );
+            inputBox.ShowDialog();
+            if (inputBox.OutputTexts.Count == 6)
+            {
+                // get number of runs
+                int numberOfRuns = int.Parse(inputBox.OutputTexts[0]);
+                // get number of steps for each run
+                int numberOfSteps = int.Parse(inputBox.OutputTexts[1]);
+                // get number of steps at which to stop and count
+                int countStep = int.Parse(inputBox.OutputTexts[2]);
+                // how often do we want to hurt?
+                int noOfKills = int.Parse(inputBox.OutputTexts[3]);
+                // probbilistic selection ?
+                if (inputBox.OutputTexts[4] != "Y" && inputBox.OutputTexts[4] != "N")
+                {
+                    MessageBox.Show("Invalis selection for probabilistic selection. Allowed values are Y or N.");
+                    return;
+                }
+                bool probabilistic = inputBox.OutputTexts[4] == "Y";
+                // what object will be removed
+                string tileName = "";
+                if (noOfKills > 0)
+                {
+                    tileName = inputBox.OutputTexts[5];
+                }
+
+                RunMultipleSimulationsV2(numberOfRuns, numberOfSteps, countStep, tileName, 0, noOfKills, probabilistic);
             }
         }
 
@@ -280,6 +335,44 @@ namespace Cytos_v2.Forms
             }
         }
 
+        /// <summary>
+        /// --- Run -> Multiple runs (probabilistic kill) V2 - Click event ---
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event parameter.</param>
+        private void multipleRunsprobabilisticKillV2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // get number of runs
+            InputBox inputBox = new InputBox("Multiple runs (probabilistic kill)", "OK",
+                new List<string> { "Number of runs",                 // number of experiments
+                                   "Number of steps for each run",   // number of steps in each experiment
+                                   "Count cells every X step",       // count system and its cells every X step in each experiment
+                                   "Probability of the kill (0.2 stands for 20%)", // execute hurt with the the probability of
+                                   "Tile name to remove (empty if it does not matter)" },  // name of the tile to be targeted
+                new List<Regexp.Check> { Regexp.Check.NumberWithoutZero, 
+                                         Regexp.Check.NumberWithoutZero,
+                                         Regexp.Check.NumberWithoutZero,
+                                         Regexp.Check.FloatingNumber, 
+                                         Regexp.Check.Skip } 
+                );
+            inputBox.ShowDialog();
+            if (inputBox.OutputTexts.Count == 5)
+            {
+                // get number of runs
+                int numberOfRuns = int.Parse(inputBox.OutputTexts[0]);
+                // get number of steps for each run
+                int numberOfSteps = int.Parse(inputBox.OutputTexts[1]);
+                // get number of steps at which to stop and count
+                int countStep = int.Parse(inputBox.OutputTexts[2]);
+                // how often do we want to hurt?
+                double probabilityOfTheKill = double.Parse(inputBox.OutputTexts[3]);
+                // what object will be removed
+                string tileName = inputBox.OutputTexts[4];
+
+                RunMultipleSimulationsV2(numberOfRuns, numberOfSteps, countStep, tileName, probabilityOfTheKill);
+            }
+
+        }
         #endregion
 
         #region Save Snapshot
@@ -346,8 +439,12 @@ namespace Cytos_v2.Forms
         /// <param name="e">Event parameter.</param>
         private void toolStripButtonAbout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Simulation of geometrical membrane systems\n- - - - - - - - - - - - - - - - - - - - - - " +
-                            " - - - - - - - - - - -\n\nAuthors:\n\nPetr Sosík\nMax Garzon\nVladimír Smolka\nJan Drastík\nJaroslav Bradík");
+            Assembly assembly = Assembly.LoadFrom(c_SimulationEngineName);
+
+            MessageBox.Show($"Simulation of geometrical membrane systems\n\nUI version: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}\n" +
+                            $"Simulation engine version: {assembly.GetName().Version}\n" +
+                            "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n" +
+                            "Authors:\n\nPetr Sosík\nMax Garzon\nVladimír Smolka\nJan Drastík\nJaroslav Bradík");
         }
 
         /// <summary>
@@ -549,8 +646,11 @@ namespace Cytos_v2.Forms
                 loadExampleToolStripMenuItem.Enabled = true;
 
                 // XJB - for statistical purposes
-                multipleRunsToolStripMenuItem.Enabled = true;
-                multipleRunsprobabilisticKillToolStripMenuItem.Enabled = true;
+                //multipleRunsToolStripMenuItem.Enabled = true;                  // the test is obsolete and shall be revisited
+                //multipleRunsprobabilisticKillToolStripMenuItem.Enabled = true; // the test is obsolete and shall be revisited
+                multipleRunsV2ToolStripMenuItem.Enabled = true;               
+                multipleRunsprobabilisticKillV2ToolStripMenuItem.Enabled = true;
+                oneOffDamageTestToolStripMenuItem.Enabled = true;
             }
         }
 
@@ -582,14 +682,84 @@ namespace Cytos_v2.Forms
         }
 
         /// <summary>
-        /// Runs multiple simulations with specified 
+        /// Runs multiple simulations and count compete cells every countStep. This test is designed for
+        /// Septum objects
         /// </summary>
         /// <param name="numberOfRuns">Number of simulation runs</param>
         /// <param name="numberOfSteps">Number of simulation steps within each run</param>
+        /// <param name="countStep">Count complete septums every step</param>
         /// <param name="tileName">Name of the tile.</param>
         /// <param name="numberOfKills">Number of object to be hurt.</param>
         /// <param name="probabilityOfTheKill">TODO</param>
         /// <param name="probabilistic">Flag for using random mechanism of choosing step.</param>
+        private void RunMultipleSimulationsV2(int numberOfRuns, 
+                                                int numberOfSteps, 
+                                                int countStep, 
+                                                string tileName,  
+                                                double probabilityOfTheKill, 
+                                                long numberOfKills = -1,
+                                                bool probabilistic = true)
+        {
+            // ReSharper disable once UnusedVariable
+            using (WaitCursor cursor = new WaitCursor())
+            {
+                VisualizeLogging.LogMessageAndVisualize(string.Format("MSystemStats multiple runs V2 started (numberOfRuns={0}, numberOfSteps={1}, countStep={2}, tileName={3}, probabilityOfTheKill={4}, numberOfKills={5}, probabilistic={6})", 
+                    numberOfRuns, numberOfSteps, countStep, tileName, probabilityOfTheKill, numberOfKills, probabilistic));
+
+                // write down headline
+                string headLine = "STAT>> RunNo,StepNo,Fail";
+                for (int i = 0; i < 41; i++)
+                    headLine += string.Format(",T_{0}", i);
+                VisualizeLogging.LogMessageAndVisualize(headLine);
+
+                ulong runNo = 1;
+                for (int i = 0; i < numberOfRuns; i++, runNo++)
+                {
+                    // create simulator
+                    Simulator simulator;
+                    try
+                    {
+                        simulator = new Simulator(v_MSystemObjects, v_SerializeFloatingObjects);
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(string.Format("Failed to create simulator object in run no. {0}. ExceptionMessage: {1}", runNo, e.Message));
+                        return;
+                    }
+
+                    // do one run
+                    try
+                    {
+                        string res = "";
+                        // numberOfKills is -1 => we want to choose the kills purely probabilisticly
+                        if (numberOfKills == -1)
+                        {
+                            res = simulator.RunSimulationV2(numberOfSteps, countStep, runNo, tileName, probabilityOfTheKill);
+                        }
+                        else
+                        {
+                            res = simulator.RunSimulationV2(numberOfSteps, countStep, runNo, tileName, numberOfKills, probabilistic);
+                        }
+                        VisualizeLogging.LogMessageAndVisualize(res);
+                    }
+                    catch (Exception e)
+                    {
+                        // this particular run has failed but we continue
+                        VisualizeLogging.LogMessageAndVisualize(string.Format("MSystemStats run no.{0} failed. Exception:{1}", runNo, e));
+                    }
+                }
+            }
+        }
+
+            /// <summary>
+            /// Runs multiple simulations with specified 
+            /// </summary>
+            /// <param name="numberOfRuns">Number of simulation runs</param>
+            /// <param name="numberOfSteps">Number of simulation steps within each run</param>
+            /// <param name="tileName">Name of the tile.</param>
+            /// <param name="numberOfKills">Number of object to be hurt.</param>
+            /// <param name="probabilityOfTheKill">TODO</param>
+            /// <param name="probabilistic">Flag for using random mechanism of choosing step.</param>
         private void RunMultipleSimulations(int numberOfRuns, int numberOfSteps, string tileName,
             double probabilityOfTheKill, long numberOfKills = -1, bool probabilistic = true)
         {
@@ -724,6 +894,85 @@ namespace Cytos_v2.Forms
         }
 
         #endregion
+
+        /// <summary>
+        /// --- One Off Damage Test - Click event ---
+        /// Runs one off Damage Test
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event parameter.</param>
+        private void oneOffDamageTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // get test parameters from user
+            InputBox inputBox = new InputBox("One Off Damage Test", "OK",
+                new List<string> { "Number of runs", "Tile name to remove (empty if it does not matter)", "Number of tiles to remove", "Number of recovery steps" },
+                new List<Regexp.Check> { Regexp.Check.NumberWithoutZero, Regexp.Check.Skip, Regexp.Check.NumberWithoutZero, Regexp.Check.NumberWithoutZero });
+            inputBox.ShowDialog();
+            if (inputBox.OutputTexts.Count == 4)
+            {
+                // get number of runs
+                int numberOfRuns = int.Parse(inputBox.OutputTexts[0]);
+                // what object will be removed
+                string tileName = inputBox.OutputTexts[1];
+                // number of tiles to remove
+                int numberOfTiles = int.Parse(inputBox.OutputTexts[2]);
+                // number of further steps to follow after the demage
+                int numberOfRecoverySteps = int.Parse(inputBox.OutputTexts[3]);
+                // run the test
+                RunOneOffDamageTest(numberOfRuns, tileName, numberOfTiles, numberOfRecoverySteps);
+            }
+
+        }
+
+        /// <summary>
+        /// Run One Off Damage test. For more information, see test description document.
+        /// </summary>
+        /// <param name="numberOfRuns">Number of runs (experiments) to perform.</param>
+        /// <param name="tileName">Name of the targeted tile, empty string means any randomly chosen tile.</param>
+        /// <param name="numberOfTiles">Number of tiles to remove.</param>
+        /// <param name="numberOfRecoverySteps">Number of system iterations given the system to recover.</param>
+        private void RunOneOffDamageTest(int numberOfRuns, string tileName, int numberOfTiles, int numberOfRecoverySteps)
+        {
+            // ReSharper disable once UnusedVariable
+            using (WaitCursor cursor = new WaitCursor())
+            {
+                VisualizeLogging.LogMessageAndVisualize(string.Format("RunOneOffDamageTest started (numberOfRuns={0}, tileName={1}, numberOfTiles={2}, numberOfRecoverySteps = {3})",
+                    numberOfRuns, tileName, numberOfTiles, numberOfRecoverySteps));
+
+                // write down headline
+                string headLine = "STAT>> RunNo,InitialStepNo,FurtherStepNo";
+                for (int i = 0; i < 41; i++)
+                    headLine += string.Format(",T_{0}", i);
+                VisualizeLogging.LogMessageAndVisualize(headLine);
+
+                for (int i = 0; i < numberOfRuns; i++)
+                {
+                    // create simulator
+                    Simulator simulator;
+                    try
+                    {
+                        simulator = new Simulator(v_MSystemObjects, v_SerializeFloatingObjects);
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(string.Format("Failed to create simulator object in run no. {0}. ExceptionMessage: {1}", i+1, e.Message));
+                        return;
+                    }
+
+                    // do one run
+                    try
+                    {
+                        string res = simulator.RunSimulationOneOffDamage(i+1, tileName, numberOfTiles, numberOfRecoverySteps);
+                        VisualizeLogging.LogMessageAndVisualize(res);
+                    }
+                    catch (Exception e)
+                    {
+                        // this particular run has failed but we continue
+                        VisualizeLogging.LogMessageAndVisualize(string.Format("MSystemStats run no.{0} failed. Exception:{1}", i+1, e));
+                    }
+                }
+            }
+        }
 
     }
 }

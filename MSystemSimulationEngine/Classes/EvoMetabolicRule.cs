@@ -60,11 +60,12 @@ namespace MSystemSimulationEngine.Classes
         /// <param name="priority">Priority of the evolution rule.</param>
         /// <param name="leftSideObjects">List of left side objects.</param>
         /// <param name="rightSideObjects">List of right side objects.</param>
+        /// <param name="delay">Number of steps which must be done before rule is applied to tiles.</param>
         /// <exception cref="ArgumentException">
         /// If format of the metabolic rule is invalid
         /// </exception>
-        public EvoMetabolicRule(int priority, List<ISimulationObject> leftSideObjects, List<ISimulationObject> rightSideObjects)
-             : base(RuleType.Metabolic, priority, leftSideObjects, rightSideObjects)
+        public EvoMetabolicRule(int priority, List<ISimulationObject> leftSideObjects, List<ISimulationObject> rightSideObjects, int delay)
+             : base(RuleType.Metabolic, priority, leftSideObjects, rightSideObjects, delay)
         {
             string errorMessage = string.Format("{0}\n{1} ", "Invalid metabolic rule format:", this);
 

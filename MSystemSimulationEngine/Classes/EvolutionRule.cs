@@ -41,6 +41,11 @@ namespace MSystemSimulationEngine.Classes
         public readonly IReadOnlyList<ISimulationObject> RightSideObjects;
 
         /// <summary>
+        /// Defines number of steps which must be done before rule is applied to tiles.
+        /// </summary>
+        public readonly int Delay;
+
+        /// <summary>
         /// Enum holding all evolution rule types.
         /// </summary>
         public enum RuleType
@@ -63,7 +68,7 @@ namespace MSystemSimulationEngine.Classes
         /// list of left side objects is null or
         /// list of right side objects is null.
         /// </exception>
-        protected EvolutionRule(RuleType type, int priority, IReadOnlyList<ISimulationObject> leftSideObjects, IReadOnlyList<ISimulationObject> rightSideObjects)
+        protected EvolutionRule(RuleType type, int priority, IReadOnlyList<ISimulationObject> leftSideObjects, IReadOnlyList<ISimulationObject> rightSideObjects, int delay)
         {
             if (leftSideObjects == null)
             {
@@ -77,6 +82,7 @@ namespace MSystemSimulationEngine.Classes
             Priority = priority;
             LeftSideObjects = leftSideObjects;
             RightSideObjects = rightSideObjects;
+            Delay = delay;
         }
 
         #endregion
@@ -112,12 +118,13 @@ namespace MSystemSimulationEngine.Classes
         /// <param name="priority">Priority of the evolution rule.</param>
         /// <param name="leftSideObjects">List of left side objects.</param>
         /// <param name="rightSideObjects">List of right side objects.</param>
+        /// <param name="delay">Number of steps which must be done before rule is applied to tiles.</param>
         /// <exception cref="ArgumentException">
         /// If rule type is null
         /// </exception>
         /// <returns>Evolution rule of a proper type.</returns>
         public static EvolutionRule NewRule(string type, int priority, List<ISimulationObject> leftSideObjects,
-            List<ISimulationObject> rightSideObjects)
+            List<ISimulationObject> rightSideObjects, int delay)
         {
             if (string.IsNullOrEmpty(type))
             {
@@ -127,11 +134,11 @@ namespace MSystemSimulationEngine.Classes
 
             if (enumRuleType == RuleType.Metabolic)
             {
-                return new EvoMetabolicRule(priority, leftSideObjects, rightSideObjects);
+                return new EvoMetabolicRule(priority, leftSideObjects, rightSideObjects, delay);
             }
             else
             {
-                return new EvoNonMetabolicRule(enumRuleType, priority, leftSideObjects, rightSideObjects);
+                return new EvoNonMetabolicRule(enumRuleType, priority, leftSideObjects, rightSideObjects, delay);
             }
         }
 
@@ -145,7 +152,7 @@ namespace MSystemSimulationEngine.Classes
             string type = values.GetValue(Convert.ToInt32(Type)).ToString();
 
             StringBuilder builder = new StringBuilder();
-            builder.AppendFormat("Rule: {2}, type = {0}, priority = {1}", type, Priority, Name);
+            builder.AppendFormat("Rule: {2}, type = {0}, priority = {1}, delay = {3}", type, Priority, Name, Delay);
             return builder.ToString();
         }
         #endregion

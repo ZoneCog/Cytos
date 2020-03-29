@@ -33,11 +33,12 @@ namespace MSystemSimulationEngine.Classes
         /// <param name="priority">Priority of the evolution rule.</param>
         /// <param name="leftSideObjects">List of left side objects.</param>
         /// <param name="rightSideObjects">List of right side objects.</param>
+        /// <param name="delay">Number of steps which must be done before rule is applied to tiles.</param>
         /// <exception cref="ArgumentException">
         /// If format of the non-metabolic rule is invalid
         /// </exception>
-        public EvoNonMetabolicRule(RuleType type, int priority, List<ISimulationObject> leftSideObjects, List<ISimulationObject> rightSideObjects) 
-            : base(type, priority, leftSideObjects, rightSideObjects)
+        public EvoNonMetabolicRule(RuleType type, int priority, List<ISimulationObject> leftSideObjects, List<ISimulationObject> rightSideObjects, int delay) 
+            : base(type, priority, leftSideObjects, rightSideObjects, delay)
         {
             string errorMessage = $"{"Invalid rule format:"}\n{this} ";
             bool correct = false;

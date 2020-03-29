@@ -21,7 +21,7 @@ namespace MSystemSimulationEngine.Classes
         private readonly HashSet<TileInSpace> v_PolygonTiles = new HashSet<TileInSpace>();
 
         /// <summary>
-        /// P System backing this tiles world
+        /// M System backing this tiles world
         /// </summary>
         private readonly MSystem v_MSystem;
 
@@ -109,7 +109,7 @@ namespace MSystemSimulationEngine.Classes
             var pushedFltObjects = new Dictionary<FloatingObjectInSpace, Vector3D>();
             foreach (var tile in pushedTiles)
             {
-                Polygon3D polygon = tile.Vertices as Polygon3D;
+                var polygon = tile.Vertices as Polygon3D;
                 // Only polygon pushed outside his own plane can push floating objects 
                 if (polygon != null && !tile.PushingVector.IsPerpendicularTo(polygon.Normal))
                 {
@@ -128,7 +128,7 @@ namespace MSystemSimulationEngine.Classes
                     }
                 }
                 tile.Move(tile.PushingVector);
-                FltObjectsWorld.ExpandWith(new Box3D(tile.Vertices));
+                FltObjectsWorld.ExpandWith(new Box3D(tile.Vertices), v_MSystem.RefillEnvironment);
             }
 
             foreach (var fltObj in pushedFltObjects)
@@ -191,9 +191,9 @@ namespace MSystemSimulationEngine.Classes
         /// </returns>
         private bool Attach(ConnectorOnTileInSpace connector)
         {
-            UnitVector3D pushingDirection = PushingDirection(connector);
+            var pushingDirection = PushingDirection(connector);
 
-            /* Randomize - up to phi/4 deviation
+            /* Randomize - up to phi/4 deviation - a parameter of randomization angle would have to be added to the input XML
             Vector3D randomVector = new Vector3D(Randomizer.Rng.NextDouble(), Randomizer.Rng.NextDouble(),
                 Randomizer.Rng.NextDouble());
             var length = randomVector.Length;
@@ -201,7 +201,7 @@ namespace MSystemSimulationEngine.Classes
                 randomVector = randomVector / (2 * length);     // Length is 0.5 now
             pushingDirection = (pushingDirection + randomVector).Normalize(); */
 
-            Vector3D maxPushingVector = default(Vector3D);               // This will be the longest of all pushing vectors in the world
+            Vector3D maxPushingVector = default;               // This will be the longest of all pushing vectors in the world
             var newTile = connector.OnTile;
 
             var objectsToBeChecked = new HashSet<TileInSpace>();  // Objects to be checked for pushing by newObject
@@ -209,44 +209,52 @@ namespace MSystemSimulationEngine.Classes
 
             // Check whether the newObject intersects existing ones, and add those to pushingList 
             // together with their components
-            foreach (var existingObject in v_TileSet)
-                if (newTile.IntersectsWith(existingObject) || newTile.OverlapsWith(existingObject))
+            foreach (var checkedObject in v_TileSet)       // TODO PARALLEL.FOREACH
+                if (newTile.IntersectsWith(checkedObject) || newTile.OverlapsWith(checkedObject))
                 {
-                    var pushingVector = newTile.PushingIntersected(existingObject, pushingDirection);
+                    var pushingVector = newTile.PushingIntersected(checkedObject, pushingDirection);
                     if (newTile.Vertices is Polygon3D)
                         pushingVector = v_MSystem.PushingCoef * pushingVector;
 
-                    objectsToBeChecked.UnionWith(existingObject.PushedComponent(pushingVector));
-
-                    if (pushingVector.Length > maxPushingVector.Length)
-                        maxPushingVector = pushingVector;
+                    if (pushingVector.Length > float.Epsilon)
+//                        lock(objectsToBeChecked)
+                        {
+                            objectsToBeChecked.UnionWith(checkedObject.SetAndGetPushedComponent(pushingVector));
+                            if (pushingVector.Length > maxPushingVector.Length)
+                                maxPushingVector = pushingVector;
+                        }
                 }
 
-            bool invalidPushing = newTile.PushingVector != default(Vector3D);
+            var invalidPushing = newTile.PushingVector != default;
 
             // Check all objects in checkList whether they can be pushed, as they may in turn push other objects
             while (objectsToBeChecked.Any() && !invalidPushing)
             {
                 var checkedObject = objectsToBeChecked.First();
 
-                foreach (var existingObject in v_TileSet)
+                foreach (var existingObject in v_TileSet)       // TODO PARALLEL.FOREACH
                     if (existingObject != checkedObject)
                     // checked object is not checked against itself
                     {
-                        var pushingVector = checkedObject.PushingNonIntersected(existingObject);  // Secondary pushing
+                        var pushingVector = checkedObject.PushingNonIntersected(existingObject);  
+                        // Secondary pushing
                         // Fact: pushingVector <= checkedObject.PushingVector; 
                         // hence any object with maximum pushing vector in checkList is never returned back to the list.
                         // This guarantees that the *while* cycle will eventually end
 
-                        objectsToBeChecked.UnionWith(existingObject.PushedComponent(pushingVector));
+                        if (pushingVector.Length > float.Epsilon)
+                        //                        lock(objectsToBeChecked)
+                        {
+                            objectsToBeChecked.UnionWith(existingObject.SetAndGetPushedComponent(pushingVector));
+                        }
                     }
                 objectsToBeChecked.Remove(checkedObject);
                 objectsToBePushed.Add(checkedObject);
-                invalidPushing |= newTile.PushingVector != default(Vector3D);
+                invalidPushing |= newTile.PushingVector != default;
             }
 
             // If any object after pushing still intersects with newObjectm, then the pushing is unsuccessful.
-            foreach (var pushedObject in v_TileSet.Where(obj => obj.PushingVector != default(Vector3D)))
+            foreach (var pushedObject in v_TileSet.Where(obj => obj.PushingVector != default))
             {
                 if (invalidPushing)     // No further cycling needed
                     break;
@@ -264,7 +272,7 @@ namespace MSystemSimulationEngine.Classes
             if (invalidPushing)
             {
                 var segment = newTile.Vertices as Segment3D;
-                double newLength = Math.Max(0D, segment?.Vector.Length - maxPushingVector.Length ?? 0D);
+                var newLength = Math.Max(0D, segment?.Vector.Length - maxPushingVector.Length ?? 0D);
                 if (newLength < MSystem.Tolerance)
                 {
                     // newObject not attached = there is just a tiny room, shortening would not help
@@ -297,7 +305,7 @@ namespace MSystemSimulationEngine.Classes
             var newTile = connectorsOnTile.Item1.OnTile;    // TODO create new tile by "ConnectObject(olderConnector)"
             var connector2 = connector1.ConnectedTo;
             var olderConnector = (connector1.OnTile.ID < connector2.OnTile.ID ? connector1 : connector2);
-            Vector3D pushingVector = newTile.Vertices[1] - newTile.Vertices[0];     // TODO correct
+            var pushingVector = newTile.Vertices[1] - newTile.Vertices[0];     // TODO correct
 
             // TODO FINISH
             return false;
@@ -385,7 +393,7 @@ namespace MSystemSimulationEngine.Classes
         /// <param name="inside">Consider inside (true) or outside (false) face of the tile.</param>
         public bool InNarrowSpace(Point3D position, TileInSpace tile, bool inside)
         {
-            Polygon3D polygon = tile.Vertices as Polygon3D;
+            var polygon = tile.Vertices as Polygon3D;
             return polygon != null &&
                 IntersectsWith(position, position + MSystem.MinFaceDist * (inside ? 1 : -1) * polygon.Normal, false);
         }
@@ -398,10 +406,11 @@ namespace MSystemSimulationEngine.Classes
         /// </summary>
         /// <param name="tile">New tile to be attached.</param>
         /// <param name="freeConnector">Connector to which the new tile should be attached.</param>
+        /// <param name="newlyCreatedTile">Out parameter with newly created tile in space.</param>
         /// <returns>
         /// True if the tile was attached to the given connection.
         /// </returns>
-        public bool Add(Tile tile, ConnectorOnTileInSpace freeConnector)
+        public bool Add(Tile tile, ConnectorOnTileInSpace freeConnector, out TileInSpace newlyCreatedTile)
         {
             if (tile == null)
                 throw new ArgumentNullException($"Parameter \'tile\' cannot be null");
@@ -417,15 +426,19 @@ namespace MSystemSimulationEngine.Classes
                 freeConnector.ConnectObject(connector);
                 if (Attach(freeConnector.ConnectedTo))
                 {
-                    var newTile = freeConnector.ConnectedTo.OnTile;
+                    TileInSpace newTile = freeConnector.ConnectedTo.OnTile;
                     _Add(newTile);
                     AutoConnect(newTile);
-                    FltObjectsWorld.ExpandWith(new Box3D(newTile.Vertices));
+                    FltObjectsWorld.ExpandWith(new Box3D(newTile.Vertices), v_MSystem.RefillEnvironment);
                     ReleaseSignalObjects(freeConnector);
+
+                    newlyCreatedTile = newTile;
                     return true;
                 }
                 freeConnector.Disconnect();
             }
+
+            newlyCreatedTile = null;
             return false;
         }
 
@@ -492,7 +505,7 @@ namespace MSystemSimulationEngine.Classes
         /// <returns>String of object.</returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.AppendFormat("Tiles in the world: \n{0}", String.Join("\n", v_TileSet));
             return builder.ToString();
         }

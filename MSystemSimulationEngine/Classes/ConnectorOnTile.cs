@@ -76,43 +76,51 @@ namespace MSystemSimulationEngine.Classes
 
         #region Private Methods
 
+        /// <summary>
+        /// Throws exception if the connector does not lie entirely on its tile or does not have smaller dimension
+        /// or when a connector with Angle==0 on segment is not its endpoint
+        /// or when a connector with Angle==0 on polygon is not at its border (if it is edge, must be clocwise)
+        /// </summary>
         protected void CheckPositions(IReadOnlyList<Point3D> positions, IPolytope polytope)
         {
-            bool connectorOk = false;
+            var message = $"{this} of object {OnTile.Name}: ";
 
-            // Connector of a polygon can be only (a) single internal point, or (b) two adjacent vertices
-            if (polytope is Polygon3D)
-            {
-                var polygon = polytope as Polygon3D;
-                switch (positions.Count)
+            if (! (positions.Count == 1 || polytope is Polygon3D && positions.Count == 2))
+                throw new InvalidOperationException(message + "connector contains too many points.");
+                
+            if (! positions.All(point => polytope.ContainsPoint(point)))
+                throw new InvalidOperationException(message + "all points must lie on the object.");
+
+            if (Angle.Radians == 0)
+                if (polytope is Polygon3D)
                 {
-                    case 1:
-                        // If Angle == 0 => connector must be on the polygon's border
-                        connectorOk = polygon.ContainsPoint(positions[0]) && 
-                            !(Angle.Radians == 0 && polygon.ContainsPoint(positions[0], MSystem.Tolerance));
-                        break;
+                    var polygon = polytope as Polygon3D;
+                    switch (positions.Count)
+                    {
+                        case 1:
+                            // If Angle == 0 => connector must be on the polygon's border
+                            if (polygon.ContainsPoint(positions[0], MSystem.Tolerance))
+                                throw new InvalidOperationException(message + "connector with zero angle must lie on the border.");
+                            break;
 
-                    case 2:
-                        int i = -1;
-                        int j = -1;
-                        for (int k = 0; k < polygon.Count; k++)
-                        {
-                            if (polygon[k].MyEquals(positions[0]))
-                                i = k;
-                            if (polygon[k].MyEquals(positions[1]))
-                                j = k;
-                        }
-                        connectorOk = i >= 0 && (i + 1) % polygon.Count == j;
-                        break;
+                        case 2:
+                            int i = -1;
+                            int j = -1;
+                            for (int k = 0; k < polygon.Count; k++)
+                            {
+                                if (polygon[k].MyEquals(positions[0]))
+                                    i = k;
+                                if (polygon[k].MyEquals(positions[1]))
+                                    j = k;
+                            }
+                            if (! (i >= 0 && (i + 1) % polygon.Count == j))
+                                throw new InvalidOperationException(message + "connector with zero angle must be an edge of polygon, clockwise.");
+                            break;
+                    }
+
                 }
-            }
-            // Each connector of segment must be one of its vertices
-            else if (polytope is Segment3D)
-                connectorOk = positions.Count == 1 && polytope.Contains(positions[0], PointComparer);
-
-            if (!connectorOk)
-                throw new InvalidOperationException($"{this} of the object {OnTile.Name} is invalid.");
-
+                else if (polytope is Segment3D && ! polytope.Contains(positions[0], PointComparer))
+                    throw new InvalidOperationException(message + "connector with zero angle must lie at an endpoint of segment.");
         }
 
         #endregion

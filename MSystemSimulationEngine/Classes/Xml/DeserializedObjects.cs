@@ -89,6 +89,17 @@ namespace MSystemSimulationEngine.Classes.Xml
         /// </summary>
         public double PushingCoef { get; }
 
+        /// <summary>
+        /// Scan connectors for attachment of new tiles in random order? 
+        /// If false, connectors are grouped by tiles in order "as created".
+        /// </summary>
+        public readonly bool RandomizeConnectors;
+
+        /// <summary>
+        /// Keep constant concentration of environmental objects as the environment grows?
+        /// </summary>
+        public readonly bool RefillEnvironment;
+
         #endregion
 
         #region Constructor
@@ -121,10 +132,12 @@ namespace MSystemSimulationEngine.Classes.Xml
             PushingCoef = GetDouble(rootOfTilingDoc, "pushingCoef", 2.2);
             if (PushingCoef < 1)
                 throw new InvalidOperationException($"Pushing coefficient must be at least 1.");
+            RandomizeConnectors = GetBool(rootOfTilingDoc, "randomizeConnectors", true);
 
             GlueRadius = GetDouble(rootOfTilingDoc, "glueRadius", 0.1);  
 
             DeserializeFloatingObjects(rootOfMSystemDoc.GetElements("floatingObjects/floatingObject"));
+            RefillEnvironment = GetBool(rootOfMSystemDoc, "refillEnvironment", true);
             DeserializeProteins(rootOfMSystemDoc.GetElements("proteins/protein"));
             DeserializeProteinsOnTiles(rootOfMSystemDoc.GetElements("proteinsOnTiles/tile"));
             DeserializeGlues(rootOfTilingDoc.GetElements("glues/glue"));
@@ -155,6 +168,22 @@ namespace MSystemSimulationEngine.Classes.Xml
                 return defaultValue;
 
             return Convert.ToDouble(Xmlizer.GetAttributeValueWithException(element, name, "value"), CultureInfo.InvariantCulture);
+        }
+
+
+        /// Returns value of a deserialized optional XML element of type double
+        /// </summary>
+        /// <param name="parentElement">parent element in which the "name" is searched for</param>
+        /// <param name="name">Name of the element.</param>
+        /// <param name="defaultValue">return value if the element does not exist</param>
+        /// <exception cref="InvalidOperationException">The name is already in use.</exception>
+        private bool GetBool(XElement parentElement, string name, bool defaultValue)
+        {
+            XElement element = parentElement.Element(name);
+            if (element == null)
+                return defaultValue;
+
+            return Convert.ToBoolean(Xmlizer.GetAttributeValueWithException(element, name, "value"), CultureInfo.InvariantCulture);
         }
 
 
@@ -527,6 +556,7 @@ namespace MSystemSimulationEngine.Classes.Xml
             {
                 string type = Xmlizer.GetAttributeValueWithException(evolutionRule, "evoRule", "type");
                 int priority = Convert.ToInt32(evolutionRule.Attribute("priority")?.Value);
+                int delay = Convert.ToInt32(evolutionRule.Attribute("delay")?.Value);
                 XElement leftSideObject = evolutionRule.Element("leftside");
                 if (leftSideObject == null)
                 {
@@ -547,7 +577,7 @@ namespace MSystemSimulationEngine.Classes.Xml
                 var leftSideObjects = leftSideObjectNames.Select(GetSimulationObject).ToList();
                 var rightSideObjects = rightSideObjectNames.Select(GetSimulationObject).ToList();
 
-                EvolutionRules.Add(EvolutionRule.NewRule(type, priority, leftSideObjects, rightSideObjects));
+                EvolutionRules.Add(EvolutionRule.NewRule(type, priority, leftSideObjects, rightSideObjects, delay));
             }
         }
 

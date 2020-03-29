@@ -17,7 +17,7 @@ namespace MSystemSimulationEngine.Classes
         /// <summary>
         /// The vector of this segment.
         /// </summary>
-        public Vector3D Vector => this[1] - this[0];
+        public Vector3D Vector => this[0].VectorTo(this[1]);
 
         /// <summary>
         /// Singleton collection of edges of the segment.
@@ -28,6 +28,16 @@ namespace MSystemSimulationEngine.Classes
         /// A unit vector orthogonal to the segment.
         /// </summary>
         public UnitVector3D Normal => Vector.MyOrthogonal();
+
+        /// <summary>
+        /// The centroid of vertices of the polygon.
+        /// </summary>
+        public Point3D Center { get; }
+
+        /// <summary>
+        /// Distance from center to the furthest point
+        /// </summary>
+        public double Radius { get; }
 
         public readonly string Name;
 
@@ -46,6 +56,8 @@ namespace MSystemSimulationEngine.Classes
             if (Geometry.PointComparer.Equals(startPoint, endPoint))
                 throw new ArgumentException($"Segment {name}: endpoints are too close.");
             Name = name;
+            Center = Point3D.Centroid(this);
+            Radius = this[0].DistanceTo(Center);
             Edges = new ReadOnlyCollection<Line3D>(new [] {new Line3D(startPoint, endPoint) });
         }
         #endregion

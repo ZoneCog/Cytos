@@ -76,7 +76,7 @@ namespace Cytos_v2_Tests.Classes
         public void ToSetTest()
         {
             var testSet = _testFltObjectsWorld.ToSet(); 
-            Assert.AreEqual(_testFltObjectsWorld.GetBox.Volume * 2, testSet.Count, 100);
+            Assert.AreEqual(_testFltObjectsWorld.GetBox.Volume * 2, testSet.Count, 150);
         }
 
         [TestMethod]
@@ -171,11 +171,13 @@ namespace Cytos_v2_Tests.Classes
         {
             var testTile = _testTilesWorld.First();
             // Construct a lower part of a dodecahedron (1+5 tiles)
-            Assert.IsTrue(_testTilesWorld.Add(_testMSystem.Tiles["q1"], testTile.Connectors[0]));
-            Assert.IsTrue(_testTilesWorld.Add(_testMSystem.Tiles["q1"], testTile.Connectors[1]));
-            Assert.IsTrue(_testTilesWorld.Add(_testMSystem.Tiles["q1"], testTile.Connectors[2]));
-            Assert.IsTrue(_testTilesWorld.Add(_testMSystem.Tiles["q1"], testTile.Connectors[3]));
-            Assert.IsTrue(_testTilesWorld.Add(_testMSystem.Tiles["q1"], testTile.Connectors[4]));
+
+            TileInSpace newlyCreatedTile;
+            Assert.IsTrue(_testTilesWorld.Add(_testMSystem.Tiles["q1"], testTile.Connectors[0], out newlyCreatedTile));
+            Assert.IsTrue(_testTilesWorld.Add(_testMSystem.Tiles["q1"], testTile.Connectors[1], out newlyCreatedTile));
+            Assert.IsTrue(_testTilesWorld.Add(_testMSystem.Tiles["q1"], testTile.Connectors[2], out newlyCreatedTile));
+            Assert.IsTrue(_testTilesWorld.Add(_testMSystem.Tiles["q1"], testTile.Connectors[3], out newlyCreatedTile));
+            Assert.IsTrue(_testTilesWorld.Add(_testMSystem.Tiles["q1"], testTile.Connectors[4], out newlyCreatedTile));
             //Assert.IsTrue(_testTilesWorld.Add(_testMSystem.Tiles["q1"], _testTilesWorld.ToArray()[1].Connectors[3]));
 
             var aBox = new Box3D(new Point3D(-5.87, -8.09, 0.01), new Point3D(-5.37, -7.59, 0.5));
@@ -211,7 +213,7 @@ namespace Cytos_v2_Tests.Classes
                 results[i] = _testFltObjectsWorld.GetObjectsInPrism(testPolygon, new Vector3D(0,0,5)).Count;
                 _testFltObjectsWorld.FinalizeStep();
             }
-            Assert.AreEqual(50195, results.Sum(), 500); //TODO how big should be delta?
+            Assert.AreEqual(50195, results.Sum(), 1000); //TODO how big should be delta?
             //Assert.AreEqual("Result=", string.Join(";", results)); // DEBUGGING
         }
 

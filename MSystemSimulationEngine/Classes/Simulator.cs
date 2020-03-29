@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using MathNet.Numerics.Distributions;
 using MSystemSimulationEngine.Classes.Tools;
 using MSystemSimulationEngine.Classes.Xml;
 using SharedComponents.Tools;
@@ -68,12 +69,12 @@ namespace MSystemSimulationEngine.Classes
             v_SnapshotXmlDoc = new SerializeSnapshot(mSystemObjects.MSystemFilePath);
             v_SerializeFloatingObjects = serializeFloatingObjects;
             FinalizeStep();
- 
+
             // For cTAM we log an initial description of the system
             if (SimulationMSystem.Nu0 > 0)
             {
-                var message = $"cTAM description: Nu_0={SimulationMSystem.Nu0}, Tau={SimulationMSystem.Tau}";
-                foreach (var tile in SimulationMSystem.Tiles.Values)
+                string message = $"cTAM description: Nu_0={SimulationMSystem.Nu0}, Tau={SimulationMSystem.Tau}";
+                foreach (Tile tile in SimulationMSystem.Tiles.Values)
                 {
                     message += "\r\nTile " + tile.Name + ", Alpha =" + tile.AlphaRatio;
                 }
@@ -101,14 +102,19 @@ namespace MSystemSimulationEngine.Classes
             InitializeStep();
             v_Step++;
 
-            var metabolicRules = ApplyMetabolicRules();
-            var destructionRules = ApplyDestructionRules();
-            var divisionRules = ApplyDivisionRules();
-            var insertionRules = ApplyInsertionRules();
-            var creationRules = ApplyCreationRules();
+            NamedMultiset metabolicRules = ApplyMetabolicRules();
+            NamedMultiset destructionRules = ApplyDestructionRules();
+            NamedMultiset divisionRules = ApplyDivisionRules();
+            NamedMultiset insertionRules = ApplyInsertionRules();
+            NamedMultiset creationRules = ApplyCreationRules();
+
+            //Locked tiles must be counted before FinalStep as this method unlock tiles. 
+            int numberOfLockedTiles = TilesWorld.Count(x => x.IsLocked);
 
             FinalizeStep();
-            var result = metabolicRules.Any() || destructionRules.Any() || divisionRules.Any() || insertionRules.Any() || creationRules.Any();
+
+
+            bool result = metabolicRules.Any() || destructionRules.Any() || divisionRules.Any() || insertionRules.Any() || creationRules.Any() || numberOfLockedTiles != 0;
 
             // Provide a dump of the step in the log file
             if (result)
@@ -124,7 +130,8 @@ namespace MSystemSimulationEngine.Classes
                                                  insertionRules + (insertionRules.Count > 0 ? "\r\n" : "") +
                                                  creationRules + (creationRules.Count > 0 ? "\r\n" : "") +
                                                  $"Tiles: {TilesWorld.Count()} \r\n" +
-                                                 $"{FltObjectsWorld}");
+                                                 $"{FltObjectsWorld} \r\n" +
+                                                 $"Number of locked tiles: {TilesWorld.Count(x => x.IsLocked)}");
             }
             return result;
         }
@@ -135,12 +142,12 @@ namespace MSystemSimulationEngine.Classes
         /// </summary>
         private void LogOneCtamStep()
         {
-            var dump = $"Step: {v_Step}\r\n";
-            foreach (var seedTile in SimulationMSystem.SeedTiles)
+            string dump = $"Step: {v_Step}\r\n";
+            foreach (TileInSpace seedTile in SimulationMSystem.SeedTiles)
             {
-                var ladder = "Ladder:";
-                var voltages = "Voltages:";
-                var tile = seedTile;
+                string ladder = "Ladder:";
+                string voltages = "Voltages:";
+                TileInSpace tile = seedTile;
                 while (tile != null)
                 {
                     ladder += tile.Name.PadLeft(7);
@@ -165,31 +172,31 @@ namespace MSystemSimulationEngine.Classes
         /// <remarks>Protected accessibility for testing only</remarks>
         protected NamedMultiset ApplyMetabolicRules()
         {
-            var appliedRules = new NamedMultiset();
+            NamedMultiset appliedRules = new NamedMultiset();
 
             // List of free proteins on all existing tiles
-            var freeProteins = TilesWorld.SelectMany(tile => tile.Proteins.Where(protein => !protein.IsUsed)).ToArray();
+            ProteinOnTileInSpace[] freeProteins = TilesWorld.Where(tile => !tile.IsLocked).SelectMany(tile => tile.Proteins.Where(protein => !protein.IsUsed)).ToArray();
             freeProteins.Shuffle();
 
-            foreach (var freeProtein in freeProteins)
+            foreach (ProteinOnTileInSpace freeProtein in freeProteins)
             {
                 TileInSpace tile = freeProtein.m_tile;
 
                 // List of available metabolic rules for this protein is constructed
                 // For protein on a 1D object only catalyzed rules are applicable.
-                var availableRules = SimulationMSystem.MetabolicRules[freeProtein.Name].Where(
+                EvoMetabolicRule[] availableRules = SimulationMSystem.MetabolicRules[freeProtein.Name].Where(
                          rule => tile.Vertices is Polygon3D || rule.SubType == EvoMetabolicRule.MetabolicRuleType.Catalyzed).ToArray();
                 availableRules.Shuffle();
 
                 // Optimization - calculate the minimum multisets of objects to apply any rule in the list
-                var unionOfLeftInNames = NamedMultiset.Union(availableRules.Select(rule => rule.MLeftInNames));
-                var unionOfLeftOutNames = NamedMultiset.Union(availableRules.Select(rule => rule.MLeftOutNames));
+                NamedMultiset unionOfLeftInNames = NamedMultiset.Union(availableRules.Select(rule => rule.MLeftInNames));
+                NamedMultiset unionOfLeftOutNames = NamedMultiset.Union(availableRules.Select(rule => rule.MLeftOutNames));
 
-                var innerSet = FltObjectsWorld.GetNearObjects(freeProtein, Tile.SideType.inside, unionOfLeftInNames);
-                var outerSet = FltObjectsWorld.GetNearObjects(freeProtein, Tile.SideType.outside, unionOfLeftOutNames);
+                FloatingObjectsSet innerSet = FltObjectsWorld.GetNearObjects(freeProtein, Tile.SideType.inside, unionOfLeftInNames);
+                FloatingObjectsSet outerSet = FltObjectsWorld.GetNearObjects(freeProtein, Tile.SideType.outside, unionOfLeftOutNames);
 
                 // TODO change to FirstOrDefault
-                foreach (var rule in availableRules)
+                foreach (EvoMetabolicRule rule in availableRules)
                 {
                     // Floating objects cannot be added to narrow spaces where two tiles are face-to-face TODO move outside the cycle
                     if ((rule.SubType == EvoMetabolicRule.MetabolicRuleType.Catalyzed &&
@@ -232,24 +239,24 @@ namespace MSystemSimulationEngine.Classes
         /// <remarks>Protected accessibility for testing only</remarks>
         protected NamedMultiset ApplyDestructionRules()
         {
-            var appliedRules = new NamedMultiset();
-            var tiles = TilesWorld.ToArray();
+            NamedMultiset appliedRules = new NamedMultiset();
+            TileInSpace[] tiles = TilesWorld.ToArray();
             tiles.Shuffle();
 
-            foreach (var tile in tiles)
+            foreach (TileInSpace tile in tiles)
             {
                 // List of destruction rules which can be applied to this object
                 // The multisets of floating objects on the left-hand side of the rule must be present in reaction distance from the object
-                var availableRules = SimulationMSystem.DestructionRules[tile.Name].ToArray();
+                EvoNonMetabolicRule[] availableRules = SimulationMSystem.DestructionRules[tile.Name].ToArray();
 
                 // Optimization - calculate the minimum multiset of objects to apply any rule in the list
-                var unionOfLeftNames = NamedMultiset.Union(availableRules.Select(r => r.MLeftSideFloatingNames));
+                NamedMultiset unionOfLeftNames = NamedMultiset.Union(availableRules.Select(r => r.MLeftSideFloatingNames));
 
-                var nearObjects = FltObjectsWorld.GetNearObjects(tile, unionOfLeftNames);
-                var mNearObjects = nearObjects.ToMultiset();
+                FloatingObjectsSet nearObjects = FltObjectsWorld.GetNearObjects(tile, unionOfLeftNames);
+                NamedMultiset mNearObjects = nearObjects.ToMultiset();
 
                 availableRules.Shuffle();
-                var rule = availableRules.FirstOrDefault(r => r.MLeftSideFloatingNames.IsSubsetOf(mNearObjects));
+                EvoNonMetabolicRule rule = availableRules.FirstOrDefault(r => r.MLeftSideFloatingNames.IsSubsetOf(mNearObjects));
 
                 if (rule != null)
                 {
@@ -274,17 +281,17 @@ namespace MSystemSimulationEngine.Classes
         /// <remarks>Protected accessibility for testing only</remarks>
         protected NamedMultiset ApplyDivisionRules()
         {
-            var appliedRules = new NamedMultiset();
+            NamedMultiset appliedRules = new NamedMultiset();
 
             // List of used (interconnected) connectors on all existing objects
             // Each connector pair has only one its member in the list
-            var availableConnectors = TilesWorld.SelectMany(tile => tile.Connectors.Where(connector =>
+            ConnectorOnTileInSpace[] availableConnectors = TilesWorld.SelectMany(tile => tile.Connectors.Where(connector =>
                     connector.ConnectedTo != null &&
                     tile.ID < connector.ConnectedTo.OnTile.ID))
                 .ToArray();
             availableConnectors.Shuffle();
 
-            foreach (var connector in availableConnectors)
+            foreach (ConnectorOnTileInSpace connector in availableConnectors)
             {
                 EvoNonMetabolicRule[] availableRules = { };
                 try
@@ -298,13 +305,13 @@ namespace MSystemSimulationEngine.Classes
 
                 // TODO in this and the next two methods move this part into a separate method returning shuffled list of available rules 
                 // Optimization - calculate the minimum multiset of objects to apply any rule in the list
-                var unionOfLeftNames = NamedMultiset.Union(availableRules.Select(r => r.MLeftSideFloatingNames));
+                NamedMultiset unionOfLeftNames = NamedMultiset.Union(availableRules.Select(r => r.MLeftSideFloatingNames));
 
                 FloatingObjectsSet nearObjects = FltObjectsWorld.GetNearObjects(connector, unionOfLeftNames);
-                var mNearObjects = nearObjects.ToMultiset();
+                NamedMultiset mNearObjects = nearObjects.ToMultiset();
 
                 availableRules.Shuffle();
-                var rule = availableRules.FirstOrDefault(r => r.MLeftSideFloatingNames.IsSubsetOf(mNearObjects));
+                EvoNonMetabolicRule rule = availableRules.FirstOrDefault(r => r.MLeftSideFloatingNames.IsSubsetOf(mNearObjects));
 
                 if (rule != null)
                 {
@@ -343,13 +350,13 @@ namespace MSystemSimulationEngine.Classes
              * 7. if NO, the rollback - reconnect connectors in C_min and return back floating objects
              * 8. Remove all connectors in C_min from <insertableConnectors>
              */
-            var appliedRules = new NamedMultiset();
+            NamedMultiset appliedRules = new NamedMultiset();
 
             // List of used (interconnected) connectors on all existing objects
             // Each connector pair has only one its member in the list
-            var insertableConnectors = TilesWorld.SelectMany(tile => tile.Connectors.Where(connector =>
+            List<ConnectorOnTileInSpace> insertableConnectors = TilesWorld.SelectMany(tile => tile.Connectors.Where(connector =>
                     tile.State == TileInSpace.FState.Unchanged &&
-                    ! connector.SetDisconnect &&
+                    !connector.SetDisconnect &&
                     connector.ConnectedTo != null &&
                     tile.ID < connector.ConnectedTo.OnTile.ID &&
                     SimulationMSystem.InsertionRules.ContainsKey(connector.Glue) &&
@@ -360,13 +367,13 @@ namespace MSystemSimulationEngine.Classes
 
             while (insertableConnectors.Any())
             {
-                var connector = insertableConnectors[0];
+                ConnectorOnTileInSpace connector = insertableConnectors[0];
 
-                foreach(var rule in InsertableRules(connector))
+                foreach (EvoNonMetabolicRule rule in InsertableRules(connector))
                 {
-               //     && TilesWorld.Insert(r.RightSideObjects.OfType<Tile>().Single(), connector));
-               // TODO continue here
-                if (rule != null)
+                    //     && TilesWorld.Insert(r.RightSideObjects.OfType<Tile>().Single(), connector));
+                    // TODO continue here
+                    if (rule != null)
                     {
                         // Remove the floating objects consumed in creating the new tiles and exit
                         //FltObjectsWorld.RemoveFrom(rule.MLeftSideFloatingNames, nearObjects);
@@ -392,15 +399,15 @@ namespace MSystemSimulationEngine.Classes
         private IEnumerable<EvoNonMetabolicRule> InsertableRules(ConnectorOnTileInSpace connector)
         {
             // Both keys must exist - possible exception!
-            var availableRules = SimulationMSystem.InsertionRules[connector.Glue][connector.ConnectedTo.Glue]
+            EvoNonMetabolicRule[] availableRules = SimulationMSystem.InsertionRules[connector.Glue][connector.ConnectedTo.Glue]
                 .Where(rule => MatchingConectors(rule.RightSideObjects.OfType<Tile>().Single(), connector).Item1 != null)
                 .ToArray();
 
             // Optimization - calculate the minimum multiset of objects to apply any rule in the list
-            var unionOfLeftNames = NamedMultiset.Union(availableRules.Select(r => r.MLeftSideFloatingNames));
+            NamedMultiset unionOfLeftNames = NamedMultiset.Union(availableRules.Select(r => r.MLeftSideFloatingNames));
 
             FloatingObjectsSet nearObjects = FltObjectsWorld.GetNearObjects(connector, unionOfLeftNames);
-            var mNearObjects = nearObjects.ToMultiset();
+            NamedMultiset mNearObjects = nearObjects.ToMultiset();
 
             availableRules.Shuffle();
             return availableRules.Where(r => r.MLeftSideFloatingNames.IsSubsetOf(mNearObjects));
@@ -414,7 +421,7 @@ namespace MSystemSimulationEngine.Classes
         /// </summary>
         private Tuple<ConnectorOnTile, ConnectorOnTile> MatchingConectors(Tile tile, ConnectorOnTileInSpace connector)
         {
-            var pair = SimulationMSystem.MatchingConectors(tile, connector.Glue, connector.ConnectedTo.Glue);
+            Tuple<ConnectorOnTile, ConnectorOnTile> pair = SimulationMSystem.MatchingConectors(tile, connector.Glue, connector.ConnectedTo.Glue);
             if (pair.Item1.IsSizeComppatibleWith(connector) && pair.Item2.IsSizeComppatibleWith(connector))
                 return pair;
             ConnectorOnTile nope = null;
@@ -434,16 +441,17 @@ namespace MSystemSimulationEngine.Classes
         /// <remarks>Protected accessibility for testing only</remarks>
         protected NamedMultiset ApplyCreationRules()
         {
-            var appliedRules = new NamedMultiset();
+            NamedMultiset appliedRules = new NamedMultiset();
 
             // List of connection sites on all existing non-destroyed objects to which a new object can attach.
-            var availableConnectors = TilesWorld.Where(tile => tile.State != TileInSpace.FState.Destroy)
+            ConnectorOnTileInSpace[] availableConnectors = TilesWorld.Where(tile => tile.State != TileInSpace.FState.Destroy && !tile.IsLocked)
                     .SelectMany(tile => tile.Connectors).ToArray();
-            availableConnectors.Shuffle();
+            if (SimulationMSystem.RandomizeConnectors)
+                availableConnectors.Shuffle();
 
-            foreach (var priority in SimulationMSystem.CreationRulesPriorities)
+            foreach (int priority in SimulationMSystem.CreationRulesPriorities)
             {
-                foreach (var connector in availableConnectors)
+                foreach (ConnectorOnTileInSpace connector in availableConnectors)
                 {
                     if (connector.ConnectedTo != null)   // must be tested here since connectors may auto-connect in each iteration
                         continue;
@@ -455,22 +463,38 @@ namespace MSystemSimulationEngine.Classes
                         continue;
 
                     // List of creation rules which can be applied to this connection site
-                    var availableRules = SimulationMSystem.CreationRules[connector.Glue].Where(r => r.Priority == priority).ToArray();
+                    EvoNonMetabolicRule[] availableRules = SimulationMSystem.CreationRules[connector.Glue].Where(r => r.Priority == priority).ToArray();
 
                     // Optimization - calculate the minimum multiset of objects to apply any rule in the list
-                    var unionOfLeftNames = NamedMultiset.Union(availableRules.Select(r => r.MLeftSideFloatingNames));
+                    NamedMultiset unionOfLeftNames = NamedMultiset.Union(availableRules.Select(r => r.MLeftSideFloatingNames));
 
                     FloatingObjectsSet nearObjects = FltObjectsWorld.GetNearObjects(connector, unionOfLeftNames);
-                    var mNearObjects = nearObjects.ToMultiset();
+                    NamedMultiset mNearObjects = nearObjects.ToMultiset();
 
                     // Method ADD tries to attach the tile in the rule to the "connector" 
                     // Returns false if there are surrounding tiles in its way which cannot be pushed
                     availableRules.Shuffle();
-                    var rule = availableRules.FirstOrDefault(r => r.MLeftSideFloatingNames.IsSubsetOf(mNearObjects)
-                        && TilesWorld.Add(r.RightSideObjects.OfType<Tile>().Single(), connector));
+
+                    TileInSpace newlyCreatedTile = null;
+                    EvoNonMetabolicRule rule = availableRules.FirstOrDefault(r => r.MLeftSideFloatingNames.IsSubsetOf(mNearObjects)
+                        && TilesWorld.Add(r.RightSideObjects.OfType<Tile>().Single(), connector, out newlyCreatedTile));
 
                     if (rule != null)
                     {
+                        if (rule.Delay > 0 && newlyCreatedTile != null)
+                        {
+                            newlyCreatedTile.IsLocked = true;
+                            // make distribution flatter but keep getting value until you get one within the bounds
+                            double normalDistValue = Normal.Sample(Randomizer.Rng, rule.Delay, (double)rule.Delay / 2);
+                            while (normalDistValue < 0 || normalDistValue > 2 * rule.Delay)
+                            {
+                                normalDistValue = Normal.Sample(Randomizer.Rng, rule.Delay, (double)rule.Delay / 2);
+                            }
+                            uint readyAtStep = (uint)Math.Round(v_Step + normalDistValue);
+                            newlyCreatedTile.ReadyAtStep = readyAtStep;
+                            Logging.LogSimulationMessage($"Tile name: {newlyCreatedTile.Name} | current step: {v_Step} | ready at: {readyAtStep} | normal distribution: {normalDistValue}.");
+                        }
+
                         // Remove the floating objects consumed in creating the new tiles and exit
                         FltObjectsWorld.RemoveFrom(rule.MLeftSideFloatingNames, nearObjects);
                         appliedRules.Add(rule.Name);
@@ -489,8 +513,8 @@ namespace MSystemSimulationEngine.Classes
         /// </summary>
         private void InitializeStep()
         {
-            foreach (var tile in TilesWorld)
-                foreach (var protein in tile.Proteins)
+            foreach (TileInSpace tile in TilesWorld)
+                foreach (ProteinOnTileInSpace protein in tile.Proteins)
                     protein.IsUsed = false;
         }
 
@@ -501,16 +525,10 @@ namespace MSystemSimulationEngine.Classes
         protected void FinalizeStep()
         {
             FltObjectsWorld.FinalizeStep();
-            var tileArray = TilesWorld.ToArray();
+            TileInSpace[] tileArray = TilesWorld.ToArray();
 
-            if (v_SerializeFloatingObjects)
-            {
-
-                Xmlizer.AddSnapshot(v_Step, FltObjectsWorld.ToSet(), TilesWorld, v_SnapshotXmlDoc);
-            }
-
-            foreach (var tile in tileArray)
-                foreach (var connector in tile.Connectors)
+            foreach (TileInSpace tile in tileArray)
+                foreach (ConnectorOnTileInSpace connector in tile.Connectors)
                 {
                     // Disconnect marked connectors - must be done before snapshot serialization
                     if (connector.SetDisconnect)
@@ -521,9 +539,20 @@ namespace MSystemSimulationEngine.Classes
             if (SimulationMSystem.Nu0 > 0)
                 Electric.CalculateCharges(SimulationMSystem);
 
-            Xmlizer.AddSnapshot(v_Step, new FloatingObjectsSet(), TilesWorld, v_SnapshotXmlDoc);
+            //Unlock tile and make it available for simulation.
+            List<TileInSpace> tilesInSpaceToBeUnlocked = tileArray.Where(tile => tile.IsLocked && v_Step >= tile.ReadyAtStep).ToList();
+            foreach (TileInSpace tileInSpace in tilesInSpaceToBeUnlocked)
+            {
+                tileInSpace.IsLocked = false;
+                tileInSpace.ReadyAtStep = 0;
+            }
 
-            foreach (var tile in tileArray)
+            Xmlizer.AddSnapshot(v_Step,
+                v_SerializeFloatingObjects ? FltObjectsWorld.ToSet() : new FloatingObjectsSet(),
+                TilesWorld,
+                v_SnapshotXmlDoc);
+
+            foreach (TileInSpace tile in tileArray)
             {
                 tile.ColorWasChanged = false; //Reset color changed flag.
 
@@ -546,7 +575,7 @@ namespace MSystemSimulationEngine.Classes
             List<TileInSpace> tilesList = TilesWorld.ToList();
             tilesList.ForEach(tile =>
             {
-                foreach (var checkedTile in tilesList)
+                foreach (TileInSpace checkedTile in tilesList)
                 {
                     PerformHealthCheck(tile, checkedTile);
                 }
@@ -576,11 +605,10 @@ namespace MSystemSimulationEngine.Classes
         /// <param name="numberOfKills">Number of object to be hurt.</param>
         private void HurtSystem(string tileName, int numberOfKills)
         {
-            Random rnd = new Random();
-
             for (int i = 0; i < numberOfKills; i++)
             {
-                int randPosition = rnd.Next(TilesWorld.Count());
+                // always use global randomizer
+                int randPosition = Randomizer.Next(TilesWorld.Count());
 
                 // we do not care about type of the object
                 if (tileName == "")
@@ -634,9 +662,76 @@ namespace MSystemSimulationEngine.Classes
             v_Notification.Message = "Simulation continue";
         }
 
+        /// <summary>
+        /// Count number of Polygon3D tiles in a component
+        /// </summary>
+        /// <param name="component">Component to be evaluated.</param>
+        /// <returns>Number of 3D tiles in a component.</returns>
+        private int Count3DTilesInComponent(HashSet<TileInSpace> component)
+        {
+            int numberOfTiles = 0;
+            foreach (TileInSpace element in component)
+            {
+                // only polygon tiles matter
+                if (element.Vertices is Polygon3D)
+                {
+                    numberOfTiles++;
+                }
+            }
+
+            return numberOfTiles;
+        }
+
+        /// <summary>
+        /// Count how many componenets consists of 0, 1, 2,...40 tiles. This gives the overview how complete is the system
+        /// </summary>
+        /// <param name="startString">Start of the resulting string. This way, method can append new information to existing string</param>
+        private string CountComponents(string startString)
+        {
+            string result = ""; // result being returned
+
+            // initiate component stats
+            Dictionary<int, int> componentStats = new Dictionary<int, int>();
+            for (int i = 0; i < 41; i++)
+            {
+                componentStats.Add(i, 0);
+            }
+
+            // get copy of all tiles
+            HashSet<TileInSpace> polygonTiles = new HashSet<TileInSpace>(TilesWorld.PolygonTiles);
+
+            while (polygonTiles.Count != 0)
+            {
+                // get first tile in the collection and get its component, e.g. all tiles connected to it
+                TileInSpace tile = polygonTiles.First();
+                HashSet<TileInSpace> component = tile.Component();
+                // get number of 3D tiles in a component
+                int numberOfTiles = Count3DTilesInComponent(component);
+                // update stats
+                componentStats[numberOfTiles]++;
+                // remove all tiles of the component form the list
+                foreach (TileInSpace element in component)
+                {
+                    polygonTiles.Remove(element);
+                }
+            }
+
+            // update string
+            result += startString;
+            for (int i = 0; i < componentStats.Count(); ++i)
+            {
+                result += string.Format(",{0}", componentStats[i]);
+            }
+            result += "\n";
+
+            return result;
+        }
+
         #endregion
 
         #region Public Methods
+
+        //TODO We have currenty to much "RunSimulation" method. There Should be only one entry point with configuration instead of so many heparated functionality.
 
         /// <summary>
         /// Run simulation loop. Can be called repeatedly.
@@ -745,7 +840,6 @@ namespace MSystemSimulationEngine.Classes
             SaveSnapshots(false);
         }
 
-
         /// <summary>
         /// Run simulation with speficied number of steps and try to hurt the system by removing random object of type specified by tileName
         /// </summary>
@@ -754,8 +848,6 @@ namespace MSystemSimulationEngine.Classes
         /// <param name="probabilityOfTheKill">TODO</param>
         public void RunSimulation(int numberOfSteps, string tileName, double probabilityOfTheKill)
         {
-            Random rand = new Random();
-
             int stepsElapsed = 0;
             while (stepsElapsed < numberOfSteps && RunOneSimulationStep())
             {
@@ -764,7 +856,7 @@ namespace MSystemSimulationEngine.Classes
                 if (stepsElapsed > 1)
                 {
                     // do we want to hurt system in this step
-                    double selection = rand.NextDouble();
+                    double selection = Randomizer.NextDoubleBetween(0, 1);
                     if (probabilityOfTheKill > selection)
                     {
                         HurtSystem(tileName, 1);
@@ -772,6 +864,272 @@ namespace MSystemSimulationEngine.Classes
                 }
             }
             SaveSnapshots(false);
+        }
+
+        /// <summary>
+        /// Run simulation with speficied number of steps and try to hurt the system by removing random object of type specified by tileName. 
+        /// This is Version2 procedure, previous version is deprecated
+        /// </summary>
+        /// <param name="numberOfSteps">Number of simulation steps.</param>
+        /// <param name="countStep">At what steps shall we count cells.</param>
+        /// <param name="runNo">Number of the run. It is only passed down the line for reporting purposes.</param>
+        /// <param name="tileName">Name of the tile.</param>
+        /// <param name="numberOfKills">Number of object to be hurt.</param>
+        /// <param name="probabilistic">Flag for using random mechanism of choosing step.</param>
+        public string RunSimulationV2(int numberOfSteps, int countStep, ulong runNo, string tileName, long numberOfKills, bool probabilistic)
+        {
+            string result = "";  // result string to be returned
+
+            // if numberOfKills is greater than number of steps then we will be killing in each (but not in the first one)
+            int sureKills = (int)(numberOfKills / ((long)numberOfSteps - 1));
+            int remainingKills = (sureKills == 0) ? (int)numberOfKills : ((int)numberOfKills - (sureKills * (numberOfSteps - 1)));
+
+            // build hurt table
+            List<int> hurtTable = new List<int>(numberOfSteps);
+            for (int i = 0; i < numberOfSteps; i++)
+            {
+                if (i == 0)
+                    hurtTable.Add(0);
+                else
+                    hurtTable.Add(sureKills);
+            }
+
+            // if we require probabilistic distribution of kills, we choose steps randomly
+            if (probabilistic)
+            {
+                long kills = 0;
+                while (kills < remainingKills)
+                {
+                    int step = Randomizer.Next(numberOfSteps); 
+                    // do not accept step zero or already selected step => accepted step greater than sureKills
+                    if (step == 0 || hurtTable[step] > sureKills)
+                        continue;
+                    hurtTable[step]++;
+                    kills++;
+                }
+            }
+            else
+            {
+                // this may look a bit tricky but it does exactly what we want
+                // kill steps are marked from the back and we mustn't mark step zero
+                if (remainingKills > 0)
+                {
+                    int killEveryXStep = (int)((long)numberOfSteps / remainingKills);
+                    for (int i = hurtTable.Count - 1; i > 0; i -= killEveryXStep)
+                        hurtTable[i]++;
+                }
+            }
+
+            // run required number of simulation steps
+            int stepsElapsed = 0;
+            while (stepsElapsed < numberOfSteps)
+            {
+                // run one simulation step
+                bool success = RunOneSimulationStep();
+
+                // do we want to hurt system in this step
+                if (hurtTable[stepsElapsed] != 0)
+                    HurtSystem(tileName, hurtTable[stepsElapsed]);
+                stepsElapsed++;
+
+                // count components if condition is met
+                if (stepsElapsed % countStep == 0)
+                {
+                    string startString = string.Format("STAT>> {0},{1},{2}", runNo, stepsElapsed, success ? 0 : 1);
+                    result += CountComponents(startString);
+                }
+            }
+            SaveSnapshots(false);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Run simulation (version 2) with specified number of steps and count complete cells every countStep. Previous version
+        /// of the simulation is deprecated.
+        /// </summary>
+        /// <param name="numberOfSteps">Number of steps for the simulation.</param>
+        /// <param name="countStep">when do we count complete cells</param>
+        /// <param name="runNo">Number of the run. It is only passed down the line for reporting purposes.</param>
+        /// <param name="tileName">Name of the tile.</param>
+        /// <param name="probabilityOfTheKill">What probability shall we assign to each step in simulation.</param>
+        public string RunSimulationV2(int numberOfSteps, int countStep, ulong runNo, string tileName, double probabilityOfTheKill)
+        {
+            string result = "";          // build result string
+
+            int stepsElapsed = 0;
+            while (stepsElapsed++ < numberOfSteps)
+            {
+                // run one simulation step
+                bool success = RunOneSimulationStep();
+
+                // we do not want to hurt system in step 1, because it would kill the whole system completely
+                if (stepsElapsed > 1)
+                {
+                    // do we want to hurt system in this step
+                    double selection = Randomizer.NextDoubleBetween(0, 1);
+                    if (selection < probabilityOfTheKill)
+                    {
+                        HurtSystem(tileName, 1);
+                    }
+                }
+
+                // count components if condition is met
+                if (stepsElapsed % countStep == 0)
+                {
+                    string startString  = string.Format("STAT>> {0},{1},{2}", runNo, stepsElapsed, success ? 0 : 1);
+                    result += CountComponents(startString);
+                }
+            }
+            SaveSnapshots(false);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Run one simulation for One Off damage test.
+        /// </summary>
+        /// <param name="runNo">Number of the current run to be used for reporting purposes.</param>
+        /// <param name="tileName">Name of the targeted tile, empty string means any randomly chosen tile.</param>
+        /// <param name="numberOfTiles">Number of tiles to remove.</param>
+        /// <param name="numberOfRecoverySteps">Number of system iterations given the system to recover.</param>
+        /// <returns></returns>
+        public string RunSimulationOneOffDamage(int runNo, string tileName, int numberOfTiles, int numberOfRecoverySteps)
+        {
+            int initialNumberOfSteps = 0;
+            // first, we want to let the system grow until there are two comlete cells
+            bool twoCells = false;
+            while (!twoCells)
+            {
+                // run one simulation step
+                RunOneSimulationStep();
+                initialNumberOfSteps++;
+
+                int firstComponentCount  = 0;
+                int secondComponentCount = 0;
+
+                // get copy of all tiles
+                HashSet<TileInSpace> polygonTiles = new HashSet<TileInSpace>(TilesWorld.PolygonTiles);
+
+                // get first tile in the collection and get its component, e.g. all tiles connected to it
+                TileInSpace tile = polygonTiles.First();
+                HashSet<TileInSpace> component = tile.Component();
+
+                // how many tiles is in this component
+                //firstComponentCount = component.Count;
+                firstComponentCount = Count3DTilesInComponent(component);
+
+                // remove all tiles of the component form the list
+                foreach (TileInSpace element in component)
+                {
+                  polygonTiles.Remove(element);
+                }
+
+                // do it the same for the second component if it exists
+                if (polygonTiles.Count > 0)
+                {
+                    tile = polygonTiles.First();
+                    component = tile.Component();
+                    secondComponentCount = Count3DTilesInComponent(component);
+                }
+
+                twoCells = (firstComponentCount >= 26) && (secondComponentCount >= 26);
+            }
+
+            // now, there are two cells and we have to remove the one with oct_base tile, because this
+            // one will always continue to grow, 
+            foreach (TileInSpace tile in TilesWorld.PolygonTiles)
+            {
+                if (tile.Name == "oct_base")
+                {
+                    HashSet<TileInSpace> component = tile.Component();
+                    // remove component
+                    foreach (TileInSpace element in component)
+                    {
+                        TilesWorld.Remove(element);
+                    }
+                    // and stop iterating
+                    break;
+                }
+            }
+
+            // report state of the system after initial number of steps
+            string startString = string.Format("STAT>> {0},{1},{2}", runNo, initialNumberOfSteps, 0);
+            string res = CountComponents(startString);
+
+            // XJB DEBUG BEGIN
+            // What is left in the TilesWorld ?
+            // I may want to put this into generic procedure to count components
+            // and make it flexible by counting tiles in generic way without hardcoding names
+            int nRectangle = 0;
+            int nTrapezoid = 0;
+            int nOct_small = 0;
+            int nInner_rod1 = 0;
+            int nInner_rod2 = 0;
+            int nOuter_rod = 0;
+            int nUnknown = 0;
+            foreach (TileInSpace tile in TilesWorld)
+            {
+                switch (tile.Name)
+                {
+                    case "rectangle":
+                        nRectangle++;
+                        break;
+                    case "trapezoid":
+                        nTrapezoid++;
+                        break;
+                    case "oct_small":
+                        nOct_small++;
+                        break;
+                    case "inner_rod1":
+                        nInner_rod1++;
+                        break;
+                    case "inner_rod2":
+                        nInner_rod2++;
+                        break;
+                    case "outer_rod":
+                        nOuter_rod++;
+                        break;
+                    default:
+                        nUnknown++;
+                        break;
+                }
+            }
+            res += string.Format("Message: rectangle = {0}, trapezoid = {1}, oct_small = {2}, inner_rod1 = {3}, inner_rod2 = {4}, outer_rod = {5}, unknown = {6}\n", 
+                nRectangle, nTrapezoid, nOct_small, nInner_rod1, nInner_rod2, nOuter_rod, nUnknown);
+            // XJB DEBUD END
+
+            // XJB DEBUG BEGIN - I want to make sure I removed required number of tiles
+            int countBeforeHurting = TilesWorld.PolygonTiles.Count();
+
+            // now we can make the damage and we know all tiles belong to one component so 
+            // no need to bother with the components
+            HurtSystem(tileName, numberOfTiles);
+
+            int countAfterHurting = TilesWorld.PolygonTiles.Count();
+            if (countBeforeHurting != countAfterHurting + numberOfTiles)
+            {
+                res += string.Format("Warning: countBeforeHurting != countAfterHurting + numberOfTiles ({0} != {1} + {2})\n",
+                    countBeforeHurting, countAfterHurting, numberOfTiles);
+            }
+            else
+            {
+                res += string.Format("Message: countBeforeHurting == countAfterHurting + numberOfTiles ({0} == {1} + {2})\n",
+                    countBeforeHurting, countAfterHurting, numberOfTiles);
+            }
+            // XJB DEVUG END
+
+            // see how the systems evolves over twice as many steps as it took to initial
+            for (int i = 0; i < numberOfRecoverySteps; i++)
+            {
+                RunOneSimulationStep();
+            }
+
+            // report state after further number of steps
+            startString = string.Format("STAT>> {0},{1},{2}", runNo, 0, numberOfRecoverySteps);
+            res += CountComponents(startString);
+
+            return res;
         }
 
         /// <summary>

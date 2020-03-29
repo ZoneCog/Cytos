@@ -82,15 +82,15 @@ namespace Cytos_v2_Tests.Classes
         {
             var expectedSet = new Collection<TileInSpace> { baseTile, eastTile, southTile, topTile, tubule };
             var emptySet = new Collection<TileInSpace>();
-            CollectionAssert.AreEquivalent(expectedSet, baseTile.PushedComponent(new Vector3D(1,1,1)).ToList());
-            CollectionAssert.AreEquivalent(emptySet, baseTile.PushedComponent(new Vector3D(1, 1, 1)).ToList());
+            CollectionAssert.AreEquivalent(expectedSet, baseTile.SetAndGetPushedComponent(new Vector3D(1,1,1)).ToList());
+            CollectionAssert.AreEquivalent(emptySet, baseTile.SetAndGetPushedComponent(new Vector3D(1, 1, 1)).ToList());
             baseTile.ClearPushing();
-            CollectionAssert.AreEquivalent(expectedSet, baseTile.PushedComponent(new Vector3D(1, 1, 1)).ToList());
-            CollectionAssert.AreEquivalent(expectedSet, tubule.PushedComponent(new Vector3D(2, 2, 2)).ToList());
+            CollectionAssert.AreEquivalent(expectedSet, baseTile.SetAndGetPushedComponent(new Vector3D(1, 1, 1)).ToList());
+            CollectionAssert.AreEquivalent(expectedSet, tubule.SetAndGetPushedComponent(new Vector3D(2, 2, 2)).ToList());
 
             tubule.Connectors[0].Disconnect();
             expectedSet.Remove(tubule);
-            CollectionAssert.AreEquivalent(expectedSet, baseTile.PushedComponent(new Vector3D(2, 2, 3)).ToList());
+            CollectionAssert.AreEquivalent(expectedSet, baseTile.SetAndGetPushedComponent(new Vector3D(2, 2, 3)).ToList());
         }
 
 

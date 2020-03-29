@@ -27,6 +27,8 @@ namespace Cytos_v2_Tests.Classes
         private DeserializedObjects mSystemObjects;
         private static XDocument mSystemDescription;
         private static string _path;
+        private TileInSpace newlyCreatedTile;
+
 
         // Initialize class => load test XML documents
         [ClassInitialize]
@@ -102,14 +104,14 @@ namespace Cytos_v2_Tests.Classes
         [ExpectedExceptionWithMessage(typeof(ArgumentNullException), "Parameter \'tile\' cannot be null", true)]
         public void TestAddNullTile()
         {
-            m_tilesWorld.Add(null, null);
+            m_tilesWorld.Add(null, null, out newlyCreatedTile);
         }
 
         [TestMethod]
         [ExpectedExceptionWithMessage(typeof(ArgumentNullException), "Parameter \'freeConnector\' cannot be null", true)]
         public void TestAddNullConnector()
         {
-            m_tilesWorld.Add(m_testMSystem.Tiles["s1"], null);
+            m_tilesWorld.Add(m_testMSystem.Tiles["s1"], null, out newlyCreatedTile);
         }
 
         [TestMethod]
@@ -121,11 +123,11 @@ namespace Cytos_v2_Tests.Classes
             // TODO - I am not using the first one (and I shall) because of bug in pussing off
 
             // connect new polygon to last edge connector on first object in the world
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[0].Connectors[4]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[0].Connectors[4], out newlyCreatedTile));
             Assert.AreEqual(++count, m_tilesWorld.Count());
 
             // connect new polygon to last connector again => this time it shall fail
-            m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[0].Connectors[4]);
+            m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[0].Connectors[4], out newlyCreatedTile);
         }
 
 
@@ -142,23 +144,23 @@ namespace Cytos_v2_Tests.Classes
             int count = m_tilesWorld.Count();
 
             // try to add rod on polygon with incompatible connectors
-            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[0]));
+            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[0], out newlyCreatedTile));
             Assert.AreEqual(count, m_tilesWorld.Count()); // number of elements did not change
 
-            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[1]));
+            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[1], out newlyCreatedTile));
             Assert.AreEqual(count, m_tilesWorld.Count()); // number of elements did not change
 
-            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[2]));
+            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[2], out newlyCreatedTile));
             Assert.AreEqual(count, m_tilesWorld.Count()); // number of elements did not change
 
-            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[3]));
+            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[3], out newlyCreatedTile));
             Assert.AreEqual(count, m_tilesWorld.Count()); // number of elements did not change
 
-            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[4]));
+            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[4], out newlyCreatedTile));
             Assert.AreEqual(count, m_tilesWorld.Count()); // number of elements did not change
 
             // this time, rod gets connected to polygon's compatible connector on surface
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[5]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[5], out newlyCreatedTile));
             // there is one more object now attached in tiles world
             Assert.AreEqual(++count, m_tilesWorld.Count());
         }
@@ -170,18 +172,18 @@ namespace Cytos_v2_Tests.Classes
 
             // try to add polygon to rod with incompatible connectors
             Assert.AreEqual(count, m_tilesWorld.Count()); // number of elements did not change
-            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[2].Connectors[0]));
+            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[2].Connectors[0], out newlyCreatedTile));
 
             // try to add polygon to rod with incompatible connectors
-            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[2].Connectors[1]));
+            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[2].Connectors[1], out newlyCreatedTile));
             Assert.AreEqual(count, m_tilesWorld.Count()); // number of elements did not change
 
             // this time, polygon gets connected to rod's compatible connector 
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[2].Connectors[0]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[2].Connectors[0], out newlyCreatedTile));
             Assert.AreEqual(++count, m_tilesWorld.Count());
 
             // try to add polygon to rod with incompatible connectors
-            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[2].Connectors[1]));
+            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[2].Connectors[1], out newlyCreatedTile));
             Assert.AreEqual(count, m_tilesWorld.Count());
         }
 
@@ -193,12 +195,19 @@ namespace Cytos_v2_Tests.Classes
             Point3D originalPosPoly1 = m_tilesWorld.ToList()[1].Position;
             Point3D originalPosLine1 = m_tilesWorld.ToList()[2].Position;
 
+            // XJB DEBUG - mathSage string is there to follow what happened
+            string mathSageBefore = DumpTilesWorldToSageMath();
+
             // add object and perform health check
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[0].Connectors[0]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[0].Connectors[0], out newlyCreatedTile));
             PerformHealthCheck();
 
             // get current position of the polygon, position must be different
             Point3D newPosPoly1 = m_tilesWorld.ToList()[1].Position;
+
+            // XJB DEBUG - mathSage string is there to follow what happened
+            string mathSageAfter = DumpTilesWorldToSageMath();
+
             Assert.AreNotEqual(originalPosPoly1, newPosPoly1);
             Point3D expectedPosPoly1 = new Point3D(11.5219303466815, 14.7294308566871, 31.9967477524977);
             Assert.IsTrue(expectedPosPoly1.Equals(newPosPoly1, MSystem.Tolerance));
@@ -206,6 +215,7 @@ namespace Cytos_v2_Tests.Classes
             // get current position of the line, positions must be the same
             Point3D newPosLine1 = m_tilesWorld.ToList()[2].Position;
             Assert.AreEqual(originalPosLine1, newPosLine1);
+
         }
 
         // add new line in the middle of first polygon on its 6th connectors => result: move second polygon above the first one
@@ -217,7 +227,7 @@ namespace Cytos_v2_Tests.Classes
             Point3D originalPosLine1 = m_tilesWorld.ToList()[2].Position;
 
             // add object and perform health check
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[5]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["s1"], m_tilesWorld.ToList()[0].Connectors[5], out newlyCreatedTile));
             PerformHealthCheck();
 
             // get current position of the polygon, position must be different
@@ -239,7 +249,7 @@ namespace Cytos_v2_Tests.Classes
             Point3D originalPosLine1 = m_tilesWorld.ToList()[2].Position;
 
             // add object and perform health check
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[0].Connectors[2]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[0].Connectors[2], out newlyCreatedTile));
             PerformHealthCheck();
 
             // get current position of the line, position must be different
@@ -262,7 +272,7 @@ namespace Cytos_v2_Tests.Classes
             Point3D originalPosLine1 = m_tilesWorld.ToList()[2].Position;
 
             // add object and perform health check
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[0].Connectors[3]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[0].Connectors[3], out newlyCreatedTile));
             PerformHealthCheck();
 
             // get current position of the polygon, position must be the same
@@ -278,11 +288,11 @@ namespace Cytos_v2_Tests.Classes
         public void TestPushingComplexObject01()
         {
             // create structure on second polygon
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[0]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[1]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[2]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[3]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[4]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[0], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[1], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[2], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[3], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[4], out newlyCreatedTile));
 
             PerformHealthCheck();
 
@@ -297,7 +307,7 @@ namespace Cytos_v2_Tests.Classes
             Point3D originalPosLine1 = m_tilesWorld.ToList()[2].Position;
 
             // add object and perform health check
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[0].Connectors[0]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[0].Connectors[0], out newlyCreatedTile));
             PerformHealthCheck();
 
             // polygon we were adding to must not move
@@ -344,24 +354,31 @@ namespace Cytos_v2_Tests.Classes
         public void TestPushingComplexObject02()
         {
             // create structure on second polygon
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[0].Connectors[3]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[3].Connectors[2]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[4].Connectors[3]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[0].Connectors[3], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[3].Connectors[2], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[4].Connectors[3], out newlyCreatedTile));
             // build rest of the cell from top
             foreach (var con in m_tilesWorld.ToList()[5].Connectors)
             {
                 if (con.ConnectedTo == null && con.Name != "c3")
-                    Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], con));
+                    Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], con, out newlyCreatedTile));
             }
             PerformHealthCheck();
 
             // now we want to add another polygon to the base, this polygon will try to move our second base polygon or line
             // which cannot be moved because polygons above are connected to the base
-            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[0].Connectors[0]));
-            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[0].Connectors[1]));
-            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[0].Connectors[1]));
+            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[0].Connectors[0], out newlyCreatedTile));
+
+            // XJB DEBUG
+            //Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[0].Connectors[1]));
+
+            string mathSageBefore = DumpTilesWorldToSageMath();
+            m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[0].Connectors[1], out newlyCreatedTile);
+            string mathSageAfter = DumpTilesWorldToSageMath();
+
+            Assert.IsFalse(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[0].Connectors[1], out newlyCreatedTile));
             // this is the only edge on base polygon which is not conflicting anything
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[0].Connectors[4]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[0].Connectors[4], out newlyCreatedTile));
             PerformHealthCheck();
         }
 
@@ -371,21 +388,21 @@ namespace Cytos_v2_Tests.Classes
         public void TestPushingHalvesOfPolyhedron()
         {
             // create structure on second polygon
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[0]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[1]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[2]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[3]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[4]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[0], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[1], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[2], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[3], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[4], out newlyCreatedTile));
 
             // add second layer of tiles
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[3].Connectors.First(conn => conn.ConnectedTo == null)));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[4].Connectors.First(conn => conn.ConnectedTo == null)));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[5].Connectors.First(conn => conn.ConnectedTo == null)));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[6].Connectors.First(conn => conn.ConnectedTo == null)));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[7].Connectors.First(conn => conn.ConnectedTo == null)));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[3].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[4].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[5].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[6].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[7].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
 
             // add final top tile - complete polyhedron
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[8].Connectors.First(conn => conn.ConnectedTo == null)));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[8].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
             // check whether all adjacent edges of the top tile connected
             Assert.IsFalse(m_tilesWorld.ToList()[8].Connectors.Any(conn => conn.ConnectedTo == null));
             PerformHealthCheck();
@@ -414,7 +431,7 @@ namespace Cytos_v2_Tests.Classes
                         conn.Disconnect();
 
             // add object (tile No 14) and perform health check
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[3].Connectors.First(conn => conn.ConnectedTo == null)));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[3].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
             PerformHealthCheck();
 
             // bottom half must not change position
@@ -448,26 +465,26 @@ namespace Cytos_v2_Tests.Classes
             // Now add more tiles - complete two new cells
 
             // add upper layer of tiles to the lower polyhedron
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[4].Connectors.First(conn => conn.ConnectedTo == null)));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[5].Connectors.First(conn => conn.ConnectedTo == null)));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[6].Connectors.First(conn => conn.ConnectedTo == null)));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[7].Connectors.First(conn => conn.ConnectedTo == null)));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[4].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[5].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[6].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[7].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
 
             // An attempt to add this tile first FAILS!
             // Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[8].Connectors.First(conn => conn.ConnectedTo == null)));
 
             // add lower layer of tiles to the upper polyhedron
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[9].Connectors.First(conn => conn.ConnectedTo == null)));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[10].Connectors.First(conn => conn.ConnectedTo == null)));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[11].Connectors.First(conn => conn.ConnectedTo == null)));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[12].Connectors.First(conn => conn.ConnectedTo == null)));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[8].Connectors.First(conn => conn.ConnectedTo == null)));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[9].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[10].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[11].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[12].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[8].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
 
             // add top tile to the lower polyhedron
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[14].Connectors.First(conn => conn.ConnectedTo == null)));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[14].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
 
             // add botom tile to the upper polyhedron
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[20].Connectors.First(conn => conn.ConnectedTo == null)));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q2"], m_tilesWorld.ToList()[20].Connectors.First(conn => conn.ConnectedTo == null), out newlyCreatedTile));
         }
 
         // create two polygons on second polygon on two edges apart, then create polygon between them and check that
@@ -476,9 +493,9 @@ namespace Cytos_v2_Tests.Classes
         public void TestAdjacentConnectorsConnected()
         {
             // create structure on second polygon
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[0]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[0], out newlyCreatedTile));
             // - skip Connector[1] - this is the intention
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[2]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[2], out newlyCreatedTile));
             PerformHealthCheck();
 
             // the following connectors shall be connected on initial polygon
@@ -509,7 +526,7 @@ namespace Cytos_v2_Tests.Classes
             Assert.IsNull(foisB.Connectors[5].ConnectedTo);
 
             // now add polygon on Connector[1] => in between already added polygons
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[1]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[1], out newlyCreatedTile));
             PerformHealthCheck();
 
             // check connectors of all the polygons, adjecent polygons shall connect as well
@@ -556,11 +573,11 @@ namespace Cytos_v2_Tests.Classes
         public void TestRemoveBase()
         {
             // create structure on second polygon
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[0]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[1]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[2]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[3]));
-            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[4]));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[0], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[1], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[2], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[3], out newlyCreatedTile));
+            Assert.IsTrue(m_tilesWorld.Add(m_testMSystem.Tiles["q1"], m_tilesWorld.ToList()[1].Connectors[4], out newlyCreatedTile));
             PerformHealthCheck();
 
             int count = m_tilesWorld.Count();
@@ -681,7 +698,7 @@ namespace Cytos_v2_Tests.Classes
                 // try Add() only if rndConnector is not used yet
                 if (rndConnector.ConnectedTo == null)
                 {
-                    if (m_tilesWorld.Add(m_testMSystem.Tiles[rndSeedTileName], rndConnector))
+                    if (m_tilesWorld.Add(m_testMSystem.Tiles[rndSeedTileName], rndConnector, out newlyCreatedTile))
                     {
                         // XJB DEBUG BEGIN
                         rndNumbers += rndSeedTilePos + "," + rndTilePos + "," + rndConnectorPos + "\n";

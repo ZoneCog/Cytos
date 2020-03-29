@@ -22,7 +22,7 @@ namespace MSystemSimulationEngine.Classes
         public readonly Point3D MinCorner;
 
         /// <summary>
-        /// Corner with all minimal coordinates.
+        /// Corner with all maximal coordinates.
         /// </summary>
         public readonly Point3D MaxCorner;
 

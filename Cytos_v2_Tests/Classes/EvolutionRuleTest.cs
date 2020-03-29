@@ -16,7 +16,7 @@ namespace Cytos_v2_Tests.Classes
             Protein protein = new Protein("p1");
             List<ISimulationObject> leftSide = new List<ISimulationObject> {floatingObject, protein};
             List<ISimulationObject> rightSide = new List<ISimulationObject> {protein, floatingObject};
-            EvoMetabolicRule metabolicRule = TypeUtil.Cast<EvoMetabolicRule>(EvolutionRule.NewRule("Metabolic", 0, leftSide, rightSide));
+            EvoMetabolicRule metabolicRule = TypeUtil.Cast<EvoMetabolicRule>(EvolutionRule.NewRule("Metabolic", 0, leftSide, rightSide, 0));
 
             Assert.AreEqual(0, metabolicRule.Priority);
             Assert.AreEqual(EvolutionRule.RuleType.Metabolic, metabolicRule.Type);
@@ -43,7 +43,7 @@ namespace Cytos_v2_Tests.Classes
             FloatingObject floatingObject = new FloatingObject("a", 1, 1);
             List<ISimulationObject> leftSide = new List<ISimulationObject> { glue, glue, floatingObject, floatingObject };
             List<ISimulationObject> rightSide = new List<ISimulationObject> { glue, glue };
-            EvoNonMetabolicRule divideRule = TypeUtil.Cast<EvoNonMetabolicRule>(EvolutionRule.NewRule("Divide", 1, leftSide, rightSide));
+            EvoNonMetabolicRule divideRule = TypeUtil.Cast<EvoNonMetabolicRule>(EvolutionRule.NewRule("Divide", 1, leftSide, rightSide, 0));
 
             Assert.AreEqual(1, divideRule.Priority);
             Assert.AreEqual(EvolutionRule.RuleType.Divide, divideRule.Type);
@@ -67,7 +67,7 @@ namespace Cytos_v2_Tests.Classes
             Protein protein = new Protein("p1");
             List<ISimulationObject> leftSide = new List<ISimulationObject> { floatingObject, protein };
             List<ISimulationObject> rightSide = new List<ISimulationObject> { protein, floatingObject };
-            EvolutionRule metabolicRule = EvolutionRule.NewRule("Metabolic", 0, leftSide, rightSide);
+            EvolutionRule metabolicRule = EvolutionRule.NewRule("Metabolic", 0, leftSide, rightSide, 0);
             string expectedOutput = "Rule: a,p1 -> p1,a, type = Metabolic, priority = 0";
             Assert.AreEqual(expectedOutput, metabolicRule.ToString());
         }

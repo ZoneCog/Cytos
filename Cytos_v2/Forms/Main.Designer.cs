@@ -50,6 +50,10 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.multipleRunsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.multipleRunsprobabilisticKillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.multipleRunsV2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.multipleRunsprobabilisticKillV2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButtonAbout = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripTextBoxSearchInMSystemObjects = new System.Windows.Forms.ToolStripTextBox();
@@ -61,6 +65,7 @@
             this.buttonRun = new System.Windows.Forms.Button();
             this.buttonRestart = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.oneOffDamageTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMainPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -175,7 +180,12 @@
             this.restartSimulationToolStripMenuItem,
             this.toolStripSeparator5,
             this.multipleRunsToolStripMenuItem,
-            this.multipleRunsprobabilisticKillToolStripMenuItem});
+            this.multipleRunsprobabilisticKillToolStripMenuItem,
+            this.toolStripSeparator6,
+            this.multipleRunsV2ToolStripMenuItem,
+            this.multipleRunsprobabilisticKillV2ToolStripMenuItem,
+            this.toolStripSeparator7,
+            this.oneOffDamageTestToolStripMenuItem});
             this.toolStripDropDownRun.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownRun.Image")));
             this.toolStripDropDownRun.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownRun.Name = "toolStripDropDownRun";
@@ -240,6 +250,31 @@
             this.multipleRunsprobabilisticKillToolStripMenuItem.Text = "Multiple runs (probabilistic kill)";
             this.multipleRunsprobabilisticKillToolStripMenuItem.Click += new System.EventHandler(this.multipleRunsprobabilisticKillToolStripMenuItem_Click);
             // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(342, 6);
+            // 
+            // multipleRunsV2ToolStripMenuItem
+            // 
+            this.multipleRunsV2ToolStripMenuItem.Enabled = false;
+            this.multipleRunsV2ToolStripMenuItem.Name = "multipleRunsV2ToolStripMenuItem";
+            this.multipleRunsV2ToolStripMenuItem.Size = new System.Drawing.Size(345, 26);
+            this.multipleRunsV2ToolStripMenuItem.Text = "Multiple runs (fixed kills) V2";
+            this.multipleRunsV2ToolStripMenuItem.Click += new System.EventHandler(this.multipleRunsV2TestToolStripMenuItem_Click);
+            // 
+            // multipleRunsprobabilisticKillV2ToolStripMenuItem
+            // 
+            this.multipleRunsprobabilisticKillV2ToolStripMenuItem.Enabled = false;
+            this.multipleRunsprobabilisticKillV2ToolStripMenuItem.Name = "multipleRunsprobabilisticKillV2ToolStripMenuItem";
+            this.multipleRunsprobabilisticKillV2ToolStripMenuItem.Size = new System.Drawing.Size(345, 26);
+            this.multipleRunsprobabilisticKillV2ToolStripMenuItem.Text = "Multiple runs (probabilistic kill) V2";
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(342, 6);
+            // 
             // toolStripButtonAbout
             // 
             this.toolStripButtonAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -262,6 +297,7 @@
             // 
             this.toolStripTextBoxSearchInMSystemObjects.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripTextBoxSearchInMSystemObjects.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.toolStripTextBoxSearchInMSystemObjects.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBoxSearchInMSystemObjects.Name = "toolStripTextBoxSearchInMSystemObjects";
             this.toolStripTextBoxSearchInMSystemObjects.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.toolStripTextBoxSearchInMSystemObjects.Size = new System.Drawing.Size(100, 25);
@@ -284,7 +320,7 @@
             // 
             // richTextBoxOutput
             // 
-            this.richTextBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.richTextBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.richTextBoxOutput.Location = new System.Drawing.Point(18, 28);
             this.richTextBoxOutput.Name = "richTextBoxOutput";
@@ -294,8 +330,8 @@
             // 
             // richTextBoxMSystem
             // 
-            this.richTextBoxMSystem.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.richTextBoxMSystem.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBoxMSystem.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.richTextBoxMSystem.Location = new System.Drawing.Point(362, 28);
@@ -352,6 +388,14 @@
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Simulation loop controls";
+            // 
+            // oneOffDamageTestToolStripMenuItem
+            // 
+            this.oneOffDamageTestToolStripMenuItem.Enabled = false;
+            this.oneOffDamageTestToolStripMenuItem.Name = "oneOffDamageTestToolStripMenuItem";
+            this.oneOffDamageTestToolStripMenuItem.Size = new System.Drawing.Size(345, 26);
+            this.oneOffDamageTestToolStripMenuItem.Text = "One off damage Test";
+            this.oneOffDamageTestToolStripMenuItem.Click += new System.EventHandler(this.oneOffDamageTestToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -413,5 +457,10 @@
         private System.Windows.Forms.ToolStripMenuItem restartSimulationToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripMenuItem multipleRunsV2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem multipleRunsprobabilisticKillV2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripMenuItem oneOffDamageTestToolStripMenuItem;
     }
 }

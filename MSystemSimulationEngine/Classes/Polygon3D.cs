@@ -19,10 +19,10 @@ namespace MSystemSimulationEngine.Classes
         /// <summary>
         /// Collection of normal vectors of edges of the polygon, placed in the polygon's plane
         /// </summary>
-        private readonly ReadOnlyCollection<UnitVector3D> v_BorderNormals;
+        private readonly ReadOnlyCollection<UnitVector3D> v_EdgeNormals;
 
         /// <summary>
-        /// Collection of offsets of border planes with normal vectors "v_BorderNormals"
+        /// Collection of offsets of border planes with normal vectors "v_EdgeNormals"
         /// </summary>
         private readonly ReadOnlyCollection<double> v_D;
 
@@ -49,8 +49,14 @@ namespace MSystemSimulationEngine.Classes
         /// <summary>
         /// The centroid of vertices of the polygon.
         /// </summary>
-        public readonly Point3D Center;
-        
+        public Point3D Center { get; }
+
+        /// <summary>
+        /// Distance from center to the furthest point
+        /// </summary>
+        public double Radius { get; }
+
+
         public string Name { get; }
 
         #endregion
@@ -68,15 +74,16 @@ namespace MSystemSimulationEngine.Classes
             Plane = new Plane(this[1], this[0], this[2]);
             Normal = Plane.Normal;
             Center = Point3D.Centroid(this);
+            Radius = this.Max(point => point.DistanceTo(Center));
             Name = name;
 
             var edges = this.Select((t, i) => new Line3D(t, this[++i % Count]));
             Edges = new ReadOnlyCollection<Line3D>(edges.ToList());
 
             var borderNormals = Edges.Select(edge => Normal.CrossProduct(edge.Direction).Negate());
-            v_BorderNormals = new ReadOnlyCollection<UnitVector3D>(borderNormals.ToList());
+            v_EdgeNormals = new ReadOnlyCollection<UnitVector3D>(borderNormals.ToList());
 
-            var offsets = this.Select((t, i) => -t.ToVector3D().DotProduct(v_BorderNormals[i]));
+            var offsets = this.Select((t, i) => -t.ToVector3D().DotProduct(v_EdgeNormals[i]));
             v_D = new ReadOnlyCollection<double>(offsets.ToList());
         }
 
@@ -86,6 +93,7 @@ namespace MSystemSimulationEngine.Classes
 
         /// <summary>
         /// Checks the list of vertices, if counterclockwise then reorders them clockwise
+        /// MUST be done as computation of inside/outside points depends on it.
         /// </summary>
         /// <param name="points">List of vertices</param>
         /// <param name="name">Polygon name</param>
@@ -121,7 +129,7 @@ namespace MSystemSimulationEngine.Classes
                 throw new ArgumentException($"Polygon {name}: {e.Message}");
             }
             for (int i = 3; i < count; i++)
-                if (plane.AbsoluteDistanceTo(vertices[i]) > MSystem.Tolerance)
+                if (Math.Abs(plane.MySignedDistanceTo(vertices[i])) > MSystem.Tolerance)
                     throw new ArgumentException($"Polygon {name}: vertices do not lie in a plane");
 
             bool clockwise = true;
@@ -168,23 +176,27 @@ namespace MSystemSimulationEngine.Classes
         }
 
         /// <summary>
-        /// Returns minimal distance of a vertex of the first polytope to an edge of the second one 
-        /// in the direction of pushingVector. 
-        /// The result is bounded from above by the length of pushingVector.
+        /// Returns minimal distance of a vertex of "polytope" to an edge of this polygon in the direction of "movement".
+        /// Boundary touches are ignored.
+        /// Original position of the vertex must be outside the polygon.
+        /// The result is bounded from above by the length of "movement".
         /// </summary>
-        /// <param name="vertices1">First polytope</param>
-        /// <param name="vertices2">Second polytope</param>
-        /// <param name="pushingVector">Pushing vector of the first polytope</param>
-        private static double UnidirectionalDistance(IPolytope vertices1, IPolytope vertices2, Vector3D pushingVector)
+        /// <param name="polytope"></param>
+        /// <param name="movement"></param>
+        private double UnidirectionalDistance(IPolytope polytope, Vector3D movement)
         {
-            var distance = pushingVector.Length;
-            foreach (var point in vertices1)
-                foreach (var edge in vertices2.Edges)
+            var distance = movement.Length;
+            foreach (var point in polytope)
+                for (int i = 0; i < Edges.Count; i++)
                 {
-                    var closePoints = new Line3D(point, point + pushingVector).ClosestPointsBetween(edge, true);
-                    if (closePoints.Item1.DistanceTo(closePoints.Item2) <= MSystem.Tolerance)
-                        // The projection of "point" by pushingVector intersects "edge"
-                        distance = Math.Min(distance, point.DistanceTo(closePoints.Item1));
+                    // if the final point  of the movement lies towards inside the polygon from the edge
+                    if (v_EdgeNormals[i].DotProduct(point.ToVector3D() + movement) + v_D[i] > MSystem.Tolerance)   
+                    {
+                        var closePoints = new Line3D(point, point+movement).ClosestPointsBetween(Edges[i], true);
+                        if (closePoints.Item1.DistanceTo(closePoints.Item2) <= MSystem.Tolerance)
+                            // The projection of "point" by pushingVector intersects "edge"
+                            distance = Math.Min(distance, point.DistanceTo(closePoints.Item1));
+                    }
                 }
             return distance;
         }
@@ -195,11 +207,12 @@ namespace MSystemSimulationEngine.Classes
 
         /// <summary>
         /// Returns intersection point of this polygon with a line, or NaN if no intersection exists.
+        /// NaN is returned also if line endpoints are vertically close to (but do not intersect) the polygon plane.
         /// </summary>
         /// <param name="p1">Line startpoint.</param>
         /// <param name="p2">Line endpoint.</param>
         /// <param name="borderWidth">Intersection within borderWidth not considered.</param>
-        /// <param name="includeEndpoints">Consider also intersections in endpoints p1, p2 of the line?</param>
+        /// <param name="includeEndpoints">If false, touches at endpoints of the line not considered.</param>
         public Point3D IntersectionWith(Point3D p1, Point3D p2, double borderWidth = 0, bool includeEndpoints = true)
         {
             Point3D intersection = Plane.MyIntersectionWith(p1, p2);
@@ -219,6 +232,10 @@ namespace MSystemSimulationEngine.Classes
         /// <returns>List of intersection points.</returns>
         public HashSet<Point3D> IntersectionsWith(IPolytope polytope)
         {
+            var result = new HashSet<Point3D>(Geometry.PointComparer);
+            if (Center.DistanceTo(polytope.Center) > Radius + polytope.Radius)
+                return result;  // Optimization - quick test excluding intersection
+
             var polygon = polytope as Polygon3D;
             if (polygon != null)  
             {
@@ -231,7 +248,6 @@ namespace MSystemSimulationEngine.Classes
                         return intersections;
                 }
             }
-            var result = new HashSet<Point3D>(Geometry.PointComparer);
             if (polytope is Segment3D)
             {
                 var intersection = IntersectionWith(polytope[0], polytope[1], MSystem.Tolerance, false);
@@ -255,7 +271,7 @@ namespace MSystemSimulationEngine.Classes
         /// <param name="verticalTolerance">Tolerated distance of the point from the polygon's plane</param>
         public bool ContainsPoint(Point3D point, double borderWidth, double verticalTolerance = MSystem.Tolerance)
         {
-            if (Plane.AbsoluteDistanceTo(point) > verticalTolerance)
+            if (Math.Abs(Plane.MySignedDistanceTo(point)) > verticalTolerance)
                 return false;
 
             var pointV = point.ToVector3D();
@@ -263,7 +279,7 @@ namespace MSystemSimulationEngine.Classes
             for (int i = 0; i < Count; i++) 
             {
                 // Signed distance of point to i-th edge of the polygon (+ inside, - outside)
-                var signedDist = v_BorderNormals[i].DotProduct(pointV) + v_D[i];
+                var signedDist = v_EdgeNormals[i].DotProduct(pointV) + v_D[i];
 
                 if (borderWidth > 0 && signedDist < borderWidth || signedDist < -MSystem.Tolerance)
                     return false;
@@ -273,21 +289,17 @@ namespace MSystemSimulationEngine.Classes
 
 
         /// <summary>
-        /// Returns true if this polygon intersects a given line.
+        /// True if this polygon intersects a segment between two given points.
+        /// False returned also if points are vertically close to (but do not intersect) the polygon plane.
         /// </summary>
-        /// <param name="p1">Line startpoint.</param>
-        /// <param name="p2">Line endpoint.</param>
+        /// <param name="p1">Segment startpoint.</param>
+        /// <param name="p2">Segment endpoint.</param>
         /// <param name="borderWidth">Intersection within borderWidth not considered.</param>
-        /// <param name="includeEndpoints">Consider also intersections in endpoints p1, p2 of the line?</param>
+        /// <param name="includeEndpoints">Consider also intersections in endpoints p1, p2 of the segment?</param>
         public bool IntersectsWith(Point3D p1, Point3D p2, double borderWidth = 0, bool includeEndpoints=true)
         {
-            // Speed optimization - if both points lie on the same side of the polygon, then line does not intersect
-            var prod1 = Normal.DotProduct(p1.ToVector3D()) + Plane.D;
-            var prod2 = Normal.DotProduct(p2.ToVector3D()) + Plane.D;
-            if (prod1*prod2 > MSystem.Tolerance*100)
-                return false;
-
-            return ! IntersectionWith(p1, p2, borderWidth, includeEndpoints).IsNaN();
+            // Speed optimization - first method is a fast test excluding intersections, the second one detailed
+            return Plane.MyIntersectsWith(p1, p2) && ! IntersectionWith(p1, p2, borderWidth, includeEndpoints).IsNaN();
         }
 
 
@@ -350,32 +362,45 @@ namespace MSystemSimulationEngine.Classes
         public Vector3D PushingOf(IPolytope another, Vector3D pushingVector)
         {
             if (pushingVector.Length < MSystem.Tolerance)   // must be tested, otherwise the Polygon3D ctor may throw an exception
-                return default(Vector3D);
+                return default;
+
+            if (Center.DistanceTo(another.Center) > pushingVector.Length + Radius + another.Radius) // Quick test excluding intersection
+                return default;
+
+            /* Several cases must be considered:
+             * A "another" is Segment3D
+             * B "another" is Polygon2D
+             * B.1 "this" is pushed within its plane
+             * B.1.1 "another" is pushed within its plane, too
+             * B.1.2 "another" is NOT pushed within its plane
+             * B.2 "this" is NOT pushed within its plane
+             */
 
             if (another is Segment3D)
                 return -another.PushingOf(this, -pushingVector);
 
             // If we got here, both objects are polygons
+            Polygon3D anotherP = another as Polygon3D;
             var pushingDirection = pushingVector.Normalize();
             var distance = pushingVector.Length;
 
-            // TODO if HealthCheck test for overlapping would not pass, then replace this by test for OverlapsWith
             if (Normal.IsPerpendicularTo(pushingDirection, 1E-12D))
-                if (another.Normal.IsPerpendicularTo(pushingDirection, 1E-12D))    
-                // Both polygons are parallel and pushing "edge to edge"
+                // This polygons is pushed within its plane
+                if (anotherP.Normal.IsPerpendicularTo(pushingDirection, 1E-12D))
                 {
-                    if (Plane.AbsoluteDistanceTo(another[0]) >= MSystem.Tolerance)
-                        return default(Vector3D);       // Polygons not in the same plane => not intersecting
+                    // Both polygons are parallel and pushing "edge to edge"
+                    if (Plane.AbsoluteDistanceTo(anotherP[0]) >= MSystem.Tolerance)
+                        return default;       // Polygons not in the same plane => not intersecting
 
-                    distance = Math.Min(UnidirectionalDistance(this, another, pushingVector),
-                        UnidirectionalDistance(another, this, -pushingVector));
+                    distance = Math.Min(UnidirectionalDistance(anotherP, -pushingVector),
+                        anotherP.UnidirectionalDistance(this, pushingVector));
                     return pushingDirection.ScaleBy(pushingVector.Length - distance);
                 }
                 else
-                    // This polygon is parallel to the pushing vector, but another is not
+                    // The second polygon is NOT pushed within its plane, therefore recursion stops
                     return -another.PushingOf(this, -pushingVector);
 
-            // If we got here, this polygon is not parallel to the pushing direction
+            // If we got here, this polygon is NOT pushed within its plane
             var intersections = new HashSet<Point3D>(Geometry.PointComparer);
 
             // Get intersections of edges of "another" with projection faces of "this"
@@ -383,24 +408,24 @@ namespace MSystemSimulationEngine.Classes
             {
                 var projectionFace = new Polygon3D(new List<Point3D> { edge.StartPoint, edge.EndPoint, edge.EndPoint + pushingVector, edge.StartPoint + pushingVector },
                     Name + "-pushing projection");
-                intersections.UnionWith(projectionFace.IntersectionsWith(another));
+                intersections.UnionWith(projectionFace.IntersectionsWith(anotherP));
             }
 
             // Add intersections of "this" with vectors -pushingVector starting in vertices of "another"
-            intersections.UnionWith(another.Where(point => IntersectsWith(point, point - pushingVector, MSystem.Tolerance, false)));
+            intersections.UnionWith(anotherP.Where(point => IntersectsWith(point, point - pushingVector, MSystem.Tolerance, false)));
 
-            // Minimum distance of "this" to some of these intersection points
+            // Minimum distance of "this" to some of these intersection points in the pushing direction
+            double n = Normal.DotProduct(pushingDirection);
             foreach (var point in intersections)
             {
-                var t = Math.Abs( Plane.SignedDistanceTo(point) / Normal.DotProduct(pushingDirection));
-                distance = Math.Min(distance, t);
+                distance = Math.Min(distance, Math.Abs(Plane.SignedDistanceTo(point) / n));
             }
 
             // Length of necessary pushing
             distance = pushingVector.Length - distance;
 
-            if (Normal.IsParallelTo(another.Normal) && (distance > 0 || 
-                ((Polygon3D)another).OverlapsWith(new Polygon3D(this.Select(v => v + pushingVector), Name+" pushed"))))
+            if (Normal.IsParallelTo(anotherP.Normal) && (distance > 0 || 
+                anotherP.OverlapsWith(new Polygon3D(this.Select(v => v + pushingVector), Name+" pushed"))))
                 //    
                 // Both polygons are parallel, pushing "face to face" => minimal face distance must be ensured
                 distance += MSystem.MinFaceDist / Math.Abs(Normal.DotProduct(pushingDirection));

@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using MathNet.Numerics.Distributions;
 using MathNet.Numerics.Random;
 using MathNet.Spatial.Euclidean;
@@ -91,7 +93,7 @@ namespace MSystemSimulationEngine.Classes
             Vector3D diagonal = new Vector3D(v_CubeSize, v_CubeSize, v_CubeSize);
             return new Box3D(center - diagonal / 2, center + diagonal / 2);
         }
-        
+
         /// <summary>
         /// Gets the grid key for a given position.
         /// </summary>
@@ -130,9 +132,9 @@ namespace MSystemSimulationEngine.Classes
     /// World of all floating objects of a P system in 3D space.
     /// Split into cubic grid for performance purposes.
     /// </summary>
-    public class FloatingObjectsWorld 
+    public class FloatingObjectsWorld
     {
-    // Wrapper class: positions of floating objects in the world can be set only internally, NOT externally!
+        // Wrapper class: positions of floating objects in the world can be set only internally, NOT externally!
         private class FloatingObjectInWorld : FloatingObjectInSpace
         {
             internal FloatingObjectInWorld(FloatingObject type, Point3D position) : base(type, position) { }
@@ -151,8 +153,8 @@ namespace MSystemSimulationEngine.Classes
         /// </summary>
         private class FloatingObjectsBar
         {
-            internal readonly HashSet<FloatingObjectInWorld> OldSet = new HashSet<FloatingObjectInWorld>();
-            internal readonly HashSet<FloatingObjectInWorld> NewSet = new HashSet<FloatingObjectInWorld>();
+            internal readonly ConcurrentHashSet<FloatingObjectInWorld> OldSet = new ConcurrentHashSet<FloatingObjectInWorld>();
+            internal readonly ConcurrentHashSet<FloatingObjectInWorld> NewSet = new ConcurrentHashSet<FloatingObjectInWorld>();
         }
 
         #region Private data
@@ -251,7 +253,7 @@ namespace MSystemSimulationEngine.Classes
             v_GridKeys.SetBox(minCorner.IsLeq(maxCorner) ? new Box3D(minCorner, maxCorner) : new Box3D(null));
             return v_GridKeys;
         }
-        
+
         /// <summary>
         /// Fills the given box with a random distribution of environmental objects.
         /// </summary>
@@ -275,7 +277,7 @@ namespace MSystemSimulationEngine.Classes
             var population = v_MSystem.FloatingObjects.Values.ToDictionary(obj => obj, obj => 0);
 
             foreach (var key in KeysInBox(box))
-                foreach (var obj in v_Grid[key].OldSet.Where(fltObject => box.Contains(fltObject.Position)))
+                foreach (var obj in v_Grid[key].OldSet.GetHashSet().Where(fltObject => box.Contains(fltObject.Position)))
                     population[obj.Type]++;
 
             foreach (var member in population)
@@ -284,15 +286,20 @@ namespace MSystemSimulationEngine.Classes
         }
 
         /// <summary>
-        /// Add the new floating object to the world.
+        /// Add the new floating object to the world. MUST BE THREAD SAFE.
         /// If the object coordinates are outside the world, object is not added and false is returned.
         /// </summary>
         /// <returns>True if the object was added.</returns>
         private bool Add(FloatingObjectInWorld newObject, bool toNewSet)
         {
             ulong key = v_GridKeys.PositionToKey(newObject.Position);
-            return v_WorldBox.Contains(newObject.Position) && 
-                (toNewSet ? v_Grid[key].NewSet.Add(newObject) : v_Grid[key].OldSet.Add(newObject));
+            bool result = false;
+
+            if (v_WorldBox.Contains(newObject.Position))
+            {
+                result = (toNewSet ? v_Grid[key].NewSet : v_Grid[key].OldSet).Add(newObject);
+            }
+            return result;
         }
 
         /// <summary>
@@ -303,7 +310,7 @@ namespace MSystemSimulationEngine.Classes
             if (fltObject == null)
                 throw new ArgumentNullException($"Removed floating object cannot be null");
             var key = v_GridKeys.PositionToKey(fltObject.Position);
-            if (v_Grid.ContainsKey(key) && (v_Grid[key].OldSet.Remove(fltObject) || 
+            if (v_Grid.ContainsKey(key) && (v_Grid[key].OldSet.Remove(fltObject) ||
                           mayBeInNewSet && v_Grid[key].NewSet.Remove(fltObject))) return;
 
             throw new ArgumentException($"{fltObject} could not be removed from the world");
@@ -317,34 +324,40 @@ namespace MSystemSimulationEngine.Classes
         /// </summary>
         private void RandomMove()
         {
-            var polygons = v_tilesWorld.PolygonTiles.Select(tile => (Polygon3D) tile.Vertices).ToList();
-            foreach (var bar in v_Grid.Values)
+            var polygons = v_tilesWorld.PolygonTiles.Select(tile => (Polygon3D)tile.Vertices).ToList();
+            Parallel.ForEach(v_Grid.Values, (bar) =>
             {
+                //Create own random for each thread.
+                Random rng = new Random();
+
                 foreach (var fltObject in bar.NewSet)
                 {
                     // Optimization - environmental objects are many, they are moved, on average, every second step
-                   if (!(fltObject.Type.Concentration > 0 && Randomizer.Rng.NextBoolean()))
+                    if (!(fltObject.Type.Concentration > 0 && rng.NextBoolean()))
                     {
                         // A random vector in 3D Maxwell–Boltzmann distribution
                         var randomVector = new Vector3D(
-                            Normal.Sample(Randomizer.Rng, 0.0, 1.0), 
-                            Normal.Sample(Randomizer.Rng, 0.0, 1.0), 
-                            Normal.Sample(Randomizer.Rng, 0.0, 1.0));
+                           Normal.Sample(rng, 0.0, 1.0),
+                           Normal.Sample(rng, 0.0, 1.0),
+                           Normal.Sample(rng, 0.0, 1.0));
 
-                        Point3D newPosition = fltObject.Position + randomVector.ScaleBy(fltObject.Type.Mobility/b);
+                        Point3D newPosition = fltObject.Position + randomVector.ScaleBy(fltObject.Type.Mobility / b);
 
-                        // Trajectory to the newPosition must mot intersect any polygon
-                        // and the newPosition must not be too close to any polygon
+                        // Trajectory to the newPosition must mot intersect any polygon and the newPosition must not be too close to a polygon
+                        // If the environment is not refilled ("test tube"), then objects cannot escape from the environment
 
-                        if (!polygons.Any(polygon =>
-                                polygon.IntersectsWith(fltObject.Position, newPosition, 0, false) ||
-                                polygon.ContainsPoint(newPosition, 0, MSystem.SideDist)))
+                        if ((v_MSystem.RefillEnvironment || v_WorldBox.Contains(newPosition))
+                            && !polygons.Any(polygon =>
+                               polygon.Plane.MyIntersectsWith(fltObject.Position, newPosition) &&
+                               (!polygon.IntersectionWith(fltObject.Position, newPosition, 0, false).IsNaN() ||
+                               polygon.ContainsPoint(newPosition, 0, MSystem.SideDist))))
                             fltObject.Position = newPosition;
                     }
-                    Add(fltObject, false); // Adding to OldSet
+                    Add(fltObject, false); // Adding to OldSet, MUST BE THREAD-SAFE
                 }
                 bar.NewSet.Clear();
             }
+            );
         }
 
         /// <summary>
@@ -433,10 +446,10 @@ namespace MSystemSimulationEngine.Classes
 
         /// <summary>
         /// Expands the world so that it includes the box given as a parameter plus the boundary.
-        /// Populate the newly added space with environmental floating objects.
         /// </summary>
         /// <param name="newBox">A box which must fit into the expanded world.</param>
-        public void ExpandWith(Box3D newBox)
+        /// <param name="fillFloatingObjects">Populate the newly added space with environmental floating objects?</param>
+        public void ExpandWith(Box3D newBox, bool fillFloatingObjects = true)
         {
             // Add a boundaryx
             newBox = new Box3D(newBox.MinCorner - v_BoundaryVector, newBox.MaxCorner + v_BoundaryVector);
@@ -450,7 +463,8 @@ namespace MSystemSimulationEngine.Classes
                     if (!v_Grid.ContainsKey(key))
                     {
                         v_Grid[key] = new FloatingObjectsBar();
-                        InitialFill(v_GridKeys.KeyToBox(key));
+                        if (fillFloatingObjects)
+                            InitialFill(v_GridKeys.KeyToBox(key));
                     }
             }
         }
@@ -486,7 +500,7 @@ namespace MSystemSimulationEngine.Classes
         public FloatingObjectsSet GetNearObjects(ConnectorOnTileInSpace connector, NamedMultiset targetMultiset)
         {
             FloatingObjectsSet objectsSet = new FloatingObjectsSet();
-            
+
             foreach (var position in connector.Positions)
                 objectsSet.UnionWith(GetNearObjects(connector.SidePoint(position), targetMultiset));
             return objectsSet;
@@ -503,9 +517,9 @@ namespace MSystemSimulationEngine.Classes
 
             foreach (var key in KeysInBox(new Box3D(basePolygon.Union(topPolygon))))
             {
-                insideObjects.UnionWith(v_Grid[key].OldSet.Where(fltObject => 
+                insideObjects.UnionWith(v_Grid[key].OldSet.GetHashSet().Where(fltObject =>
                     basePolygon.IntersectsWith(fltObject.Position, fltObject.Position - vector)));
-                insideObjects.UnionWith(v_Grid[key].NewSet.Where(fltObject =>
+                insideObjects.UnionWith(v_Grid[key].NewSet.GetHashSet().Where(fltObject =>
                     basePolygon.IntersectsWith(fltObject.Position, fltObject.Position - vector)));
             }
             return insideObjects;
@@ -574,7 +588,8 @@ namespace MSystemSimulationEngine.Classes
                 }
             if (!freeze)
                 RandomMove();       // Moves all objects to OldSet, clears newSet
-            RefillBoundary();
+            if (v_MSystem.RefillEnvironment)
+                RefillBoundary();
         }
 
 
@@ -587,8 +602,8 @@ namespace MSystemSimulationEngine.Classes
             FloatingObjectsSet allFltObjects = new FloatingObjectsSet();
             foreach (var bar in v_Grid.Values)
             {
-                allFltObjects.UnionWith(bar.OldSet);
-                allFltObjects.UnionWith(bar.NewSet);
+                allFltObjects.UnionWith(bar.OldSet.GetHashSet());
+                allFltObjects.UnionWith(bar.NewSet.GetHashSet());
             }
             return allFltObjects;
         }

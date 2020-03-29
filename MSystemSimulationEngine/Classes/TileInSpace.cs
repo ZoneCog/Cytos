@@ -73,9 +73,13 @@ namespace MSystemSimulationEngine.Classes
         public Quaternion Quaternion { get; private set; } = Quaternion.One;
 
         /// <summary>
-        /// Vector by which this object has to be pushed in one simulation step.
+        /// Vector by which this object has to be pushed in one simulation step. Too small vectors are ignored - prevent runtiome erros.
         /// </summary>
-        public Vector3D PushingVector { get; private set; }
+        public Vector3D PushingVector {
+            get { return _pushingVector; }
+            private set { _pushingVector = value.Length <= float.Epsilon ? default : value; }
+        }
+        private Vector3D _pushingVector;
 
         /// <summary>
         /// State of the tile.
@@ -91,6 +95,16 @@ namespace MSystemSimulationEngine.Classes
         /// Holds flag about color change.
         /// </summary>
         public bool ColorWasChanged;
+
+        /// <summary>
+        /// Defines whether tile is usable in rules or locked for changes.
+        /// </summary>
+        public bool IsLocked;
+
+        /// <summary>
+        /// Step in which the tile will be unlocked.
+        /// </summary>
+        public uint ReadyAtStep;
 
         /// <summary>
         /// Enum holding possible state of the object.
@@ -255,9 +269,9 @@ namespace MSystemSimulationEngine.Classes
         /// and all its members have set PushingVector = pushingVector as a SIDE EFFECT.
         /// Empty set is returned otherwise.
         /// </summary>
-        public HashSet<TileInSpace> PushedComponent(Vector3D pushingVector)
+        public HashSet<TileInSpace> SetAndGetPushedComponent(Vector3D pushingVector)
         {
-            if (pushingVector.Length <= this.PushingVector.Length)
+            if (pushingVector.Length <= Math.Max(this.PushingVector.Length, float.Epsilon))
              // Component is already pushed so no new pushing is needed
                return new HashSet<TileInSpace>();
 
@@ -273,7 +287,7 @@ namespace MSystemSimulationEngine.Classes
         public void ClearPushing()
         {
             xpushingVector = PushingVector;
-            PushingVector = default(Vector3D);
+            PushingVector = default;
         }
 
         /// <summary>
@@ -310,8 +324,9 @@ namespace MSystemSimulationEngine.Classes
            return Vertices.PushingOf(another.Vertices, PushingVector);
         }
 
+        
         /// <returns>
-        /// True if an intersection of this and another objects exists.
+        /// True if an intersection of this and another tile exists.
         /// </returns>
         public bool IntersectsWith(TileInSpace another)
         {
@@ -320,7 +335,7 @@ namespace MSystemSimulationEngine.Classes
 
 
         /// <returns>
-        /// True if this and another object are both polygons in the same plane and they overlap.
+        /// True if this and another tile are both polygons in the same plane and they overlap.
         /// </returns>
         public bool OverlapsWith(TileInSpace another)
         {
@@ -328,6 +343,15 @@ namespace MSystemSimulationEngine.Classes
             var p2 = another.Vertices as Polygon3D;
             return p1 != null && p2 != null && p1.OverlapsWith(p2);
         }
+
+        /// <returns>
+        /// True if this tile intersects or overlaps another tile. Optimized.
+        /// </returns>
+        public bool CollidesWith(TileInSpace another)
+        {
+            return Vertices.IntersectionsWith(another.Vertices).Any();
+        }
+
 
         /// <summary>
         /// Gives the reference point close to a given position around which we search for / add / remove floating objects

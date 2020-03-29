@@ -85,7 +85,8 @@ namespace Cytos_v2_Tests.Classes
         {
             var baseTile = _testSimulator.TestTilesWorld.First();
             var tubule = _testMSystem.Tiles["s1"];
-            _testSimulator.TestTilesWorld.Add(tubule, baseTile.Connectors[5]);
+            TileInSpace newlyCreatedTile;
+            _testSimulator.TestTilesWorld.Add(tubule, baseTile.Connectors[5], out newlyCreatedTile);
             var verticalTubule = _testSimulator.TestTilesWorld.First(obj => obj.Name == "s1");
 
             Assert.IsFalse(_testSimulator.ApplyDestructionRules());
@@ -112,7 +113,8 @@ namespace Cytos_v2_Tests.Classes
         {
             var baseTile = _testSimulator.TestTilesWorld.First();
             var tubule = _testMSystem.Tiles["s1"];
-            _testSimulator.TestTilesWorld.Add(tubule, baseTile.Connectors[5]);
+            TileInSpace newlyCreatedTile;
+            _testSimulator.TestTilesWorld.Add(tubule, baseTile.Connectors[5], out newlyCreatedTile);
             var verticalTubule = _testSimulator.TestTilesWorld.Last(obj => obj.Name == "s1");
 
             Assert.AreEqual(baseTile.Connectors[5], verticalTubule.Connectors[0].ConnectedTo);
@@ -164,7 +166,8 @@ namespace Cytos_v2_Tests.Classes
         {
             var baseTile = _testSimulator.TestTilesWorld.First();
             var tubule = _testMSystem.Tiles["s1"];
-            _testSimulator.TestTilesWorld.Add(tubule, baseTile.Connectors[5]);
+            TileInSpace newlyCreatedTile;
+            _testSimulator.TestTilesWorld.Add(tubule, baseTile.Connectors[5], out newlyCreatedTile);
 
             TileInSpace[] tilesInSpace = _testSimulator.TestTilesWorld.ToArray();
 
