@@ -905,10 +905,18 @@ namespace Cytos_v2.Forms
         {
             // get test parameters from user
             InputBox inputBox = new InputBox("One Off Damage Test", "OK",
-                new List<string> { "Number of runs", "Tile name to remove (empty if it does not matter)", "Number of tiles to remove", "Number of recovery steps" },
-                new List<Regexp.Check> { Regexp.Check.NumberWithoutZero, Regexp.Check.Skip, Regexp.Check.NumberWithoutZero, Regexp.Check.NumberWithoutZero });
+                new List<string> { "Number of runs", 
+                                   "Tile name to remove (empty if it does not matter)", 
+                                   "Number of tiles to remove", 
+                                   "Remove only Polygon3D tiles (Y/N) ?",
+                                   "Number of recovery steps" },
+                new List<Regexp.Check> { Regexp.Check.NumberWithoutZero, 
+                                         Regexp.Check.Skip, 
+                                         Regexp.Check.NumberWithoutZero, 
+                                         Regexp.Check.String,
+                                         Regexp.Check.NumberWithoutZero });
             inputBox.ShowDialog();
-            if (inputBox.OutputTexts.Count == 4)
+            if (inputBox.OutputTexts.Count == 5)
             {
                 // get number of runs
                 int numberOfRuns = int.Parse(inputBox.OutputTexts[0]);
@@ -916,10 +924,17 @@ namespace Cytos_v2.Forms
                 string tileName = inputBox.OutputTexts[1];
                 // number of tiles to remove
                 int numberOfTiles = int.Parse(inputBox.OutputTexts[2]);
+                // do we want to remove only Pologon3D tiles
+                if (inputBox.OutputTexts[3] != "Y" && inputBox.OutputTexts[3] != "N")
+                {
+                    MessageBox.Show("Invalis selection for \"Remove only Polygon3D tiles(Y/N) ?\". Allowed values are Y or N.");
+                    return;
+                }
+                bool onlyPologon3DTiles = inputBox.OutputTexts[3] == "Y";
                 // number of further steps to follow after the demage
-                int numberOfRecoverySteps = int.Parse(inputBox.OutputTexts[3]);
+                int numberOfRecoverySteps = int.Parse(inputBox.OutputTexts[4]);
                 // run the test
-                RunOneOffDamageTest(numberOfRuns, tileName, numberOfTiles, numberOfRecoverySteps);
+                RunOneOffDamageTest(numberOfRuns, tileName, numberOfTiles, onlyPologon3DTiles, numberOfRecoverySteps);
             }
 
         }
@@ -930,8 +945,9 @@ namespace Cytos_v2.Forms
         /// <param name="numberOfRuns">Number of runs (experiments) to perform.</param>
         /// <param name="tileName">Name of the targeted tile, empty string means any randomly chosen tile.</param>
         /// <param name="numberOfTiles">Number of tiles to remove.</param>
+        /// <param name="onlyPologon3DTiles">If TRUE then only tiles of type Pologon3D type are being removed</param>
         /// <param name="numberOfRecoverySteps">Number of system iterations given the system to recover.</param>
-        private void RunOneOffDamageTest(int numberOfRuns, string tileName, int numberOfTiles, int numberOfRecoverySteps)
+        private void RunOneOffDamageTest(int numberOfRuns, string tileName, int numberOfTiles, bool onlyPologon3DTiles, int numberOfRecoverySteps)
         {
             // ReSharper disable once UnusedVariable
             using (WaitCursor cursor = new WaitCursor())
@@ -962,7 +978,7 @@ namespace Cytos_v2.Forms
                     // do one run
                     try
                     {
-                        string res = simulator.RunSimulationOneOffDamage(i+1, tileName, numberOfTiles, numberOfRecoverySteps);
+                        string res = simulator.RunSimulationOneOffDamage(i+1, tileName, numberOfTiles, onlyPologon3DTiles, numberOfRecoverySteps);
                         VisualizeLogging.LogMessageAndVisualize(res);
                     }
                     catch (Exception e)

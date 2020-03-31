@@ -599,32 +599,57 @@ namespace MSystemSimulationEngine.Classes
         }
 
         /// <summary>
+        /// Try to return tile at a specific position. Tile name and type match is performed before removal.
+        /// </summary>
+        /// <param name="position">Position of the tile in TilesWorld</param>
+        /// <param name="tileName">Tile name to be matched, empty string always generates match.</param>
+        /// <param name="onlyPologon3DTiles">Check whether tile is of Pologon3D type.</param>
+        /// <returns></returns>
+        private bool HurtSystemTryToRemoveTile(int position, string tileName, bool onlyPologon3DTiles)
+        {
+            // get the tile
+            TileInSpace tile = TilesWorld.ElementAt(position);
+            // empty name always generates name match
+            if (tileName == "" || tile.Name == tileName)
+            {
+                // do we want to remove only Pologon3D tiles?
+                if (onlyPologon3DTiles)
+                {
+                    if (tile.Vertices is Polygon3D)
+                    {
+                        TilesWorld.Remove(tile);
+                        return true;
+                    }
+                }
+                else
+                {
+                    TilesWorld.Remove(tile);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Hurts system by removing randomly numberOfKills of type tileName. If tileName is empty string then we do not care about the type of the object
         /// </summary>
         /// <param name="tileName">Name of the tile.</param>
         /// <param name="numberOfKills">Number of object to be hurt.</param>
-        private void HurtSystem(string tileName, int numberOfKills)
+        /// <param name="onlyPologon3DTiles">If TRUE then only Polygon3D tiles will be removed, otherwise any type including rods.</param>
+        private void HurtSystem(string tileName, int numberOfKills, bool onlyPologon3DTiles = false)
         {
             for (int i = 0; i < numberOfKills; i++)
             {
                 // always use global randomizer
                 int randPosition = Randomizer.Next(TilesWorld.Count());
 
-                // we do not care about type of the object
-                if (tileName == "")
-                {
-                    TilesWorld.Remove(TilesWorld.ElementAt(randPosition));
-                    continue;
-                }
-
+                // iterate over the collection try to find first available tile for removal
                 bool removed = false;
                 // try to find object from random position going forward
                 for (int j = randPosition; j < TilesWorld.Count(); j++)
                 {
-                    TileInSpace tile = TilesWorld.ElementAt(j);
-                    if (tile.Name == tileName)
+                    if (HurtSystemTryToRemoveTile(j, tileName, onlyPologon3DTiles))
                     {
-                        TilesWorld.Remove(tile);
                         removed = true;
                         break;
                     }
@@ -634,10 +659,8 @@ namespace MSystemSimulationEngine.Classes
                 {
                     for (int j = randPosition - 1; j >= 0; j--)
                     {
-                        TileInSpace tile = TilesWorld.ElementAt(j);
-                        if (tile.Name == tileName)
+                        if (HurtSystemTryToRemoveTile(j, tileName, onlyPologon3DTiles))
                         {
-                            TilesWorld.Remove(tile);
                             removed = true;
                             break;
                         }
@@ -987,14 +1010,61 @@ namespace MSystemSimulationEngine.Classes
         }
 
         /// <summary>
+        /// This is helper procedure which shall be made more general but I need this quick for now.
+        /// </summary>
+        /// <returns></returns>
+        private string ReportTileNumbers()
+        {
+            // I may want to put this into generic procedure to count components
+            // and make it flexible by counting tiles in generic way without hardcoding names
+            int nRectangle = 0;
+            int nTrapezoid = 0;
+            int nOct_small = 0;
+            int nInner_rod1 = 0;
+            int nInner_rod2 = 0;
+            int nOuter_rod = 0;
+            int nUnknown = 0;
+            foreach (TileInSpace tile in TilesWorld)
+            {
+                switch (tile.Name)
+                {
+                    case "rectangle":
+                        nRectangle++;
+                        break;
+                    case "trapezoid":
+                        nTrapezoid++;
+                        break;
+                    case "oct_small":
+                        nOct_small++;
+                        break;
+                    case "inner_rod1":
+                        nInner_rod1++;
+                        break;
+                    case "inner_rod2":
+                        nInner_rod2++;
+                        break;
+                    case "outer_rod":
+                        nOuter_rod++;
+                        break;
+                    default:
+                        nUnknown++;
+                        break;
+                }
+            }
+            return string.Format("Message: rectangle = {0}, trapezoid = {1}, oct_small = {2}, inner_rod1 = {3}, inner_rod2 = {4}, outer_rod = {5}, unknown = {6}\n",
+                nRectangle, nTrapezoid, nOct_small, nInner_rod1, nInner_rod2, nOuter_rod, nUnknown);
+        }
+
+        /// <summary>
         /// Run one simulation for One Off damage test.
         /// </summary>
         /// <param name="runNo">Number of the current run to be used for reporting purposes.</param>
         /// <param name="tileName">Name of the targeted tile, empty string means any randomly chosen tile.</param>
         /// <param name="numberOfTiles">Number of tiles to remove.</param>
+        /// <param name="onlyPologon3DTiles">If TRUE then only tiles of type Pologon3D type are being removed</param>
         /// <param name="numberOfRecoverySteps">Number of system iterations given the system to recover.</param>
         /// <returns></returns>
-        public string RunSimulationOneOffDamage(int runNo, string tileName, int numberOfTiles, int numberOfRecoverySteps)
+        public string RunSimulationOneOffDamage(int runNo, string tileName, int numberOfTiles, bool onlyPologon3DTiles, int numberOfRecoverySteps)
         {
             int initialNumberOfSteps = 0;
             // first, we want to let the system grow until there are two comlete cells
@@ -1057,56 +1127,14 @@ namespace MSystemSimulationEngine.Classes
             string startString = string.Format("STAT>> {0},{1},{2}", runNo, initialNumberOfSteps, 0);
             string res = CountComponents(startString);
 
-            // XJB DEBUG BEGIN
-            // What is left in the TilesWorld ?
-            // I may want to put this into generic procedure to count components
-            // and make it flexible by counting tiles in generic way without hardcoding names
-            int nRectangle = 0;
-            int nTrapezoid = 0;
-            int nOct_small = 0;
-            int nInner_rod1 = 0;
-            int nInner_rod2 = 0;
-            int nOuter_rod = 0;
-            int nUnknown = 0;
-            foreach (TileInSpace tile in TilesWorld)
-            {
-                switch (tile.Name)
-                {
-                    case "rectangle":
-                        nRectangle++;
-                        break;
-                    case "trapezoid":
-                        nTrapezoid++;
-                        break;
-                    case "oct_small":
-                        nOct_small++;
-                        break;
-                    case "inner_rod1":
-                        nInner_rod1++;
-                        break;
-                    case "inner_rod2":
-                        nInner_rod2++;
-                        break;
-                    case "outer_rod":
-                        nOuter_rod++;
-                        break;
-                    default:
-                        nUnknown++;
-                        break;
-                }
-            }
-            res += string.Format("Message: rectangle = {0}, trapezoid = {1}, oct_small = {2}, inner_rod1 = {3}, inner_rod2 = {4}, outer_rod = {5}, unknown = {6}\n", 
-                nRectangle, nTrapezoid, nOct_small, nInner_rod1, nInner_rod2, nOuter_rod, nUnknown);
-            // XJB DEBUD END
-
             // XJB DEBUG BEGIN - I want to make sure I removed required number of tiles
-            int countBeforeHurting = TilesWorld.PolygonTiles.Count();
-
+            res += ReportTileNumbers();
+            int countBeforeHurting = onlyPologon3DTiles ? TilesWorld.PolygonTiles.Count() : TilesWorld.Count();
             // now we can make the damage and we know all tiles belong to one component so 
             // no need to bother with the components
-            HurtSystem(tileName, numberOfTiles);
-
-            int countAfterHurting = TilesWorld.PolygonTiles.Count();
+            HurtSystem(tileName, numberOfTiles, onlyPologon3DTiles);
+            res += ReportTileNumbers();
+            int countAfterHurting = onlyPologon3DTiles ? TilesWorld.PolygonTiles.Count() : TilesWorld.Count();
             if (countBeforeHurting != countAfterHurting + numberOfTiles)
             {
                 res += string.Format("Warning: countBeforeHurting != countAfterHurting + numberOfTiles ({0} != {1} + {2})\n",
@@ -1117,7 +1145,7 @@ namespace MSystemSimulationEngine.Classes
                 res += string.Format("Message: countBeforeHurting == countAfterHurting + numberOfTiles ({0} == {1} + {2})\n",
                     countBeforeHurting, countAfterHurting, numberOfTiles);
             }
-            // XJB DEVUG END
+            // XJB DEBUG END
 
             // see how the systems evolves over twice as many steps as it took to initial
             for (int i = 0; i < numberOfRecoverySteps; i++)
