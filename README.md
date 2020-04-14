@@ -8,4 +8,13 @@ As computer simulations play a crucial tool in study and applications of morphog
 
 M systems simulator called Cytos is divided into separated modules which cooperate to produce simulation results. The goal of this motion is to make the dynamics of M systems more likely to reproduce macro-properties observed in actual phenomena being modeled, while preserving their computational feasibility.
 A modular architecture has been chosen for simpler development and maintenanc. Cytos consists of two main modules, namely the simulation engine and the visualization module. The simulation engine is built as a standalone Microsoft Windows DLL with a friendly and well described API. 
-All modules are covered in a single application with a simple user interface called Cytos. The package affords full functionality needed for a variety of experiments since it is intended to be a universal simulation tool for M systems, as given by their definition. All components (modules) are written in C# and .NET 4.6.1 
+All modules are covered in a single application with a simple user interface called Cytos. The package affords full functionality needed for a variety of experiments since it is intended to be a universal simulation tool for M systems, as given by their definition. All components (modules) are written in C# and .NET 4.6.1
+
+## Simulation examples
+### Boxy hallows - simple box division inspired by "Duplication spell" from Harry Potter
+![Boxy hallows](http://mmaverikk.borec.cz/images/Cytos/BoxyHallows.jpg)
+### Cytoskeleton - controlled cell division
+![Cytoskeleton growth](http://mmaverikk.borec.cz/images/Cytos/Cytoskeleton.jpg)
+### Septum - Simulation of growth of prokaryotic cell without nuclei
+![Septum](http://mmaverikk.borec.cz/images/Cytos/Septum.jpg)
+
