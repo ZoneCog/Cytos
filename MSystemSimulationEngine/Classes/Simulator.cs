@@ -1066,6 +1066,9 @@ namespace MSystemSimulationEngine.Classes
         /// <returns></returns>
         public string RunSimulationOneOffDamage(int runNo, string tileName, int numberOfTiles, bool onlyPologon3DTiles, int numberOfRecoverySteps)
         {
+            string startString = "";
+            string res = "";
+
             int initialNumberOfSteps = 0;
             // first, we want to let the system grow until there are two comlete cells
             bool twoCells = false;
@@ -1074,6 +1077,10 @@ namespace MSystemSimulationEngine.Classes
                 // run one simulation step
                 RunOneSimulationStep();
                 initialNumberOfSteps++;
+
+                // report state of the system after initial number of steps
+                startString = string.Format("STAT>> {0},{1},{2}", runNo, initialNumberOfSteps, 0);
+                res += CountComponents(startString);
 
                 int firstComponentCount  = 0;
                 int secondComponentCount = 0;
@@ -1123,10 +1130,6 @@ namespace MSystemSimulationEngine.Classes
                 }
             }
 
-            // report state of the system after initial number of steps
-            string startString = string.Format("STAT>> {0},{1},{2}", runNo, initialNumberOfSteps, 0);
-            string res = CountComponents(startString);
-
             // XJB DEBUG BEGIN - I want to make sure I removed required number of tiles
             res += ReportTileNumbers();
             int countBeforeHurting = onlyPologon3DTiles ? TilesWorld.PolygonTiles.Count() : TilesWorld.Count();
@@ -1150,12 +1153,12 @@ namespace MSystemSimulationEngine.Classes
             // see how the systems evolves over twice as many steps as it took to initial
             for (int i = 0; i < numberOfRecoverySteps; i++)
             {
+                // perform one simulation step
                 RunOneSimulationStep();
+                // report state for every further stpe
+                startString = string.Format("STAT>> {0},{1},{2}", runNo, 0, i+1);
+                res += CountComponents(startString);
             }
-
-            // report state after further number of steps
-            startString = string.Format("STAT>> {0},{1},{2}", runNo, 0, numberOfRecoverySteps);
-            res += CountComponents(startString);
 
             return res;
         }
