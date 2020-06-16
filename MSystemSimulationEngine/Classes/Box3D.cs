@@ -9,8 +9,8 @@ using SharedComponents.Tools;
 namespace MSystemSimulationEngine.Classes
 {
     /// <summary>
-    /// 3D box with edges parallel to coordinate axes
-    /// Not a struct as it sets its private properties in some impure methods
+    /// 3D box with edges parallel to coordinate axes.
+    /// Not a struct as it sets its private properties in some impure methods.
     ///  </summary>
     public struct Box3D
     {

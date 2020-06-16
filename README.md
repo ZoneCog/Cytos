@@ -7,5 +7,19 @@ Mathematically, M systems rely on basic principles of membrane computing and sel
 As computer simulations play a crucial tool in study and applications of morphogenetics, we have developed a software package to implement M systems in silico. It consists of two modules, a simulation engine and a visualizing tool based on the Unity game engine. Due to the key role of geometry and self-assembly, we were unable to use known P systems modelling libraries, such as the P-Lingua. 
 
 M systems simulator called Cytos is divided into separated modules which cooperate to produce simulation results. The goal of this motion is to make the dynamics of M systems more likely to reproduce macro-properties observed in actual phenomena being modeled, while preserving their computational feasibility.
-A modular architecture has been chosen for simpler development and maintenanc. Cytos consists of two main modules, namely the simulation engine and the visualization module. The simulation engine is built as a standalone Microsoft Windows DLL with a friendly and well described API. 
+A modular architecture has been chosen for simpler development and maintenance. Cytos consists of two main modules, namely the simulation engine and the visualization module. The simulation engine is built as a standalone Microsoft Windows DLL with a friendly and well described interface. 
 All modules are covered in a single application with a simple user interface called Cytos. The package affords full functionality needed for a variety of experiments since it is intended to be a universal simulation tool for M systems, as given by their definition. All components (modules) are written in C# and .NET 4.6.1 
+
+<b>For further informations see <a href="https://github.com/mmaverikk/Cytos/wiki">Wiki page</a>.</b>
+
+## Simulation examples
+
+### Boxy hallows - simple box division inspired by "Duplication spell" from Harry Potter
+<img src="http://mmaverikk.borec.cz/images/Cytos/BoxyHallows.jpg" alt="Boxy hallows">
+
+### Cytoskeleton - controlled cell division
+<img src="http://mmaverikk.borec.cz/images/Cytos/Cytoskeleton.jpg" alt="Cytoskeleton growth">
+
+### Septum - Simulation of growth of prokaryotic cell without nuclei
+<img src="http://mmaverikk.borec.cz/images/Cytos/Septum.jpg" alt="Septum">
+
