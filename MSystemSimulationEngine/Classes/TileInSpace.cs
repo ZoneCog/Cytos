@@ -190,7 +190,7 @@ namespace MSystemSimulationEngine.Classes
 
 
         /// <summary>
-        // Moving and rotating the object including positions of vertices, connectors, proteins.
+        /// Moving and rotating the object including positions of vertices, connectors, proteins.
         /// </summary>
         /// <param name="rotation">Rotation quaternion.</param>
         /// <param name="vector">Moving vector.</param>

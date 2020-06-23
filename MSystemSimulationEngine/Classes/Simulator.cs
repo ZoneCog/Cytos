@@ -610,7 +610,7 @@ namespace MSystemSimulationEngine.Classes
         /// <param name="movementMaxValue">Max value of push in any direction.</param>
         private void RandomlyMoveTiles(double movementMaxValue)
         {
-            var tilesToBeMoved = TilesWorld.GetCopyOfTilesInWorld();
+            var tilesToBeMoved = TilesWorld.ToList();
 
             while (tilesToBeMoved.Any())
             {
@@ -621,7 +621,8 @@ namespace MSystemSimulationEngine.Classes
 
                 var component = tilesToBeMoved.First().SetAndGetPushedComponent(pushingVector);
 
-                tilesToBeMoved.ExceptWith(component);
+                var tilesWithoutComponent = tilesToBeMoved.Except(component);
+                tilesToBeMoved = tilesWithoutComponent.ToList();
 
                 var validMovement = true;
                 foreach (var tileInComponent in component)

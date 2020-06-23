@@ -499,6 +499,12 @@ namespace MSystemSimulationEngine.Classes
 
         }
 
+        /// <summary>
+        /// Gets copy of tiles in space.
+        /// </summary>
+        /// <returns>
+        /// Hashset of tiles in space.
+        /// </returns>
         public HashSet<TileInSpace> GetCopyOfTilesInWorld()
         {
             TileInSpace[] copyOfTiles = new TileInSpace[v_TileSet.Count];
