@@ -499,6 +499,14 @@ namespace MSystemSimulationEngine.Classes
 
         }
 
+        public HashSet<TileInSpace> GetCopyOfTilesInWorld()
+        {
+            TileInSpace[] copyOfTiles = new TileInSpace[v_TileSet.Count];
+            v_TileSet.CopyTo(copyOfTiles);
+
+            return new HashSet<TileInSpace>(copyOfTiles);
+        }
+
         /// <summary>
         /// Override of ToString() method.
         /// </summary>

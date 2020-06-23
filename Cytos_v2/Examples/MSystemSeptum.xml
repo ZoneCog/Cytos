@@ -388,6 +388,7 @@
     </initialObjects>
     <glueRadius value="0.001"/>
     <pushingCoef value="2.01"/>
+	<randomMovement value ="0.0"/>
   </tiling>
   <Msystem>
     <floatingObjects>

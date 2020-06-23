@@ -64,6 +64,8 @@ namespace MSystemSimulationEngine.Classes.Xml
         /// </summary>
         public double GlueRadius { get; }
 
+        public double TilingRandomMovement { get; }
+
         /// <summary>
         /// List of glue relation objects.
         /// </summary>
@@ -134,7 +136,8 @@ namespace MSystemSimulationEngine.Classes.Xml
                 throw new InvalidOperationException($"Pushing coefficient must be at least 1.");
             RandomizeConnectors = GetBool(rootOfTilingDoc, "randomizeConnectors", true);
 
-            GlueRadius = GetDouble(rootOfTilingDoc, "glueRadius", 0.1);  
+            GlueRadius = GetDouble(rootOfTilingDoc, "glueRadius", 0.1);
+            TilingRandomMovement = GetDouble(rootOfTilingDoc, "randomMovement", 0);
 
             DeserializeFloatingObjects(rootOfMSystemDoc.GetElements("floatingObjects/floatingObject"));
             RefillEnvironment = GetBool(rootOfMSystemDoc, "refillEnvironment", true);

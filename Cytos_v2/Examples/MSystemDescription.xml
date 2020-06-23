@@ -422,6 +422,7 @@ Note:
       </initialObject>
     </initialObjects>
     <glueRadius value="0.1"/>
+    <randomMovement value ="0.0"/>
   </tiling>
   <Msystem>
     <floatingObjects>

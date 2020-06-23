@@ -52,6 +52,11 @@ namespace MSystemSimulationEngine.Classes
         public readonly double GlueRadius;
 
         /// <summary>
+        /// Defines random movement of tiles during simulation.
+        /// </summary>
+        public readonly double TilingRandomMovement;
+
+        /// <summary>
         /// Maximum mobility among floating objects in the M system.
         /// </summary>
         public readonly double Mobility = 1;
@@ -163,6 +168,7 @@ namespace MSystemSimulationEngine.Classes
             // New copies of seed tiles must be created here!
             SeedTiles = mSystemObjects.SeedTiles.Select(tile => new TileInSpace((Tile)tile, tile.Position, tile.Quaternion)).ToList();
             GlueRadius = mSystemObjects.GlueRadius;
+            TilingRandomMovement = mSystemObjects.TilingRandomMovement;
             Tau = mSystemObjects.Tau;
             Nu0 = mSystemObjects.Nu0;
             PushingCoef = mSystemObjects.PushingCoef;
@@ -350,6 +356,8 @@ namespace MSystemSimulationEngine.Classes
             builder.AppendLine(string.Format("\nGlue relation:\n{0}", GlueRelation));
 
             builder.AppendLine($"\nGlue radius: {GlueRadius}");
+            builder.AppendLine($"\nTiling random movement: {TilingRandomMovement}");
+
 
             builder.AppendLine("\nM System:\n");
 

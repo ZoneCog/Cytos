@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MathNet.Numerics.Distributions;
 
 namespace SharedComponents.Tools
 {
@@ -97,6 +98,19 @@ namespace SharedComponents.Tools
         {
             return Rng.Next(maxValue);
         }
+
+        /// <summary>
+        /// Gets double valued based on normal distribution with maximal value.
+        /// </summary>
+        /// <param name="maxValue">Max value</param>
+        /// <returns>
+        /// Double value.
+        /// </returns>
+        public static double NextDoubleBasedOnNormalDistribution(double maxValue)
+        {
+            return Normal.Sample(Randomizer.Rng, maxValue, maxValue);
+        }
+
         #endregion
     }
 }

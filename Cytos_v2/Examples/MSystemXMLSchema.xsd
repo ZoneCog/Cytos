@@ -292,6 +292,15 @@ XML Schema document MSystem, for more info, see https://www.w3schools.com/Xml/sc
                   </xs:simpleContent>
                 </xs:complexType>
               </xs:element>
+              <xs:element name="randomMovement" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:float" name="value"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
               <xs:element name="batteryVoltage" minOccurs="0"  maxOccurs="1">
                 <xs:complexType>
                   <xs:simpleContent>

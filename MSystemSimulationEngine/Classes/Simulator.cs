@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using MathNet.Numerics.Distributions;
+using MathNet.Spatial.Euclidean;
 using MSystemSimulationEngine.Classes.Tools;
 using MSystemSimulationEngine.Classes.Xml;
 using SharedComponents.Tools;
@@ -564,6 +565,11 @@ namespace MSystemSimulationEngine.Classes
 
                 //PerformHealthCheck();
             }
+
+            if (SimulationMSystem.TilingRandomMovement > 0)
+            {
+                RandomlyMoveTiles(SimulationMSystem.TilingRandomMovement);
+            }
         }
 
         /// <summary>
@@ -596,6 +602,47 @@ namespace MSystemSimulationEngine.Classes
             { }
             if (tile.IntersectsWith(checkedTile))
             { }
+        }
+
+        /// <summary>
+        /// Moves all available tiles in world about random pushing vector.
+        /// </summary>
+        /// <param name="movementMaxValue">Max value of push in any direction.</param>
+        private void RandomlyMoveTiles(double movementMaxValue)
+        {
+            var tilesToBeMoved = TilesWorld.GetCopyOfTilesInWorld();
+
+            while (tilesToBeMoved.Any())
+            {
+                var pushingVector = new Vector3D(
+                    Randomizer.NextDoubleBasedOnNormalDistribution(movementMaxValue),
+                    Randomizer.NextDoubleBasedOnNormalDistribution(movementMaxValue),
+                    Randomizer.NextDoubleBasedOnNormalDistribution(movementMaxValue));
+
+                var component = tilesToBeMoved.First().SetAndGetPushedComponent(pushingVector);
+
+                tilesToBeMoved.ExceptWith(component);
+
+                var validMovement = true;
+                foreach (var tileInComponent in component)
+                {
+                    foreach (var tileInWorld in tilesToBeMoved)
+                    {
+                        if (!component.Contains(tileInWorld))
+                        {
+                            validMovement = tileInComponent.PushingNonIntersected(tileInWorld) == default;
+                        }
+                    }
+                }
+
+                if (validMovement)
+                {
+                    component.ToList().ForEach(tile => tile.Move(pushingVector));
+                }
+
+                component.ToList().ForEach(tile => tile.ClearPushing());
+
+            }
         }
 
         /// <summary>
@@ -923,7 +970,7 @@ namespace MSystemSimulationEngine.Classes
                 long kills = 0;
                 while (kills < remainingKills)
                 {
-                    int step = Randomizer.Next(numberOfSteps); 
+                    int step = Randomizer.Next(numberOfSteps);
                     // do not accept step zero or already selected step => accepted step greater than sureKills
                     if (step == 0 || hurtTable[step] > sureKills)
                         continue;
@@ -1000,7 +1047,7 @@ namespace MSystemSimulationEngine.Classes
                 // count components if condition is met
                 if (stepsElapsed % countStep == 0)
                 {
-                    string startString  = string.Format("STAT>> {0},{1},{2}", runNo, stepsElapsed, success ? 0 : 1);
+                    string startString = string.Format("STAT>> {0},{1},{2}", runNo, stepsElapsed, success ? 0 : 1);
                     result += CountComponents(startString);
                 }
             }
@@ -1082,7 +1129,7 @@ namespace MSystemSimulationEngine.Classes
                 startString = string.Format("STAT>> {0},{1},{2}", runNo, initialNumberOfSteps, 0);
                 res += CountComponents(startString);
 
-                int firstComponentCount  = 0;
+                int firstComponentCount = 0;
                 int secondComponentCount = 0;
 
                 // get copy of all tiles
@@ -1099,7 +1146,7 @@ namespace MSystemSimulationEngine.Classes
                 // remove all tiles of the component form the list
                 foreach (TileInSpace element in component)
                 {
-                  polygonTiles.Remove(element);
+                    polygonTiles.Remove(element);
                 }
 
                 // do it the same for the second component if it exists
@@ -1156,7 +1203,7 @@ namespace MSystemSimulationEngine.Classes
                 // perform one simulation step
                 RunOneSimulationStep();
                 // report state for every further stpe
-                startString = string.Format("STAT>> {0},{1},{2}", runNo, 0, i+1);
+                startString = string.Format("STAT>> {0},{1},{2}", runNo, 0, i + 1);
                 res += CountComponents(startString);
             }
 
