@@ -11,6 +11,9 @@ using MSystemSimulationEngine.Classes.Xml;
 
 namespace Cytos_v2_Tests.Classes
 {
+    /// <summary>
+    ///TODO: Add test of pushed floating object by a growing tile.
+    /// </summary>
 
     [TestClass]
     public class TilesWorldTest
@@ -67,10 +70,8 @@ namespace Cytos_v2_Tests.Classes
         [TestMethod]
         public void TestConstructorEqualTiles()
         {
-            // test the the number of elements in our test torld
+            // test the the number of elements in our test world
             Assert.AreEqual(m_testMSystem.SeedTiles.Count, m_tilesWorld.ToList().Count);
-
-            // TODO - not sure we can test much more here
         }
 
         [TestMethod]

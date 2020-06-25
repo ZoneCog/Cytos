@@ -568,7 +568,7 @@ namespace MSystemSimulationEngine.Classes
 
             if (SimulationMSystem.TilingRandomMovement > 0)
             {
-                RandomlyMoveTiles(SimulationMSystem.TilingRandomMovement);
+                TilesWorld.RandomlyMoveTiles(SimulationMSystem.TilingRandomMovement);
             }
         }
 
@@ -602,48 +602,6 @@ namespace MSystemSimulationEngine.Classes
             { }
             if (tile.IntersectsWith(checkedTile))
             { }
-        }
-
-        /// <summary>
-        /// Moves all available tiles in world about random pushing vector.
-        /// </summary>
-        /// <param name="movementMaxValue">Max value of push in any direction.</param>
-        private void RandomlyMoveTiles(double movementMaxValue)
-        {
-            var tilesToBeMoved = TilesWorld.ToList();
-
-            while (tilesToBeMoved.Any())
-            {
-                var pushingVector = new Vector3D(
-                    Randomizer.NextDoubleBasedOnNormalDistribution(movementMaxValue),
-                    Randomizer.NextDoubleBasedOnNormalDistribution(movementMaxValue),
-                    Randomizer.NextDoubleBasedOnNormalDistribution(movementMaxValue));
-
-                var component = tilesToBeMoved.First().SetAndGetPushedComponent(pushingVector);
-
-                var tilesWithoutComponent = tilesToBeMoved.Except(component);
-                tilesToBeMoved = tilesWithoutComponent.ToList();
-
-                var validMovement = true;
-                foreach (var tileInComponent in component)
-                {
-                    foreach (var tileInWorld in tilesToBeMoved)
-                    {
-                        if (!component.Contains(tileInWorld))
-                        {
-                            validMovement = tileInComponent.PushingNonIntersected(tileInWorld) == default;
-                        }
-                    }
-                }
-
-                if (validMovement)
-                {
-                    component.ToList().ForEach(tile => tile.Move(pushingVector));
-                }
-
-                component.ToList().ForEach(tile => tile.ClearPushing());
-
-            }
         }
 
         /// <summary>

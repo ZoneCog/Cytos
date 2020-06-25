@@ -385,7 +385,6 @@ namespace MSystemSimulationEngine.Classes
             }
             builder.AppendLine(evolutionRules);
 
-            builder.AppendLine($"Mobility: {Mobility}");
             builder.AppendLine($"Tolerance: {Tolerance}");
             builder.AppendLine($"Side distance: {SideDist}");
             builder.AppendLine($"Minimal face distance: {MinFaceDist}");

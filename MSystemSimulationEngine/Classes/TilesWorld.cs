@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SharedComponents.Tools;
 
 namespace MSystemSimulationEngine.Classes
 {
@@ -97,45 +98,6 @@ namespace MSystemSimulationEngine.Classes
         }
 
         /// <summary>
-        /// Applies pushing to tiles in the passed list.
-        /// Applies pushing to floating object pushed by these tiles.
-        /// TODO for each component containing tiles: calculate pushing vectors by tiles growing from them.
-        /// Calculate their common (average) pushing veector.
-        /// If its scalar product with all particular pushing vectors is positive, then try to apply the average vector
-        /// to all objects pushed by these interconnected growing tiles.
-        /// </summary>
-        private void ApplyPushing(IEnumerable<TileInSpace> pushedTiles)
-        {
-            var pushedFltObjects = new Dictionary<FloatingObjectInSpace, Vector3D>();
-            foreach (var tile in pushedTiles)
-            {
-                var polygon = tile.Vertices as Polygon3D;
-                // Only polygon pushed outside his own plane can push floating objects 
-                if (polygon != null && !tile.PushingVector.IsPerpendicularTo(polygon.Normal))
-                {
-                    var checkedSet = FltObjectsWorld.GetObjectsInPrism(polygon, tile.PushingVector);
-                    foreach (var fltObj in checkedSet)
-                    {
-                        // Vector between the current position of the floating object and the pushed position
-                        var pushingVector = fltObj.Position
-                            - polygon.Plane.IntersectionWith(new Ray3D(fltObj.Position, tile.PushingVector));
-
-                        // Extra safe distance of floating objects from the closest tile
-                        pushingVector += MSystem.SideDist * Math.Sign(polygon.Normal.DotProduct(tile.PushingVector)) * polygon.Normal;
-
-                        if (!pushedFltObjects.ContainsKey(fltObj) || pushingVector.Length > pushedFltObjects[fltObj].Length)
-                            pushedFltObjects[fltObj] = pushingVector;
-                    }
-                }
-                tile.Move(tile.PushingVector);
-                FltObjectsWorld.ExpandWith(new Box3D(tile.Vertices), v_MSystem.RefillEnvironment);
-            }
-
-            foreach (var fltObj in pushedFltObjects)
-                v_FltObjectsWorld.Move(fltObj.Key, fltObj.Value);
-        }
-
-        /// <summary>
         /// Clears pushing vectors in all tiles in the world.
         /// </summary>
         private void ClearPushing()
@@ -182,8 +144,13 @@ namespace MSystemSimulationEngine.Classes
         }
 
         /// <summary>
-        /// Tries to attach a tile in space to the world due to space constraints.
+        /// Tries to attach a tile in space to the tiles world due to space constraints.
         /// Resolves pushing of fixed and floating objects.
+        /// TODO More realistic pushing: 
+        /// For each component containing tiles: calculate pushing vectors by tiles growing from them.
+        /// Calculate their common (average) pushing veector.
+        /// If its scalar product with all particular pushing vectors is positive, then try to apply the average vector
+        /// to all objects pushed by these interconnected growing tiles.
         /// </summary>
         /// <param name="connector">Connector on the new tile by which it is attached to an existing one.</param>
         /// <returns>
@@ -287,6 +254,43 @@ namespace MSystemSimulationEngine.Classes
 
             ClearPushing();
             return true;
+        }
+
+
+        /// <summary>
+        /// Applies pushing to tiles in the passed list.
+        /// Applies pushing to floating object pushed by these tiles.
+        /// </summary>
+        private void ApplyPushing(IEnumerable<TileInSpace> pushedTiles)
+        {
+            var pushedFltObjects = new Dictionary<FloatingObjectInSpace, Vector3D>();
+            foreach (var tile in pushedTiles)
+            {
+                var polygon = tile.Vertices as Polygon3D;
+                // Only polygon pushed outside his own plane can push floating objects 
+                if (polygon != null && !tile.PushingVector.IsPerpendicularTo(polygon.Normal))
+                {
+                    var checkedSet = FltObjectsWorld.GetObjectsInPrism(polygon, tile.PushingVector);
+                    foreach (var fltObj in checkedSet)
+                    {
+                        // Vector from the current position of the floating object to the pushed position
+                        var pushingVector = fltObj.Position.VectorTo
+                            (polygon.Plane.IntersectionWith(new Ray3D(fltObj.Position, tile.PushingVector)) + tile.PushingVector);
+
+                        // Extra safe distance of floating objects from the closest tile
+                        pushingVector += MSystem.SideDist * Math.Sign(polygon.Normal.DotProduct(tile.PushingVector)) * polygon.Normal;
+
+                        // If the floating object was already pushed by another tile, we take the longer of the two pushing vectors
+                        if (!pushedFltObjects.ContainsKey(fltObj) || pushingVector.Length > pushedFltObjects[fltObj].Length)
+                            pushedFltObjects[fltObj] = pushingVector;
+                    }
+                }
+                tile.Move(tile.PushingVector);
+                FltObjectsWorld.ExpandWith(new Box3D(tile.Vertices), v_MSystem.RefillEnvironment);
+            }
+            // Now we actually change positions of the pushed floating objects
+            foreach (var fltObj in pushedFltObjects)
+                v_FltObjectsWorld.Move(fltObj.Key, fltObj.Value);
         }
 
 
@@ -443,6 +447,38 @@ namespace MSystemSimulationEngine.Classes
         }
 
 
+        /// <summary>
+        /// Moves all tile complexes in world by random pushing vectors
+        /// </summary>
+        /// <param name="movementMaxValue">Max value of push in any direction.</param>
+        public void RandomlyMoveTiles(double movementMaxValue)
+        {
+            var tilesToBeMoved = v_TileSet.ToList();
+
+            while (tilesToBeMoved.Any())
+            {
+                var pushingVector = new Vector3D(
+                    Randomizer.NextDoubleBasedOnNormalDistribution(movementMaxValue), // - movementMaxValue
+                    Randomizer.NextDoubleBasedOnNormalDistribution(movementMaxValue), //-movementMaxValue
+                    Randomizer.NextDoubleBasedOnNormalDistribution(movementMaxValue)); //-movementMaxValue
+
+                var component = tilesToBeMoved.First().SetAndGetPushedComponent(pushingVector);
+                tilesToBeMoved = tilesToBeMoved.Except(component).ToList();
+
+                var tilesToBeChecked = v_TileSet.Except(component);
+
+                // if no tile in the moved component pushes any remaining tile in the world, moving is possible
+                if (component.All(tileInComponent => tilesToBeChecked.All(
+                    tileInWorld => tileInComponent.PushingNonIntersected(tileInWorld) == default)))
+                {
+                    ApplyPushing(component);
+                }
+
+                component.ToList().ForEach(tile => tile.ClearPushing());
+            }
+        }
+
+        
         /// <summary>
         /// Tries to insert a new tile between two existing conected tiles at a given connection.
         /// TODO at the moment allows only insertion of rods, generalize also for 2D tiles
