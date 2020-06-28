@@ -52,8 +52,9 @@
             this.multipleRunsprobabilisticKillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.multipleRunsV2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.multipleRunsprobabilisticKillV2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.oneOffDamageTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButtonAbout = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripTextBoxSearchInMSystemObjects = new System.Windows.Forms.ToolStripTextBox();
@@ -65,9 +66,13 @@
             this.buttonRun = new System.Windows.Forms.Button();
             this.buttonRestart = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.oneOffDamageTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonVizualizeSnapshot = new System.Windows.Forms.Button();
+            this.buttonOpenSimLog = new System.Windows.Forms.Button();
+            this.buttonLoadMSystem = new System.Windows.Forms.Button();
             this.toolStripMainPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripMainPanel
@@ -253,13 +258,13 @@
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(342, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(274, 6);
             // 
             // multipleRunsV2ToolStripMenuItem
             // 
             this.multipleRunsV2ToolStripMenuItem.Enabled = false;
             this.multipleRunsV2ToolStripMenuItem.Name = "multipleRunsV2ToolStripMenuItem";
-            this.multipleRunsV2ToolStripMenuItem.Size = new System.Drawing.Size(345, 26);
+            this.multipleRunsV2ToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.multipleRunsV2ToolStripMenuItem.Text = "Multiple runs (fixed kills) V2";
             this.multipleRunsV2ToolStripMenuItem.Click += new System.EventHandler(this.multipleRunsV2TestToolStripMenuItem_Click);
             // 
@@ -267,13 +272,21 @@
             // 
             this.multipleRunsprobabilisticKillV2ToolStripMenuItem.Enabled = false;
             this.multipleRunsprobabilisticKillV2ToolStripMenuItem.Name = "multipleRunsprobabilisticKillV2ToolStripMenuItem";
-            this.multipleRunsprobabilisticKillV2ToolStripMenuItem.Size = new System.Drawing.Size(345, 26);
+            this.multipleRunsprobabilisticKillV2ToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.multipleRunsprobabilisticKillV2ToolStripMenuItem.Text = "Multiple runs (probabilistic kill) V2";
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(342, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(274, 6);
+            // 
+            // oneOffDamageTestToolStripMenuItem
+            // 
+            this.oneOffDamageTestToolStripMenuItem.Enabled = false;
+            this.oneOffDamageTestToolStripMenuItem.Name = "oneOffDamageTestToolStripMenuItem";
+            this.oneOffDamageTestToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
+            this.oneOffDamageTestToolStripMenuItem.Text = "One off damage Test";
+            this.oneOffDamageTestToolStripMenuItem.Click += new System.EventHandler(this.oneOffDamageTestToolStripMenuItem_Click);
             // 
             // toolStripButtonAbout
             // 
@@ -320,23 +333,23 @@
             // 
             // richTextBoxOutput
             // 
-            this.richTextBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.richTextBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.richTextBoxOutput.Location = new System.Drawing.Point(18, 28);
             this.richTextBoxOutput.Name = "richTextBoxOutput";
-            this.richTextBoxOutput.Size = new System.Drawing.Size(338, 566);
+            this.richTextBoxOutput.Size = new System.Drawing.Size(338, 611);
             this.richTextBoxOutput.TabIndex = 1;
             this.richTextBoxOutput.Text = "";
             // 
             // richTextBoxMSystem
             // 
-            this.richTextBoxMSystem.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.richTextBoxMSystem.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBoxMSystem.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.richTextBoxMSystem.Location = new System.Drawing.Point(362, 28);
             this.richTextBoxMSystem.Name = "richTextBoxMSystem";
-            this.richTextBoxMSystem.Size = new System.Drawing.Size(635, 617);
+            this.richTextBoxMSystem.Size = new System.Drawing.Size(635, 715);
             this.richTextBoxMSystem.TabIndex = 2;
             this.richTextBoxMSystem.Text = "Load M System description file to see content.";
             // 
@@ -382,26 +395,65 @@
             this.groupBox1.Controls.Add(this.buttonStop);
             this.groupBox1.Controls.Add(this.buttonRestart);
             this.groupBox1.Controls.Add(this.buttonRun);
-            this.groupBox1.Location = new System.Drawing.Point(18, 600);
+            this.groupBox1.Location = new System.Drawing.Point(18, 697);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(338, 46);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Simulation loop controls";
             // 
-            // oneOffDamageTestToolStripMenuItem
+            // groupBox2
             // 
-            this.oneOffDamageTestToolStripMenuItem.Enabled = false;
-            this.oneOffDamageTestToolStripMenuItem.Name = "oneOffDamageTestToolStripMenuItem";
-            this.oneOffDamageTestToolStripMenuItem.Size = new System.Drawing.Size(345, 26);
-            this.oneOffDamageTestToolStripMenuItem.Text = "One off damage Test";
-            this.oneOffDamageTestToolStripMenuItem.Click += new System.EventHandler(this.oneOffDamageTestToolStripMenuItem_Click);
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox2.Controls.Add(this.buttonVizualizeSnapshot);
+            this.groupBox2.Controls.Add(this.buttonOpenSimLog);
+            this.groupBox2.Controls.Add(this.buttonLoadMSystem);
+            this.groupBox2.Location = new System.Drawing.Point(18, 645);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(338, 46);
+            this.groupBox2.TabIndex = 11;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Favourite controls";
+            // 
+            // buttonVizualizeSnapshot
+            // 
+            this.buttonVizualizeSnapshot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonVizualizeSnapshot.Location = new System.Drawing.Point(115, 16);
+            this.buttonVizualizeSnapshot.Name = "buttonVizualizeSnapshot";
+            this.buttonVizualizeSnapshot.Size = new System.Drawing.Size(103, 23);
+            this.buttonVizualizeSnapshot.TabIndex = 8;
+            this.buttonVizualizeSnapshot.Text = "Vizualize snapshot";
+            this.buttonVizualizeSnapshot.UseVisualStyleBackColor = true;
+            this.buttonVizualizeSnapshot.Click += new System.EventHandler(this.buttonVizualizeSnapshot_Click);
+            // 
+            // buttonOpenSimLog
+            // 
+            this.buttonOpenSimLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonOpenSimLog.Location = new System.Drawing.Point(224, 16);
+            this.buttonOpenSimLog.Name = "buttonOpenSimLog";
+            this.buttonOpenSimLog.Size = new System.Drawing.Size(103, 23);
+            this.buttonOpenSimLog.TabIndex = 9;
+            this.buttonOpenSimLog.Text = "Open Sim log";
+            this.buttonOpenSimLog.UseVisualStyleBackColor = true;
+            this.buttonOpenSimLog.Click += new System.EventHandler(this.buttonOpenSimLog_Click);
+            // 
+            // buttonLoadMSystem
+            // 
+            this.buttonLoadMSystem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonLoadMSystem.Location = new System.Drawing.Point(6, 16);
+            this.buttonLoadMSystem.Name = "buttonLoadMSystem";
+            this.buttonLoadMSystem.Size = new System.Drawing.Size(103, 23);
+            this.buttonLoadMSystem.TabIndex = 7;
+            this.buttonLoadMSystem.Text = "Load M System";
+            this.buttonLoadMSystem.UseVisualStyleBackColor = true;
+            this.buttonLoadMSystem.Click += new System.EventHandler(this.buttonLoadMSystem_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1003, 657);
+            this.ClientSize = new System.Drawing.Size(1003, 754);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.richTextBoxMSystem);
             this.Controls.Add(this.richTextBoxOutput);
@@ -418,6 +470,7 @@
             this.toolStripMainPanel.ResumeLayout(false);
             this.toolStripMainPanel.PerformLayout();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -462,5 +515,9 @@
         private System.Windows.Forms.ToolStripMenuItem multipleRunsprobabilisticKillV2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem oneOffDamageTestToolStripMenuItem;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button buttonVizualizeSnapshot;
+        private System.Windows.Forms.Button buttonOpenSimLog;
+        private System.Windows.Forms.Button buttonLoadMSystem;
     }
 }

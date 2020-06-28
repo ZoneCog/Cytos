@@ -494,6 +494,36 @@ namespace Cytos_v2.Forms
             openLogFile.Show();
         }
 
+        /// <summary>
+        /// Load M System description.
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event parameter.</param>
+        private void buttonLoadMSystem_Click(object sender, EventArgs e)
+        {
+            mSystemDescriptionToolStripMenuItem.PerformClick();
+        }
+
+        /// <summary>
+        /// Save snapshot and vizualize.
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event parameter.</param>
+        private void buttonVizualizeSnapshot_Click(object sender, EventArgs e)
+        {
+            saveSnapshotAndVizualizeToolStripMenuItem.PerformClick();
+        }
+
+        /// <summary>
+        /// Open simulation log.
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event parameter.</param>
+        private void buttonOpenSimLog_Click(object sender, EventArgs e)
+        {
+            openSimulationLogFileToolStripMenuItem.PerformClick();
+        }
+
         #region Simulation engine controls
 
         /// <summary>
@@ -989,6 +1019,5 @@ namespace Cytos_v2.Forms
                 }
             }
         }
-
     }
 }
