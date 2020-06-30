@@ -19,6 +19,7 @@ namespace Cytos_v2_Tests.Classes.Xml
     {
         // Test floating object for all tests, it is never changed.
         private static readonly FloatingObject v_TestFloatingObject = new FloatingObject("testName", 0, 0);
+        private static readonly IEnumerable<Tile> v_EmptyTiles = new List<Tile>();
 
         private const string c_TestMSystemDescription = "../../Classes/Xml/TestXML/testEmptyMSystemDescription.xml";
 
@@ -27,7 +28,7 @@ namespace Cytos_v2_Tests.Classes.Xml
         [TestMethod]
         public void TestConstructor()
         {
-            SerializeSnapshot testSnapshot = new SerializeSnapshot(c_TestMSystemDescription);
+            SerializeSnapshot testSnapshot = new SerializeSnapshot(c_TestMSystemDescription, v_EmptyTiles);
             Assert.AreEqual("<root><MSystemDescription><tiling></tiling><Msystem></Msystem></MSystemDescription><snapshots/></root>", 
                 Regex.Replace(testSnapshot.GetXmlDocAsAString(), @"\s+", ""));//Regex removes all whitespaces
         }
@@ -36,7 +37,7 @@ namespace Cytos_v2_Tests.Classes.Xml
         public void TestSaveXmlFile()
         {
             string xmlPath = "testFolder/testXML.xml";
-            SerializeSnapshot testSnapshot = new SerializeSnapshot(c_TestMSystemDescription);
+            SerializeSnapshot testSnapshot = new SerializeSnapshot(c_TestMSystemDescription, v_EmptyTiles);
             testSnapshot.SaveXmlFile(xmlPath);
             Assert.IsTrue(File.Exists(xmlPath));
             File.Delete(xmlPath);
@@ -57,7 +58,7 @@ namespace Cytos_v2_Tests.Classes.Xml
             Tile baseObject = new Tile("testName", testPointList, null, null, null, Color.Black);
             List<TileInSpace> testTilesList = new List<TileInSpace> { new TileInSpace(baseObject, Point3D.Origin, Quaternion.One) };
 
-            SerializeSnapshot testSnapshot = new SerializeSnapshot(c_TestMSystemDescription);
+            SerializeSnapshot testSnapshot = new SerializeSnapshot(c_TestMSystemDescription, new List<Tile>{ baseObject });
             testSnapshot.Serialize(0, testFloatingObjectsSet, testTilesList);
             string serializedSnapShot = testSnapshot.GetXmlDocAsAString();
             XDocument expecteDocument = XDocument.Load("../../Classes/Xml/TestXML/serializedSnapShotTest.xml");
@@ -111,11 +112,12 @@ namespace Cytos_v2_Tests.Classes.Xml
 
             Tile baseTile = CreateTile("q2");
             Tile baseTubule = CreateSegment("s1");
+            var v_baseTilesList = new List<Tile> { baseTile, baseTubule };
 
             var testTilesList = new List<TileInSpace>
                 {new TileInSpace(baseTile, Point3D.Origin, Quaternion.One)};
 
-            SerializeSnapshot testSnapshot = new SerializeSnapshot(c_TestMSystemDescription);
+            SerializeSnapshot testSnapshot = new SerializeSnapshot(c_TestMSystemDescription, v_baseTilesList);
             testSnapshot.Serialize(0, testFloatingObjectsSet, testTilesList);
 
             TileInSpace bottomTile = testTilesList.First();
