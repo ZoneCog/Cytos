@@ -133,12 +133,14 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Examples\MSystemSeptumX1.xml" />
+    <Content Include="Examples\MSystemSquereSnapshot.xml" />
     <Content Include="Examples\MSystemSquereTiles.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Examples\TestSnapshotFile.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Examples\_SnapshotBoxyHallows.xml" />
     <Content Include="ico.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
