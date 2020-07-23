@@ -67,7 +67,7 @@ namespace MSystemSimulationEngine.Classes
         public Simulator(DeserializedObjects mSystemObjects, bool serializeFloatingObjects) :
             base(mSystemObjects)
         {
-            v_SnapshotXmlDoc = new SerializeSnapshot(mSystemObjects.MSystemFilePath);
+            v_SnapshotXmlDoc = new SerializeSnapshot(mSystemObjects.MSystemFilePath, mSystemObjects.Tiles.Values);
             v_SerializeFloatingObjects = serializeFloatingObjects;
             FinalizeStep();
 

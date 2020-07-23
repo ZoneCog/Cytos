@@ -35,7 +35,7 @@ namespace MSystemSimulationEngine.Classes.Xml
         /// Creates new Xml document with the master snapshots element.
         /// </summary>
         /// <param name="MSystemPath">Path to MSystem description</param>
-        public SerializeSnapshot(string MSystemPath)
+        public SerializeSnapshot(string MSystemPath, IEnumerable<Tile> tilesInZeroPosition)
         {
 
             v_XmlDoc = new XDocument();
@@ -47,10 +47,12 @@ namespace MSystemSimulationEngine.Classes.Xml
 
             // TODO change all colors to the format aarrggbb
             XDocument mSystemDescription = XDocument.Load(MSystemPath);
-            XElement tiling = mSystemDescription.Root.GetElement("tiling");
+            XElement tilingCoordinates = new XElement("tilingCoordinates");   // Absolute coordinates of all tiles in zero positions
+            SerializeTilingCoordinates(tilingCoordinates, tilesInZeroPosition);
+            XElement tiling = mSystemDescription.Root.GetElement("tiling");  // Description of tiling loaded from the input XML
             XElement Msystem = mSystemDescription.Root.GetElement("Msystem");
 
-            v_RootXmlElement.GetElement("MSystemDescription").Add(tiling, Msystem);
+            v_RootXmlElement.GetElement("MSystemDescription").Add(tiling, tilingCoordinates, Msystem);
 
         }
 
@@ -87,134 +89,141 @@ namespace MSystemSimulationEngine.Classes.Xml
 
 
         /// <summary>
-        /// Serializes tiles.
+        /// Serializes coordinates of all tiles in zero position.
         /// </summary>
         /// <param name="tilesNode">Xml node where the tiles belong.</param>
         /// <param name="tiles">Tiles to serialize.</param>
-        private void SerializeTiles(XElement tilesNode, IEnumerable<TileInSpace> tiles)
+        private void SerializeTilingCoordinates(XElement tilesNode, IEnumerable<Tile> tiles)
         {
-            foreach (TileInSpace tile in tiles)
+            foreach (var tile in tiles)
             {
-                if (tile.State != TileInSpace.FState.Unchanged)
-                {
-                    SerializeTile(tilesNode,
-                        tile.Name,
-                        tile.ID,
-                        tile.Vertices is Segment3D ? "rod" : "tile",
-                        tile.State,
-                        tile.Vertices,
-                        tile.Color,
-                        tile.Alpha);
-                }
-                //Change color of tile in space
-                else if (tile.State == TileInSpace.FState.Unchanged && tile.ColorWasChanged)
-                {
-                    //Destroy old one
-                    SerializeTile(tilesNode,
-                        tile.Name,
-                        tile.ID,
-                        tile.Vertices is Segment3D ? "rod" : "tile",
-                        TileInSpace.FState.Destroy,
-                        tile.Vertices,
-                        tile.Color,
-                        tile.Alpha);
-                    //Create new one with new color
-                    SerializeTile(tilesNode,
-                        tile.Name,
-                        tile.ID,
-                        tile.Vertices is Segment3D ? "rod" : "tile",
-                        TileInSpace.FState.Create,
-                        tile.Vertices,
-                        tile.Color,
-                        tile.Alpha);
-                }
-
-                // If any connector was disconnected and it still stick to its previous tile, we emphasize its color
-                uint count = 0;
-                foreach (var connector in tile.Connectors)
-                {
-                    count++;
-                    // Should the connector be displayed in an emphasized color?
-                    bool emphasize = connector.Positions.Count == 2 && // TODO GENERALIZE ALSO FOR POINT CONNECTORS
-                                     connector.ConnectedTo == null &&
-                                     connector.OnTile.ID < connector.WasConnectedTo?.OnTile.ID &&
-                                     // Only one of the two overlapping connectors will emphasize the edge
-                                     connector.WasConnectedTo?.OnTile.State != TileInSpace.FState.Destroy &&
-                                     connector.Overlaps(connector.WasConnectedTo);
-
-                    var state = TileInSpace.FState.Unchanged;
-
-                    if (connector.WasEmphasized)
-                    {
-                        if (!emphasize)
-                            state = TileInSpace.FState.Destroy;
-                        else if (tile.State == TileInSpace.FState.Destroy || tile.State == TileInSpace.FState.Move)
-                            state = tile.State;
-                    }
-                    else if (emphasize && tile.State != TileInSpace.FState.Destroy)
-                        state = TileInSpace.FState.Create;
-
-                    connector.WasEmphasized = emphasize;
-
-                    if (state != TileInSpace.FState.Unchanged)
-                    {
-                        // Store a fake tile shaped as the conector to the snapshot file
-                        SerializeTile(tilesNode,
-                            tile.Name + "- connector " + connector.Name,
-                            tile.ID * 1000000 + count,
-                            "rod",
-                            state,
-                            connector.Positions,
-                            connector.EmphColor,
-                            255,
-                            0.1);
-
-                    }
-                }
+                SerializeTileCoordinates(tilesNode, tile);
             }
         }
 
 
         /// <summary>
-        /// Serializes single tile.
+        /// Serializes coordinates of a single tile in zero position.
         /// </summary>
-        /// <param name="tilesNode">Xml node where the tile belong.</param>
-        /// <param name="name">Tile name</param>
-        /// <param name="id">Tile unique ID</param>
-        /// <param name="type">Tile type (rod, tile)</param>
-        /// <param name="state">Tile state (Move, Create, Destroy)</param>
-        /// <param name="vertices">Tile vertices</param>
-        /// <param name="color">Tile color</param>
-        /// <param name="alpha">Alpha attribute of the tile color</param>
-        /// <param name="thickness">Tile thickness - relevant only for rods, ignored if <=0</param>
-        private void SerializeTile(XElement tilesNode, string name, ulong id, string type, TileInSpace.FState state, IEnumerable<Point3D> vertices, Color color, int alpha, double thickness = 0)
+        /// <param name="tilesNode">Xml node where the tile belongs.</param>
+        /// <param name="tile">Tile in zero position</param>
+        private void SerializeTileCoordinates(XElement tilesNode, Tile tile)
         {
-            /*  <tile name="b" objectID="1" type="tile" state="create">
-                    <vertices>
-                        <vertex>
-                            <posX value="0"/>s
-                            <posY value="0"/>
-                            <posZ value="0"/>
-                        </vertex>
-                        ...
-                    </vertice>
+            XElement tileElement =
+                new XElement("tile",
+                    new XAttribute("name", tile.Name));
+
+            foreach(var vertex in tile.Vertices)
+                SerializePosition(tileElement, vertex, "vertex");
+
+            tilesNode.Add(tileElement);
+        }
+
+        /// <summary>
+        /// Serializes tiles of a snapshot.
+        /// </summary>
+        /// <param name="tilesNode">Xml node where the tiles belong.</param>
+        /// <param name="tiles">Tiles to serialize.</param>
+        private void SerializeTiles(XElement tilesNode, IEnumerable<TileInSpace> tiles)
+        {
+            foreach (var tile in tiles)
+            {
+                if (tile.State != TileInSpace.FState.Unchanged)
+                {
+                    SerializeTile(tilesNode, tile);
+                }
+                //Change color of tile in space, state = Unchanged
+                else if (tile.ColorWasChanged)
+                {
+                    //Destroy old one
+                    tile.State = TileInSpace.FState.Destroy;
+                    SerializeTile(tilesNode, tile);
+                    //Create new one with new color
+                    tile.State = TileInSpace.FState.Create;
+                    SerializeTile(tilesNode, tile);
+                    tile.State = TileInSpace.FState.Unchanged;
+                }
+
+                // TODO If any connector was disconnected and it still stick to its previous tile, we emphasize its color
+                /*                uint count = 0;
+                                foreach (var connector in tile.Connectors)
+                                {
+                                    count++;
+                                    // Should the connector be displayed in an emphasized color?
+                                    bool emphasize = connector.Positions.Count == 2 && 
+                                                     connector.ConnectedTo == null &&
+                                                     connector.OnTile.ID < connector.WasConnectedTo?.OnTile.ID &&
+                                                     // Only one of the two overlapping connectors will emphasize the edge
+                                                     connector.WasConnectedTo?.OnTile.State != TileInSpace.FState.Destroy &&
+                                                     connector.Overlaps(connector.WasConnectedTo);
+
+                                    var state = TileInSpace.FState.Unchanged;
+
+                                    if (connector.WasEmphasized)
+                                    {
+                                        if (!emphasize)
+                                            state = TileInSpace.FState.Destroy;
+                                        else if (tile.State == TileInSpace.FState.Destroy || tile.State == TileInSpace.FState.Move)
+                                            state = tile.State;
+                                    }
+                                    else if (emphasize && tile.State != TileInSpace.FState.Destroy)
+                                        state = TileInSpace.FState.Create;
+
+                                    connector.WasEmphasized = emphasize;
+
+                                    if (state != TileInSpace.FState.Unchanged)
+                                    {
+                                        // Store a fake tile shaped as the conector to the snapshot file
+                                        SerializeTile(tilesNode,
+                                            tile.Name + "- connector " + connector.Name,
+                                            tile.ID * 1000000 + count,
+                                            "rod",
+                                            state,
+                                            connector.Positions,
+                                            connector.EmphColor,
+                                            255,
+                                            0.1);
+
+                                    }
+                                }
+                  */
+            }
+        }
+
+
+        /// <summary>
+        /// Serializes single tile in space.
+        /// </summary>
+        /// <param name="tilesNode">Xml node where the tile belongs.</param>
+        /// <param name="tile">Tile in space</param>
+        /// <param name="thickness">Tile thickness - relevant only for rods, ignored if <=0</param>
+        private void SerializeTile(XElement tilesNode, TileInSpace tile, double thickness = 0)
+        {
+            /*  <tile name="b" objectID="1" state="create">
+                    <position>
+                        <posX value="0"/>s
+                        <posY value="0"/>
+                        <posZ value="0"/>
+                    </position>
+                    <angle>
+                        <imagX value="0"/>s
+                        <imagY value="0"/>
+                        <imagZ value="0"/>
+                        <real value="0"/>
+                    </angle>
                     <color name = "4000bfff">
                     </color>
             </tile>  */
 
             XElement tileElement =
                 new XElement("tile",
-                    new XAttribute("name", name),
-                    new XAttribute("objectID", id.ToString()),
-                    new XAttribute("type", type),
-                    new XAttribute("state", state.ToString()));
+                    new XAttribute("name", tile.Name),
+                    new XAttribute("objectID", tile.ID.ToString()),
+                    new XAttribute("state", tile.State));
 
-            XElement verticesNode = new XElement("vertices");
-            tileElement.Add(verticesNode);
-
-            foreach (Point3D vertex in vertices)
-                SerializePosition(verticesNode, vertex, "vertex");
-            SerializeColor(tileElement, color, alpha);      // Serialize in ARGB, no name
+            SerializePosition(tileElement, tile.Position);
+            SerializeAngle(tileElement, tile.Quaternion);
+            SerializeColor(tileElement, tile.Color, tile.Alpha);      // Serialize in ARGB, no name
             if (thickness > 0)
             {
                 tileElement.Add(new XElement("thickness", new XAttribute("value", thickness.ToString(CultureInfo.InvariantCulture))));
@@ -240,18 +249,19 @@ namespace MSystemSimulationEngine.Classes.Xml
         }
 
         /// <summary>
-        /// Serializes 3D angle of an object.
+        /// Serializes 3D angle of an object in the form of quaternion.
         /// </summary>
         /// <param name="objectNode">Xml node where the angle is added.</param>
-        /// <param name="angle">Angle in 3D.</param>
-        private void SerializeAngle(XElement objectNode, EulerAngles angle)
+        /// <param name="quaternion"></param>
+        private void SerializeAngle(XElement objectNode, Quaternion quaternion)
         {
             // Quaternion.ToEulerAngles rotates Z-Y-X, while Unity requires Z-X-Y
             XElement angleNode =
                 new XElement("angle",
-                    new XElement("angleX", new XAttribute("value", angle.Alpha.Degrees.ToString(CultureInfo.InvariantCulture))),
-                    new XElement("angleY", new XAttribute("value", angle.Beta.Degrees.ToString(CultureInfo.InvariantCulture))),
-                    new XElement("angleZ", new XAttribute("value", angle.Gamma.Degrees.ToString(CultureInfo.InvariantCulture))));
+                    new XElement("imagX", new XAttribute("value", quaternion.ImagX.ToString(CultureInfo.InvariantCulture))),
+                    new XElement("imagY", new XAttribute("value", quaternion.ImagY.ToString(CultureInfo.InvariantCulture))),
+                    new XElement("imagZ", new XAttribute("value", quaternion.ImagZ.ToString(CultureInfo.InvariantCulture))),
+                    new XElement("real",  new XAttribute("value", quaternion.Real.ToString(CultureInfo.InvariantCulture))));
 
             objectNode.Add(angleNode);
         }
