@@ -359,15 +359,6 @@
             ]
         },
         {
-            "managedAssemblyName": "UnityEngine.dll",
-            "nativeClass": "CGProgram",
-            "fullManagedTypeName": "UnityEngine.TextAsset",
-            "moduleName": "Core",
-            "usedInScenes": [
-                "Assets/Scenes/Main.unity"
-            ]
-        },
-        {
             "managedAssemblyName": "",
             "nativeClass": "NavMeshSettings",
             "fullManagedTypeName": "",
