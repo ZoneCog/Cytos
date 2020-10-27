@@ -15,11 +15,11 @@ All modules are covered in a single application with a simple user interface cal
 ## Simulation examples
 
 ### Boxy hallows - simple box division inspired by "Duplication spell" from Harry Potter
-<img src="http://mmaverikk.borec.cz/images/Cytos/BoxyHallows.jpg" alt="Boxy hallows">
+<img src="https://github.com/mmaverikk/Cytos/blob/master/Images/BoxyHallows.jpg" alt="Boxy hallows">
 
 ### Cytoskeleton - controlled cell division
-<img src="http://mmaverikk.borec.cz/images/Cytos/Cytoskeleton.jpg" alt="Cytoskeleton growth">
+<img src="https://github.com/mmaverikk/Cytos/blob/master/Images/Cytoskeleton.png" alt="Cytoskeleton growth">
 
 ### Septum - Simulation of growth of prokaryotic cell without nuclei
-<img src="http://mmaverikk.borec.cz/images/Cytos/Septum.jpg" alt="Septum">
+<img src="https://github.com/mmaverikk/Cytos/blob/master/Images/Septum.png" alt="Septum">
 
